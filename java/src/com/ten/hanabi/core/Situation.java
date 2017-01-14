@@ -48,7 +48,7 @@ public class Situation {
 		// Run all turns and update
 		for(turn = 0; turn < endTurn; turn++) {
 			Play p = hanabi.getPlay(turn);
-			p.checkValidity(this);
+			checkPlayValidity(p);
 			if(p instanceof CardPlay) {
 				// Remove card from hand
 				Hand hand = hands.get(turn%hanabi.getPlayerCount());
