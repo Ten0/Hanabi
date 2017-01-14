@@ -91,7 +91,7 @@ public class Situation {
 		int newClues = clues + play.getCluesAdded();
 		if(newClues < 0) throw new InvalidPlayException(play, "clues<0");
 		int maxClues = hanabi.getRuleSet().getMaxNumberOfClues();
-		if(clues > maxClues) throw new InvalidPlayException(play, "clues>"+maxClues);
+		if(newClues > maxClues) throw new InvalidPlayException(play, "clues>"+maxClues);
 		if(strikes >= hanabi.getRuleSet().getNbStrikesUntilDeath()) throw new InvalidPlayException(play, "Game is already over");
 	}
 

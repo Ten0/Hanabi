@@ -3,7 +3,8 @@ package com.ten.hanabi.tests;
 import java.io.PrintStream;
 
 import com.ten.hanabi.core.*;
-import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import com.ten.hanabi.core.clues.*;
+import com.ten.hanabi.core.exceptions.*;
 
 public class GameEngineTest {
 	
@@ -22,6 +23,10 @@ public class GameEngineTest {
 		so.println(h.getDeck());
 		
 		printState();
+		
+		p1.clue(p2, new ColorClue(Color.RED));
+		p2.clue(p3, new ColorClue(Color.RED));
+		p3.clue(p1, new ColorClue(Color.RED));
 		
 		p1.discard(0);
 		p2.discard(0);

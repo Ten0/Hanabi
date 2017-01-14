@@ -2,6 +2,7 @@ package com.ten.hanabi.core.plays;
 
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.Clue;
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
 
 public class CluePlay extends Play {
 	
@@ -12,6 +13,9 @@ public class CluePlay extends Play {
 		super(player);
 		this.toPlayer = toPlayer;
 		this.clue = clue;
+		
+		if(player == toPlayer)
+			throw new RuntimeException(new InvalidPlayException(this, "Player giving the clue cannot be receiving it"));
 	}
 
 	@Override
