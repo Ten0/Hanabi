@@ -9,54 +9,24 @@ public class Hand implements Iterable<Card> {
 
 	private final Hanabi hanabi;
 	private final Player player;
-	private final int turn;
 	private final ArrayList<Card> cards;
 	
-	private int cardId = 0;
-	
-	/*Hand(Hand previousHand, int turn) {
-		this.player = previousHand.player;
-		this.turn = turn;
-		this.hanabi = player.getHanabi();
-		
-		cards = new ArrayList<Card>();
-		for(Card c : previousHand) cards.add(c);
-		cardId = previousHand.cardId;
-		for(int cTurn = previousHand.getTurn(); cTurn < turn; cTurn++) {
-			Play p = hanabi.getPlay(cTurn);
-			if(p.getPlayer() == player && p instanceof CardPlay) {
-				cards.remove(((CardPlay)p).getPlacement());
-				cards.add(0, hanabi.getDeck().getCard(cardId));
-			}
-			cardId += p.getNbCardsPicked();
-		}
-	}*/
-	
-	/*Hand(Player player, int turn) {
-		this(player, turn, new ArrayList<Card>());
-		for(int i = 0; i < hanabi.getNbOfCardsPerPlayer(); i++) {
-			cards.add(hanabi.getDeck().getCard(player.getId()+i*hanabi.getPlayerCount()));
-		}
-		
-		cardId = hanabi.getNbOfCardsPerPlayer()*hanabi.getPlayerCount();
-		for(int cTurn = 0; cTurn < turn; cTurn++) {
-			Play p = hanabi.getPlay(cTurn);
-			if(p.getPlayer() == player && p instanceof CardPlay) {
-				cards.remove(((CardPlay)p).getPlacement());
-				cards.add(0, hanabi.getDeck().getCard(cardId));
-			}
-			cardId += p.getNbCardsPicked();
-		}
-	}*/
-	
-	Hand(Player player, int turn, ArrayList<Card> cards) {
+	Hand(Player player) {
 		this.player = player;
-		this.turn = turn;
 		this.hanabi = player.getHanabi();
-		this.cards = cards;
+		this.cards = new ArrayList<Card>();
 	}
 	
-	public Card getCard(int id) {
+	void pick(Card c) {
+		if(c == null) return;
+		cards.add(0, c);
+	}
+	
+	Card play(int id) {
+		return cards.remove(id);
+	}
+	
+	public Card get(int id) {
 		return cards.get(id);
 	}
 
@@ -72,10 +42,6 @@ public class Hand implements Iterable<Card> {
 	public Player getPlayer() {
 		return player;
 	}
-
-	public int getTurn() {
-		return turn;
-	}
 	
 	public Hanabi getHanabi() {
 		return hanabi;
@@ -84,9 +50,9 @@ public class Hand implements Iterable<Card> {
 	@Override
 	public String toString() {
 		String s = "";
-		for(int i = 0; i < size(); i++) {
-			s += getCard(i);
-			if(i != size()-1) s += " ";
+		for(int i = 0; i < this.size(); i++) {
+			s += this.get(i);
+			if(i != this.size()-1) s += " ";
 		}
 		return s;
 	}

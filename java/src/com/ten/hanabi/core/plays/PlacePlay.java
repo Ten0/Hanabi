@@ -12,5 +12,10 @@ public class PlacePlay extends CardPlay {
 	public int getCluesAdded() {
 		return 0;
 	}
+	
+	@Override
+	public String toString() {
+		return getPlayer().toString()+" places card "+getPlacement();
+	}
 
 }

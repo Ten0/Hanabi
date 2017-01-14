@@ -1,6 +1,6 @@
 package com.ten.hanabi.core;
 
-public class Card {
+public class Card implements Comparable<Card> {
 	
 	private final Color color;
 	private final int number;
@@ -28,5 +28,11 @@ public class Card {
 	@Override
 	public String toString() {
 		return ""+getNumber()+getColor().smallName();
+	}
+
+	@Override
+	public int compareTo(Card other) {
+		int compareColor = this.getColor().compareTo(other.getColor());
+		return compareColor != 0 ? compareColor : this.getNumber()-other.getNumber();
 	}
 }

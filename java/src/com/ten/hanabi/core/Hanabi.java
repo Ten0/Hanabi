@@ -2,6 +2,7 @@ package com.ten.hanabi.core;
 
 import java.util.ArrayList;
 
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
 public class Hanabi {
@@ -62,29 +63,27 @@ public class Hanabi {
 	public int getTurn() {
 		return plays.size();
 	}
+	
 	public RuleSet getRuleSet() {
 		return ruleSet;
 	}
 	
-	public void savePlay(Play play) {
-		if(getTurn()%getPlayerCount() != play.getPlayer().getId())
-			throw new RuntimeException("It isn't your turn!");
+	public Situation getSituation() throws InvalidPlayException {
+		return getSituation(getTurn());
+	}
+	
+	public Situation getSituation(int turn) throws InvalidPlayException {
+		return new Situation(this, turn);
+	}
+	
+	public boolean savePlay(Play play) {
+		boolean valid = false;
+		try {
+			if(getSituation().canPlay(play))
+				valid = true;
+		} catch (InvalidPlayException e) {}
+		
 		plays.add(play);
+		return valid;
 	}
-	
-	/*public int getNbClues() {
-		return getNbClues(getTurn());
-	}
-	
-	public int getNbClues(int turn) {
-		int maxClues = ruleSet.getInitialNumberOfClues();
-		int nClues = maxClues;
-		for(int cTurn = 0; cTurn < turn; cTurn++) {
-			nClues += getPlay(cTurn).getCluesAdded();
-			if(nClues > maxClues || nClues < 0) {
-				throw new RuntimeException("Clue count went over or under limits at turn "+cTurn+": "+nClues);
-			}
-		}
-		return nClues;
-	}*/
 }

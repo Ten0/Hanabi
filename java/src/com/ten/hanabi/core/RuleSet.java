@@ -22,5 +22,13 @@ public class RuleSet {
 
 	public int getInitialNumberOfClues() {
 		return 8;
+	}
+
+	public int getMaxNumberOfClues() {
+		return getInitialNumberOfClues();
+	}
+
+	public int getNbStrikesUntilDeath() {
+		return 3;
 	} 
 }

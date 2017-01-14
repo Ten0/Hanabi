@@ -1,5 +1,21 @@
 package com.ten.hanabi.core.clues;
 
-public class ColorClue extends Clue {
+import com.ten.hanabi.core.*;
 
+public class ColorClue extends Clue {
+	
+	private final Color color;
+
+	public ColorClue(Color c) {
+		color = c;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+	
+	@Override
+	public String toString() {
+		return color.name();
+	}
 }

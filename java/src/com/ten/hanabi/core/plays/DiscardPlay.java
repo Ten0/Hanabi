@@ -12,5 +12,10 @@ public class DiscardPlay extends CardPlay {
 	public int getCluesAdded() {
 		return 1;
 	}
+	
+	@Override
+	public String toString() {
+		return getPlayer().toString()+" discards card "+getPlacement();
+	}
 
 }

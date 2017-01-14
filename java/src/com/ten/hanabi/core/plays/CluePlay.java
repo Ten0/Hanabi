@@ -35,5 +35,10 @@ public class CluePlay extends Play {
 	public Clue getClue() {
 		return clue;
 	}
+	
+	@Override
+	public String toString() {
+		return getPlayer().toString()+" clues "+getClue()+" to "+getReceiver();
+	}
 
 }

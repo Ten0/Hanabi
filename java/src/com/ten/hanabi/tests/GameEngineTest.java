@@ -3,6 +3,7 @@ package com.ten.hanabi.tests;
 import java.io.PrintStream;
 
 import com.ten.hanabi.core.*;
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
 
 public class GameEngineTest {
 	
@@ -20,8 +21,7 @@ public class GameEngineTest {
 	public static void main(String[] args) {
 		so.println(h.getDeck());
 		
-		printHands();
-		
+		printState();
 		
 		p1.discard(0);
 		p2.discard(0);
@@ -30,13 +30,18 @@ public class GameEngineTest {
 		p2.discard(1);
 		p3.place(1);
 		
-		printHands();
+		printState();
 	}
 	
-	public static void printHands() {
-		so.println("\nTurn "+h.getTurn());
-		for(Player p : ps)
-			so.println(p.getCards());
+	public static void printState() {
+		try {
+			so.println("\nTurn "+h.getTurn());
+			Situation s = h.getSituation();
+			for(Player p : ps)
+				so.println(s.getHand(p));
+		} catch (InvalidPlayException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
