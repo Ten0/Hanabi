@@ -17,7 +17,16 @@ public class Card {
 		return this.color;
 	}
 	
+	public int getNumber() {
+		return this.number;
+	}
+	
 	public boolean matchesColor(Color color) {
 		return this.color.matchesColor(color);
+	}
+	
+	@Override
+	public String toString() {
+		return ""+getNumber()+getColor().smallName();
 	}
 }
