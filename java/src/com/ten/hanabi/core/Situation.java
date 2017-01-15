@@ -155,4 +155,16 @@ public class Situation {
 	public int getScore() {
 		return placedCards.size();
 	}
+	
+	public boolean isCardPlaced(Card card) {
+		return placedCards.contains(card);
+	}
+	
+	public boolean isCardDiscarded(Card card) {
+		return discardedCards.contains(card);
+	}
+	
+	public boolean isCardUsed(Card card) {
+		return isCardPlaced(card) || isCardDiscarded(card);
+	}
 }

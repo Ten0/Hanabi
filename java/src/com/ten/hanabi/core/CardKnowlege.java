@@ -1,5 +1,6 @@
 package com.ten.hanabi.core;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -15,6 +16,7 @@ public class CardKnowlege {
 	
 	private final TreeSet<Color> possibleColors;
 	private final TreeSet<Integer> possibleNumbers;
+	private final HashSet<Card> possibleCards;
 	
 	CardKnowlege(Situation situation, int turnEntered) {
 		this.situation = situation;
@@ -26,6 +28,8 @@ public class CardKnowlege {
 		for(Color c : situation.getHanabi().getRuleSet().getEnabledColors()) possibleColors.add(c);
 		possibleNumbers = new TreeSet<Integer>();
 		for(int i = 1; i <= 5; i++) possibleNumbers.add(i);
+		possibleCards = new HashSet<Card>();
+		for(Card c : situation.getHanabi().getDeck()) possibleCards.add(c);
 	}
 	
 	void knowClue(Clue clue) {
@@ -78,7 +82,8 @@ public class CardKnowlege {
 		return possibleColors;
 		
 	}
-	public Color getColor() {
+	/** Limited to clues, won't count cards */
+	public Color getColorFromClues() {
 		if(getPossibleColors().size() == 1)
 			return possibleColors.toArray(new Color[1])[0];
 		else
@@ -114,11 +119,35 @@ public class CardKnowlege {
 		
 		return possibleNumbers;
 	}
-	public int getNumber() {
+	/** Limited to clues, won't count cards */
+	public int getNumberFromClues() {
 		if(getPossibleNumbers().size() == 1)
 			return possibleNumbers.toArray(new Integer[1])[0];
 		else
 			return -1;
+	}
+	
+	/** Also counting cards */
+	public HashSet<Card> getPossibleCards() {
+		Iterator<Card> it = possibleCards.iterator();
+		TreeSet<Integer> pn = getPossibleNumbers();
+		TreeSet<Color> pc = getPossibleColors();
+		while(it.hasNext()) {
+			Card card = it.next();
+			if(!pc.contains(card.getColor()) || !pn.contains(card.getNumber()) || situation.isCardUsed(card)) {
+				it.remove();
+			}
+		}
+		
+		return possibleCards;
+	}
+	
+	/** Also counting cards */
+	public TreeSet<Card> getPossibleCardsWithoutDupplicates() {
+		TreeSet<Card> res = new TreeSet<Card>();
+		for(Card c : getPossibleCards())
+			res.add(c);
+		return res;
 	}
 	
 	@Override
