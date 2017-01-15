@@ -1,53 +1,36 @@
 package com.ten.hanabi.ui.play;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
-public class PlayFrame {
-
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PlayFrame window = new PlayFrame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+public class PlayFrame extends JFrame {
+	
+	UIPlayManager uiPlayManager;
 
 	/**
-	 * Create the application.
+	 * Create the frame.
+	 * @param uiPlayManager 
 	 */
-	public PlayFrame() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setEnabled(false);
-		frame.setBounds(100, 100, 1243, 762);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+	public PlayFrame(UIPlayManager upm) {
+		super();
+		setTitle("Hanabi - Game");
+		uiPlayManager = upm;
+		
+		getContentPane().setEnabled(false);
+		setBounds(100, 100, 1243, 762);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JSplitPane splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.7);
-		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
+		splitPane.setResizeWeight(0.8);
+		getContentPane().add(splitPane, BorderLayout.CENTER);
 		
-		PlayersCardsPanel playersCardsPanel = new PlayersCardsPanel();
+		PlayersCardsPanel playersCardsPanel = new PlayersCardsPanel(upm);
 		splitPane.setRightComponent(playersCardsPanel);
 		
 		JSplitPane board_options = new JSplitPane();
@@ -69,4 +52,5 @@ public class PlayFrame {
 		log_options.setResizeWeight(0.5);
 		board_options.setRightComponent(log_options);
 	}
+
 }

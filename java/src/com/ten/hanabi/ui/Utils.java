@@ -31,8 +31,18 @@ public class Utils {
 		return resizedImg;
 	}
 	
-	public static Image getImage(Card c) {
-		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource("/com/ten/hanabi/img/cards.png"));
-		
+	public static Image getCardImage(Card c) { return getCardImage(c, 85, 130); }
+	public static Image getCardImage(Card c, int w, int h) {
+		if(c == null) return getCardBackImage(w, h);
+		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource("/com/ten/hanabi/ui/img/cards.png"));
+		int x = 65 * (c.getNumber()-1);
+		int y = 100 * (c.getColor().ordinal());
+		return getScaledImage(ii.getImage(), w, h, x, y, x+65, y+100);
+	}
+	
+	public static Image getCardBackImage() { return getCardBackImage(85, 130); }
+	public static Image getCardBackImage(int w, int h) {
+		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource("/com/ten/hanabi/ui/img/cardBack.png"));
+		return getScaledImage(ii.getImage(), w, h, 0, 0, 81, 125);
 	}
 }

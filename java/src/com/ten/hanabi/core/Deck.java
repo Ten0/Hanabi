@@ -9,10 +9,6 @@ public class Deck implements Iterable<Card> {
 	private final ArrayList<Card> cards;
 	private final RuleSet ruleSet;
 	
-	public Deck(RuleSet ruleSet, boolean shuffle) {
-		this(ruleSet);
-		if(shuffle) shuffle();
-	}
 	public Deck(RuleSet ruleSet) {
 		this.ruleSet = ruleSet;
 		cards = new ArrayList<Card>();
@@ -23,6 +19,7 @@ public class Deck implements Iterable<Card> {
 					cards.add(new Card(color, number));
 			}
 		}
+		shuffle();
 	}
 	
 	public void shuffle() {

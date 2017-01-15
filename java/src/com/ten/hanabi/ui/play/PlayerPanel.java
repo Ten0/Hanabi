@@ -2,23 +2,26 @@ package com.ten.hanabi.ui.play;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
 import javax.swing.border.EmptyBorder;
 
+import com.ten.hanabi.core.*;
 import com.ten.hanabi.ui.Utils;
 
 import java.awt.Font;
-import javax.swing.ImageIcon;
 
-public class PlayerPanel extends JPanel {
+public class PlayerPanel extends JPanel implements SituationChangeListener {
+	private Player player;
+	
+	private JPanel cardsPanel;
+	private JLabel nameLabel;
 
 	/**
 	 * Create the panel.
 	 */
-	public PlayerPanel() {
-		setPreferredSize(new Dimension(500, 300));
+	public PlayerPanel(UIPlayManager upm, Player p) {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel namePanel = new JPanel();
@@ -26,20 +29,36 @@ public class PlayerPanel extends JPanel {
 		add(namePanel, BorderLayout.NORTH);
 		namePanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel nameLabel = new JLabel("PlayerName");
+		nameLabel = new JLabel(p == null ? "<Player name>" : p.toString());
 		nameLabel.setFont(new Font("Serif", Font.BOLD, 16));
 		namePanel.add(nameLabel, BorderLayout.WEST);
 		
-		JPanel cardsPanel = new JPanel();
+		cardsPanel = new JPanel();
 		cardsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(cardsPanel, BorderLayout.CENTER);
 		cardsPanel.setLayout(new GridLayout(1, 5, 10, 0));
 		
-		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource("/com/ten/hanabi/img/cards.png"));
-		ii = new ImageIcon(Utils.getScaledImage(ii.getImage(), 81, 125, 0, 0, 65, 100));
-		JLabel card0 = new JLabel(ii);
-		cardsPanel.add(card0);
-
+		player = p;
+		
+		upm.registerSituationChangeListener(this);
 	}
+
+	@Override
+	public void onSituationChange(Situation s) {
+		cardsPanel.removeAll();
+		if(s != null) {
+			for(Card c : s.getHand(player)) {
+				cardsPanel.add(new JLabel(new ImageIcon(Utils.getCardImage(c))));
+			}
+		}
+		else {
+			for(int i = 0; i < 4; i++) {
+				cardsPanel.add(new JLabel(new ImageIcon(Utils.getCardBackImage())));
+			}
+		}
+		cardsPanel.revalidate();
+	}
+	
+	
 
 }

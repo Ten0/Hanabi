@@ -167,4 +167,12 @@ public class Situation {
 	public boolean isCardUsed(Card card) {
 		return isCardPlaced(card) || isCardDiscarded(card);
 	}
+	
+	@Override
+	public String toString() {
+		String ret = "\nTurn "+getTurn()+" - "+getScore();
+		for(Player p : hanabi.getPlayers())
+			ret += "\n"+getHand(p).toDetailedString();
+		return ret;
+	}
 }
