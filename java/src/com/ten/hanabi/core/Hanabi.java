@@ -12,7 +12,6 @@ public class Hanabi {
 	private final ArrayList<Player> players;
 	
 	private ArrayList<Play> plays = new ArrayList<Play>();
-	
 
 	public Hanabi(Player... players) {
 		this(new RuleSet(), players);

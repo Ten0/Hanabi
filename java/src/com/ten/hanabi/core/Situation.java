@@ -2,7 +2,7 @@ package com.ten.hanabi.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import com.ten.hanabi.core.exceptions.*;
 import com.ten.hanabi.core.plays.*;
@@ -15,8 +15,8 @@ public class Situation {
 	private int clues;
 	private int strikes;
 	private final HashMap<Color, Integer> placedOnColor;
-	private final TreeSet<Card> placedCards;
-	private final TreeSet<Card> discardedCards;
+	private final HashSet<Card> placedCards;
+	private final HashSet<Card> discardedCards;
 	private final ArrayList<Hand> hands;
 	
 	
@@ -25,10 +25,10 @@ public class Situation {
 	Situation(Hanabi hanabi, int endTurn) throws InvalidPlayException {
 		// Instanciation
 		this.hanabi = hanabi;
-		placedCards = new TreeSet<Card>();
-		discardedCards = new TreeSet<Card>();
+		placedCards = new HashSet<Card>();
+		discardedCards = new HashSet<Card>();
 		placedOnColor = new HashMap<Color, Integer>();
-		for(Color color : Color.values()) if (hanabi.getRuleSet().isColorEnabled(color)) {
+		for(Color color : hanabi.getRuleSet().getEnabledColors()) {
 			placedOnColor.put(color, 0);
 		}
 		
@@ -37,7 +37,7 @@ public class Situation {
 		for(Player player : hanabi.getPlayers()) {
 			Hand hand = new Hand(player);
 			for(int i = 0; i < hanabi.getNbOfCardsPerPlayer(); i++) {
-				hand.pick(hanabi.getDeck().getCard(player.getId()+i*hanabi.getPlayerCount()));
+				hand.pick(this, hanabi.getDeck().getCard(player.getId()+i*hanabi.getPlayerCount()));
 			}
 			hands.add(hand);
 		}
@@ -71,7 +71,12 @@ public class Situation {
 				
 				// Pick a new card if deck is not empty
 				if(cardId < hanabi.getDeck().size())
-					hand.pick(hanabi.getDeck().getCard(cardId));
+					hand.pick(this, hanabi.getDeck().getCard(cardId));
+			}
+			else if(p instanceof CluePlay) {
+				CluePlay cPlay = (CluePlay)p;
+				// Update info known on cards in that hand
+				hands.get(cPlay.getReceiver().getId()).receiveClue(cPlay.getClue());
 			}
 			clues += p.getCluesAdded();
 			cardId += p.getNbCardsPicked();

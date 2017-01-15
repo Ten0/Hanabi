@@ -1,18 +1,24 @@
 package com.ten.hanabi.core;
 
+import java.util.ArrayList;
+
 public class RuleSet {
 
-	public boolean multi = false;
+	public final boolean multi;
 	
 	public RuleSet() {
-		
+		multi = false;
+	}
+	
+	public RuleSet(boolean multi) {
+		this.multi = multi;
 	}
 	
 	public boolean isMultiEnabled() {
 		return multi;
 	}
 	
-	public boolean isColorEnabled(Color c) {
+	private boolean isColorEnabled(Color c) {
 		return multi || c != Color.MULTI;
 	}
 
@@ -30,5 +36,11 @@ public class RuleSet {
 
 	public int getNbStrikesUntilDeath() {
 		return 3;
+	}
+
+	public ArrayList<Color> getEnabledColors() {
+		ArrayList<Color> enabledColors = new ArrayList<Color>();
+		for(Color c : Color.values()) if(isColorEnabled(c)) enabledColors.add(c);
+		return enabledColors;
 	} 
 }

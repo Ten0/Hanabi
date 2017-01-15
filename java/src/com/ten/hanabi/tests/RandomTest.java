@@ -1,18 +1,16 @@
 package com.ten.hanabi.tests;
 
-import java.util.HashSet;
+import java.util.*;
 
 import com.ten.hanabi.core.*;
 
 public class RandomTest {
 
 	public static void main(String[] args) {
-		Card c1 = new Card(Color.BLUE, 1);
-		Card c2 = new Card(Color.BLUE, 1);
-		HashSet<Card> cs = new HashSet<Card>();
-		cs.add(c1);
-		cs.add(c1);
-		cs.add(c2);
+		HashSet<Color> cs = new HashSet<Color>();
+		cs.add(Color.values()[1]);
+		cs.add(Color.values()[1]);
+		cs.remove(Color.values()[1]);
 		System.out.println(cs.size());
 	}
 

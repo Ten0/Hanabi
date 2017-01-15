@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 public class Deck implements Iterable<Card> {
 
-	private ArrayList<Card> cards;
-	private RuleSet ruleSet;
+	private final ArrayList<Card> cards;
+	private final RuleSet ruleSet;
 	
 	public Deck(RuleSet ruleSet, boolean shuffle) {
 		this(ruleSet);
@@ -16,7 +16,7 @@ public class Deck implements Iterable<Card> {
 	public Deck(RuleSet ruleSet) {
 		this.ruleSet = ruleSet;
 		cards = new ArrayList<Card>();
-		for(Color color : Color.values()) if (ruleSet.isColorEnabled(color)) {
+		for(Color color : ruleSet.getEnabledColors()) {
 			for(int number = 1; number <= 5; number++) {
 				int count = number == 1 ? 3 : number == 5 ? 1 : 2;
 				for(int i = 0; i < count; i++)

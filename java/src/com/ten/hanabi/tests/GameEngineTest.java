@@ -32,8 +32,6 @@ public class GameEngineTest {
 		p2.discard(0);
 		p3.place(0);
 		p1.place(1);
-		p2.discard(1);
-		p3.place(1);
 		
 		printState();
 	}
@@ -43,7 +41,7 @@ public class GameEngineTest {
 			so.println("\nTurn "+h.getTurn());
 			Situation s = h.getSituation();
 			for(Player p : ps)
-				so.println(s.getHand(p));
+				so.println(s.getHand(p).toDetailedString());
 		} catch (InvalidPlayException e) {
 			e.printStackTrace();
 		}

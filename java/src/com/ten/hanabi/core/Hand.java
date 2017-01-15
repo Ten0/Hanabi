@@ -3,6 +3,7 @@ package com.ten.hanabi.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.ten.hanabi.core.clues.Clue;
 import com.ten.hanabi.core.plays.*;
 
 public class Hand implements Iterable<Card> {
@@ -11,23 +12,42 @@ public class Hand implements Iterable<Card> {
 	private final Player player;
 	private final ArrayList<Card> cards;
 	
+	private final ArrayList<CardKnowlege> cardsKnowlege;
+	
 	Hand(Player player) {
 		this.player = player;
 		this.hanabi = player.getHanabi();
 		this.cards = new ArrayList<Card>();
+		this.cardsKnowlege = new ArrayList<CardKnowlege>();
 	}
 	
-	void pick(Card c) {
+	void pick(Situation s, Card c) {
 		if(c == null) return;
 		cards.add(0, c);
+		cardsKnowlege.add(0, new CardKnowlege(s, s.getTurn()));
 	}
 	
 	Card play(int id) {
+		cardsKnowlege.remove(id);
 		return cards.remove(id);
+	}
+	
+	void receiveClue(Clue c) {
+		for(int i = 0; i < size(); i++) {
+			CardKnowlege ck = cardsKnowlege.get(i);
+			if(c.matches(cards.get(i)))
+				ck.knowClue(c);
+			else
+				ck.knowNegativeClue(c);
+		}
 	}
 	
 	public Card get(int id) {
 		return cards.get(id);
+	}
+	
+	public CardKnowlege getKnowlege(int id) {
+		return cardsKnowlege.get(id);
 	}
 
 	@Override
@@ -52,6 +72,15 @@ public class Hand implements Iterable<Card> {
 		String s = "";
 		for(int i = 0; i < this.size(); i++) {
 			s += this.get(i);
+			if(i != this.size()-1) s += " ";
+		}
+		return s;
+	}
+	
+	public String toDetailedString() {
+		String s = "";
+		for(int i = 0; i < this.size(); i++) {
+			s += this.get(i) + "(" + getKnowlege(i) + ")";
 			if(i != this.size()-1) s += " ";
 		}
 		return s;
