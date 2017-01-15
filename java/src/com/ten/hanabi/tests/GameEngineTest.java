@@ -16,7 +16,7 @@ public class GameEngineTest {
 	private static Player[] ps = new Player[]{p1, p2, p3};
 	
 	private static RuleSet rs = new RuleSet();
-	private static Deck d = new Deck(rs, false);
+	private static Deck d = new Deck(rs, true);
 	private static Hanabi h = new Hanabi(rs, d, ps);
 
 	public static void main(String[] args) {
@@ -38,8 +38,8 @@ public class GameEngineTest {
 	
 	public static void printState() {
 		try {
-			so.println("\nTurn "+h.getTurn());
 			Situation s = h.getSituation();
+			so.println("\nTurn "+s.getTurn()+" - "+s.getScore());
 			for(Player p : ps)
 				so.println(s.getHand(p).toDetailedString());
 		} catch (InvalidPlayException e) {

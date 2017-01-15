@@ -24,7 +24,7 @@ public class Situation {
 	/** The turn at which the last card was picked if it happened, -1 otherwise */
 	private int lastCardPicked = -1;
 	
-	Situation(Hanabi hanabi, int endTurn) throws InvalidPlayException {
+	Situation(Hanabi hanabi) {
 		// Instanciation
 		this.hanabi = hanabi;
 		placedCards = new HashSet<Card>();
@@ -33,7 +33,7 @@ public class Situation {
 		for(Color color : hanabi.getRuleSet().getEnabledColors()) {
 			placedOnColor.put(color, 0);
 		}
-		this.turn = -1;
+		this.turn = 0;
 		
 		// Situation in the beginning of the game
 		this.hands = new ArrayList<Hand>();
@@ -47,48 +47,55 @@ public class Situation {
 		this.clues = hanabi.getRuleSet().getInitialNumberOfClues();
 		this.strikes = 0;
 		cardId = hanabi.getNbOfCardsPerPlayer()*hanabi.getPlayerCount();
+	}
+	Situation(Hanabi hanabi, int endTurn) throws InvalidPlayException {
+		this(hanabi);
 		
 		// Run all turns and update
-		for(turn = 0; turn < endTurn; turn++) {
-			Play p = hanabi.getPlay(turn);
-			checkPlayValidity(p);
-			if(p instanceof CardPlay) {
-				// Remove card from hand
-				Hand hand = hands.get(getPlayingPlayerId());
-				Card playedCard = hand.play(((CardPlay)p).getPlacement());
-				
-				// Place it where it belongs
-				if(p instanceof DiscardPlay) {
+		while(turn < endTurn) {
+			nextTurn();
+		}
+	}
+	private void nextTurn() throws InvalidPlayException {
+		turn++;
+		Play p = hanabi.getPlay(turn);
+		checkPlayValidity(p);
+		if(p instanceof CardPlay) {
+			// Remove card from hand
+			Hand hand = hands.get(getPlayingPlayerId());
+			Card playedCard = hand.play(((CardPlay)p).getPlacement());
+			
+			// Place it where it belongs
+			if(p instanceof DiscardPlay) {
+				discardedCards.add(playedCard);
+			}
+			else if(p instanceof PlacePlay) {
+				if(this.canBePlaced(playedCard)) {
+					placedOnColor.put(playedCard.getColor(), placedOnColor.get(playedCard.getColor())+1);
+					placedCards.add(playedCard);
+				}
+				else {
+					strikes++;
 					discardedCards.add(playedCard);
 				}
-				else if(p instanceof PlacePlay) {
-					if(this.canBePlaced(playedCard)) {
-						placedOnColor.put(playedCard.getColor(), placedOnColor.get(playedCard.getColor())+1);
-						placedCards.add(playedCard);
-					}
-					else {
-						strikes++;
-						discardedCards.add(playedCard);
-					}
-				}
-				
-				// Pick a new card if deck is not empty
-				if(cardId < hanabi.getDeck().size())
-					hand.pick(this, hanabi.getDeck().getCard(cardId));
 			}
-			else if(p instanceof CluePlay) {
-				CluePlay cPlay = (CluePlay)p;
-				// Update info known on cards in that hand
-				hands.get(cPlay.getReceiver().getId()).receiveClue(cPlay.getClue());
-			}
-			clues += p.getCluesAdded();
-			cardId += p.getNbCardsPicked();
-			if(cardId >= hanabi.getDeck().size()) lastCardPicked = turn; 
+			
+			// Pick a new card if deck is not empty
+			if(cardId < hanabi.getDeck().size())
+				hand.pick(this, hanabi.getDeck().getCard(cardId));
 		}
+		else if(p instanceof CluePlay) {
+			CluePlay cPlay = (CluePlay)p;
+			// Update info known on cards in that hand
+			hands.get(cPlay.getReceiver().getId()).receiveClue(cPlay.getClue());
+		}
+		clues += p.getCluesAdded();
+		cardId += p.getNbCardsPicked();
+		if(cardId >= hanabi.getDeck().size()) lastCardPicked = turn;
 	}
 	
 	private int getPlayingPlayerId() {
-		return getTurn()%hanabi.getPlayerCount();
+		return (getTurn()-1)%hanabi.getPlayerCount();
 	}
 	
 	public boolean canPlay(Play play) {
@@ -143,5 +150,9 @@ public class Situation {
 	public boolean isGameOver() {
 		return isGameLost() || (lastCardPicked >= 0 &&
 			(getTurn() - lastCardPicked) > hanabi.getPlayerCount()*hanabi.getRuleSet().getNbTurnsPerPlayerAfterLastCard());
+	}
+	
+	public int getScore() {
+		return placedCards.size();
 	}
 }
