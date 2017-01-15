@@ -42,5 +42,9 @@ public class RuleSet {
 		ArrayList<Color> enabledColors = new ArrayList<Color>();
 		for(Color c : Color.values()) if(isColorEnabled(c)) enabledColors.add(c);
 		return enabledColors;
-	} 
+	}
+	
+	public int getNbTurnsPerPlayerAfterLastCard() {
+		return 1;
+	}
 }
