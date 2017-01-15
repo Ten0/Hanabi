@@ -44,7 +44,7 @@ public class CardKnowlege {
 	}
 	
 	public int getAge() {
-		return situation.getTurn()-turnEntered;
+		return (situation.getTurn()-turnEntered)/situation.getHanabi().getPlayerCount();
 	}
 	
 	
@@ -123,7 +123,7 @@ public class CardKnowlege {
 	
 	@Override
 	public String toString() {
-		String r = "";
+		String r = getAge()+" | ";
 		for(int n : getPossibleNumbers()) {
 			r += n+",";
 		}

@@ -28,9 +28,14 @@ public class GameEngineTest {
 		p2.clue(p3, new ColorClue(Color.RED));
 		p3.clue(p1, new ColorClue(Color.RED));
 		
+		printState();
+		
 		p1.discard(0);
 		p2.discard(0);
 		p3.place(0);
+		
+		printState();
+		
 		p1.place(1);
 		
 		printState();
