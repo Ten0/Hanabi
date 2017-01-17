@@ -11,6 +11,7 @@ import com.ten.hanabi.core.Hanabi;
 import com.ten.hanabi.core.Player;
 import com.ten.hanabi.core.Situation;
 import javax.swing.BoxLayout;
+import javax.swing.ScrollPaneConstants;
 
 public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 	

@@ -1,6 +1,8 @@
 package com.ten.hanabi.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -174,5 +176,17 @@ public class Situation {
 		for(Player p : hanabi.getPlayers())
 			ret += "\n"+getHand(p).toDetailedString();
 		return ret;
+	}
+	
+	public int getNumberAtColor(Color c) {
+		return placedOnColor.get(c);
+	}
+	
+	public Collection<Card> getPlacedCards() {
+		return Collections.unmodifiableCollection(placedCards);
+	}
+	
+	public Collection<Card> getDiscardedCards() {
+		return Collections.unmodifiableCollection(discardedCards);
 	}
 }

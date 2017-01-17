@@ -30,13 +30,13 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 		namePanel.setLayout(new BorderLayout(0, 0));
 		
 		nameLabel = new JLabel(p == null ? "<Player name>" : p.toString());
-		nameLabel.setFont(new Font("Serif", Font.BOLD, 16));
+		nameLabel.setFont(new Font("Lato Black", Font.BOLD, 18));
 		namePanel.add(nameLabel, BorderLayout.WEST);
 		
 		cardsPanel = new JPanel();
 		cardsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(cardsPanel, BorderLayout.CENTER);
-		cardsPanel.setLayout(new GridLayout(1, 5, 10, 0));
+		cardsPanel.setLayout(new GridLayout(1, 5, 5, 0));
 		
 		player = p;
 		
