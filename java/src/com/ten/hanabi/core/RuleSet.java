@@ -41,11 +41,16 @@ public class RuleSet {
 	public ArrayList<Color> getEnabledColors() {
 		ArrayList<Color> enabledColors = new ArrayList<Color>();
 		for(Color c : Color.values())
-			if(isColorEnabled(c)) enabledColors.add(c);
+			if(isColorEnabled(c))
+				enabledColors.add(c);
 		return enabledColors;
 	}
 
 	public int getNbTurnsPerPlayerAfterLastCard() {
 		return 1;
+	}
+
+	public int getNbCardsForNumber(int n) {
+		return n == 1 ? 3 : n == 5 ? 1 : 2;
 	}
 }
