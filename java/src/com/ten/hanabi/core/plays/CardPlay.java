@@ -3,7 +3,7 @@ package com.ten.hanabi.core.plays;
 import com.ten.hanabi.core.*;
 
 public abstract class CardPlay extends Play {
-	
+
 	private final int placement;
 
 	CardPlay(Player player, int placement) {

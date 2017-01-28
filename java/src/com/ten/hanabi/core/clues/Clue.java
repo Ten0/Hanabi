@@ -6,6 +6,6 @@ public abstract class Clue implements Comparable<Clue> {
 
 	@Override
 	public abstract String toString();
-	
+
 	public abstract boolean matches(Card c);
 }

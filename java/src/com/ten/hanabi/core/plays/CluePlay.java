@@ -5,7 +5,7 @@ import com.ten.hanabi.core.clues.Clue;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 
 public class CluePlay extends Play {
-	
+
 	private final Player toPlayer;
 	private final Clue clue;
 
@@ -13,7 +13,7 @@ public class CluePlay extends Play {
 		super(player);
 		this.toPlayer = toPlayer;
 		this.clue = clue;
-		
+
 		if(player == toPlayer)
 			throw new RuntimeException(new InvalidPlayException(this, "Player giving the clue cannot be receiving it"));
 	}
@@ -27,7 +27,7 @@ public class CluePlay extends Play {
 	public int getCluesAdded() {
 		return -1;
 	}
-	
+
 	public Player getGiver() {
 		return getPlayer();
 	}
@@ -39,10 +39,10 @@ public class CluePlay extends Play {
 	public Clue getClue() {
 		return clue;
 	}
-	
+
 	@Override
 	public String toString() {
-		return getPlayer().toString()+" clues "+getClue()+" to "+getReceiver();
+		return getPlayer().toString() + " clues " + getClue() + " to " + getReceiver();
 	}
 
 }

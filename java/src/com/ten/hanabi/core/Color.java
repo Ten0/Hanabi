@@ -7,17 +7,17 @@ public enum Color {
 	BLUE(java.awt.Color.BLUE),
 	WHITE(java.awt.Color.GRAY),
 	MULTI(java.awt.Color.MAGENTA);
-	
+
 	private java.awt.Color awtColor;
 
 	private Color(java.awt.Color awtColor) {
 		this.awtColor = awtColor;
 	}
-	
+
 	public String smallName() {
 		return this.name().substring(0, 1);
 	}
-	
+
 	public boolean matchesColor(Color color) {
 		return this == MULTI || this == color;
 	}

@@ -14,25 +14,26 @@ import javax.swing.BoxLayout;
 import javax.swing.ScrollPaneConstants;
 
 public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
-	
+
 	UIPlayManager uiPlayManager;
 	private JPanel panel;
 
 	/**
 	 * Create the panel.
-	 * @param uiPlayManager 
+	 * 
+	 * @param uiPlayManager
 	 */
 	public PlayersCardsPanel(UIPlayManager upm) {
 		uiPlayManager = upm;
 		setLayout(new BorderLayout(0, 0));
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, BorderLayout.CENTER);
-		
+
 		panel = new JPanel();
 		scrollPane.setViewportView(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		
+
 		upm.registerHanabiChangeListener(this);
 	}
 
@@ -44,8 +45,7 @@ public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 				PlayerPanel playerPanel = new PlayerPanel(uiPlayManager, p);
 				panel.add(playerPanel);
 			}
-		}
-		else {
+		} else {
 			for(int i = 0; i < 4; i++) {
 				PlayerPanel playerPanel = new PlayerPanel(uiPlayManager, null);
 				panel.add(playerPanel);

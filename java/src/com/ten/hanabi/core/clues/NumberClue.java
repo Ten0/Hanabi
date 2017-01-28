@@ -5,7 +5,7 @@ import com.ten.hanabi.core.Card;
 public class NumberClue extends Clue {
 
 	private final int number;
-	
+
 	public NumberClue(int n) {
 		number = n;
 	}
@@ -23,7 +23,8 @@ public class NumberClue extends Clue {
 	public int compareTo(Clue o) {
 		if(o instanceof NumberClue)
 			return this.getNumber() - ((NumberClue) o).getNumber();
-		else return -1;
+		else
+			return -1;
 	}
 
 	@Override

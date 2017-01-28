@@ -14,7 +14,7 @@ import java.awt.Font;
 
 public class PlayerPanel extends JPanel implements SituationChangeListener {
 	private Player player;
-	
+
 	private JPanel cardsPanel;
 	private JLabel nameLabel;
 
@@ -23,23 +23,23 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 	 */
 	public PlayerPanel(UIPlayManager upm, Player p) {
 		setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel namePanel = new JPanel();
 		namePanel.setBorder(new EmptyBorder(5, 5, 3, 5));
 		add(namePanel, BorderLayout.NORTH);
 		namePanel.setLayout(new BorderLayout(0, 0));
-		
+
 		nameLabel = new JLabel(p == null ? "<Player name>" : p.toString());
 		nameLabel.setFont(new Font("Lato Black", Font.BOLD, 18));
 		namePanel.add(nameLabel, BorderLayout.WEST);
-		
+
 		cardsPanel = new JPanel();
 		cardsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(cardsPanel, BorderLayout.CENTER);
 		cardsPanel.setLayout(new GridLayout(1, 5, 5, 0));
-		
+
 		player = p;
-		
+
 		upm.registerSituationChangeListener(this);
 	}
 
@@ -50,15 +50,12 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 			for(Card c : s.getHand(player)) {
 				cardsPanel.add(new JLabel(new ImageIcon(Utils.getCardImage(c))));
 			}
-		}
-		else {
+		} else {
 			for(int i = 0; i < 4; i++) {
 				cardsPanel.add(new JLabel(new ImageIcon(Utils.getCardBackImage())));
 			}
 		}
 		cardsPanel.revalidate();
 	}
-	
-	
 
 }
