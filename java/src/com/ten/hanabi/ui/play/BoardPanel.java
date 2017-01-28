@@ -5,16 +5,15 @@ import javax.swing.JPanel;
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.ui.Utils;
 
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
-import javax.swing.BoxLayout;
 
 public class BoardPanel extends JPanel implements HanabiChangeListener, SituationChangeListener {
 	
@@ -29,11 +28,12 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 	 */
 	public BoardPanel(UIPlayManager upm) {
 		uiPlayManager = upm;
-		setLayout(new GridLayout(1, 6, 5, 0));
+		setLayout(new GridLayout(1, Color.values().length+1, 5, 0));
 		
 		for(Color c : Color.values()) {
 			JPanel cColorPanel = new JPanel();
-			cColorPanel.setLayout(new BoxLayout(cColorPanel, BoxLayout.X_AXIS));
+			//cColorPanel.setLayout(new BoxLayout(cColorPanel, BoxLayout.X_AXIS));
+			cColorPanel.setLayout(new FlowLayout());
 
 			colorPanels.put(c, cColorPanel);
 		}

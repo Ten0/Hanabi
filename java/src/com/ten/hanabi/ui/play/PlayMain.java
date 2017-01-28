@@ -10,21 +10,21 @@ public class PlayMain {
 		
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);
+		
+		Thread.sleep(3000);
 
-		Player[] ps = new Player[4];
+		Player[] ps = new Player[3];
 		for(int i = 0; i < ps.length; i++) ps[i] = new Player();
 		
-		Hanabi h = new Hanabi(ps);
+		RuleSet rs = new RuleSet(true);
+		Hanabi h = new Hanabi(rs, ps);
 		
 		for(int i = 0; i < 5; i++) {
-			ps[0].clue(ps[1], new ColorClue(Color.RED));
-			ps[1].clue(ps[2], new ColorClue(Color.RED));
-			ps[2].clue(ps[3], new ColorClue(Color.RED));
-			ps[3].clue(ps[0], new ColorClue(Color.RED));
-			ps[0].discard(3);
-			ps[1].discard(3);
-			ps[2].discard(3);
-			ps[3].discard(3);
+			for(int j = 0; j < ps.length; j++) {
+				ps[j].clue(ps[(j+1)%ps.length], new ColorClue(Color.RED));
+			}
+			for(Player p : ps)
+				p.discard(3);
 		}
 		
 		
