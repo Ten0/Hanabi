@@ -24,7 +24,8 @@ public class Hanabi {
 	public Hanabi(RuleSet ruleSet, Deck deck, Player... players) {
 		this.ruleSet = ruleSet;
 		this.deck = deck;
-		if(deck.getRuleSet() != ruleSet) throw new RuntimeException("Deck was created with a different ruleset.");
+		if(deck.getRuleSet() != ruleSet)
+			throw new RuntimeException("Deck was created with a different ruleset.");
 
 		this.players = new ArrayList<Player>();
 		int playerId = 0;
@@ -33,7 +34,8 @@ public class Hanabi {
 			this.players.add(p);
 		}
 
-		if(getPlayerCount() < 2) throw new RuntimeException("Too few players.");
+		if(getPlayerCount() < 2)
+			throw new RuntimeException("Too few players.");
 	}
 
 	public int getPlayerCount() {
@@ -79,7 +81,8 @@ public class Hanabi {
 	public boolean savePlay(Play play) {
 		boolean valid = false;
 		try {
-			if(getSituation().canPlay(play)) valid = true;
+			if(getSituation().canPlay(play))
+				valid = true;
 		} catch (InvalidPlayException e) {
 		}
 

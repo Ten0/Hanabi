@@ -22,7 +22,8 @@ public class Hand implements Iterable<Card> {
 	}
 
 	void pick(Situation s, Card c) {
-		if(c == null) return;
+		if(c == null)
+			return;
 		cards.add(0, c);
 		cardsKnowlege.add(0, new CardKnowlege(s, s.getTurn()));
 	}
@@ -72,7 +73,8 @@ public class Hand implements Iterable<Card> {
 		String s = "";
 		for(int i = 0; i < this.size(); i++) {
 			s += this.get(i);
-			if(i != this.size() - 1) s += " ";
+			if(i != this.size() - 1)
+				s += " ";
 		}
 		return s;
 	}
@@ -81,7 +83,8 @@ public class Hand implements Iterable<Card> {
 		String s = "";
 		for(int i = 0; i < this.size(); i++) {
 			s += this.get(i) + "(" + getKnowlege(i) + ")";
-			if(i != this.size() - 1) s += " ";
+			if(i != this.size() - 1)
+				s += " ";
 		}
 		return s;
 	}

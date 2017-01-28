@@ -8,7 +8,8 @@ public class ColorClue extends Clue {
 
 	public ColorClue(Color color) {
 		this.color = color;
-		if(color == Color.MULTI) throw new RuntimeException("You cannot give a MULTI clue.");
+		if(color == Color.MULTI)
+			throw new RuntimeException("You cannot give a MULTI clue.");
 	}
 
 	public Color getColor() {
@@ -34,7 +35,8 @@ public class ColorClue extends Clue {
 	}
 
 	public boolean matches(Color c) {
-		if(c == null) throw new RuntimeException("Color shouldn't be null");
+		if(c == null)
+			throw new RuntimeException("Color shouldn't be null");
 		return c == color || c == Color.MULTI;
 	}
 }

@@ -17,9 +17,12 @@ public class Utils {
 	public static Image getScaledImage(Image srcImg, int w, int h, int fromw, int fromh, int tow, int toh) {
 		int origW = srcImg.getWidth(null);
 		int origH = srcImg.getHeight(null);
-		if(origW < 0 || origH < 0) throw new RuntimeException("Couldn't get image size");
-		if(tow < 0) tow = origW;
-		if(toh < 0) toh = origH;
+		if(origW < 0 || origH < 0)
+			throw new RuntimeException("Couldn't get image size");
+		if(tow < 0)
+			tow = origW;
+		if(toh < 0)
+			toh = origH;
 		double wFactor = ((double) w) / ((double) (tow - fromw));
 		double hFactor = ((double) h) / ((double) (toh - fromh));
 
@@ -39,7 +42,8 @@ public class Utils {
 	}
 
 	public static Image getCardImage(Card c, int w, int h) {
-		if(c == null) return getCardBackImage(w, h);
+		if(c == null)
+			return getCardBackImage(w, h);
 		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(resourcePackage + "cards.png"));
 		int x = 65 * (c.getNumber() - 1);
 		int y = 100 * (c.getColor().ordinal());

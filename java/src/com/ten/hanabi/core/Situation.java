@@ -85,7 +85,8 @@ public class Situation {
 			}
 
 			// Pick a new card if deck is not empty
-			if(cardId < hanabi.getDeck().size()) hand.pick(this, hanabi.getDeck().getCard(cardId));
+			if(cardId < hanabi.getDeck().size())
+				hand.pick(this, hanabi.getDeck().getCard(cardId));
 		} else if(p instanceof CluePlay) {
 			CluePlay cPlay = (CluePlay) p;
 			// Update info known on cards in that hand
@@ -93,7 +94,8 @@ public class Situation {
 		}
 		clues += p.getCluesAdded();
 		cardId += p.getNbCardsPicked();
-		if(cardId >= hanabi.getDeck().size()) lastCardPicked = turn;
+		if(cardId >= hanabi.getDeck().size())
+			lastCardPicked = turn;
 	}
 
 	private int getPlayingPlayerId() {
@@ -101,10 +103,13 @@ public class Situation {
 	}
 
 	public boolean canPlay(Play play) {
-		if(getPlayingPlayerId() != play.getPlayer().getId()) return false; // Not this player's turn
+		if(getPlayingPlayerId() != play.getPlayer().getId())
+			return false; // Not this player's turn
 		int newClues = clues + play.getCluesAdded();
-		if(newClues < 0 || newClues > hanabi.getRuleSet().getMaxNumberOfClues()) return false; // Invalid clue count
-		if(strikes >= hanabi.getRuleSet().getNbStrikesUntilDeath()) return false; // Game is already over
+		if(newClues < 0 || newClues > hanabi.getRuleSet().getMaxNumberOfClues())
+			return false; // Invalid clue count
+		if(strikes >= hanabi.getRuleSet().getNbStrikesUntilDeath())
+			return false; // Game is already over
 		return true;
 	}
 
@@ -112,10 +117,13 @@ public class Situation {
 		if(getPlayingPlayerId() != play.getPlayer().getId())
 			throw new InvalidPlayException(play, "Not this player's turn");
 		int newClues = clues + play.getCluesAdded();
-		if(newClues < 0) throw new InvalidPlayException(play, "clues<0");
+		if(newClues < 0)
+			throw new InvalidPlayException(play, "clues<0");
 		int maxClues = hanabi.getRuleSet().getMaxNumberOfClues();
-		if(newClues > maxClues) throw new InvalidPlayException(play, "clues>" + maxClues);
-		if(isGameOver()) throw new InvalidPlayException(play, "Game is already over");
+		if(newClues > maxClues)
+			throw new InvalidPlayException(play, "clues>" + maxClues);
+		if(isGameOver())
+			throw new InvalidPlayException(play, "Game is already over");
 	}
 
 	public boolean canBePlaced(Card playedCard) {

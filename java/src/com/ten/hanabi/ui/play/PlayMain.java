@@ -11,7 +11,7 @@ public class PlayMain {
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);
 
-		//Thread.sleep(3000);
+		// Thread.sleep(3000);
 
 		Player[] ps = new Player[4];
 		for(int i = 0; i < ps.length; i++)

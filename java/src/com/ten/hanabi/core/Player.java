@@ -35,8 +35,8 @@ public class Player {
 	}
 
 	/*
-	 * public Hand getCards() { return getCards(hanabi.getTurn()); } public Hand
-	 * getCards(int untilTurn) { return new Hand(this, untilTurn); }
+	 * public Hand getCards() { return getCards(hanabi.getTurn()); } public Hand getCards(int untilTurn) { return new
+	 * Hand(this, untilTurn); }
 	 * 
 	 * public int getNbOfCards() { return getCards().size(); }
 	 */

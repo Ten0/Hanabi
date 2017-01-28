@@ -32,7 +32,7 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 
 		for(Color c : Color.values()) {
 			JPanel cColorPanel = new JPanel();
-			//cColorPanel.setLayout(new BoxLayout(cColorPanel, BoxLayout.X_AXIS));
+			// cColorPanel.setLayout(new BoxLayout(cColorPanel, BoxLayout.X_AXIS));
 			cColorPanel.setLayout(new FlowLayout());
 
 			colorPanels.put(c, cColorPanel);
