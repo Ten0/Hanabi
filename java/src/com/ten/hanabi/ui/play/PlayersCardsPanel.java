@@ -2,16 +2,9 @@ package com.ten.hanabi.ui.play;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-
-import com.ten.hanabi.core.Hanabi;
-import com.ten.hanabi.core.Player;
-import com.ten.hanabi.core.Situation;
-import javax.swing.BoxLayout;
-import javax.swing.ScrollPaneConstants;
+import com.ten.hanabi.core.*;
+import com.ten.hanabi.ui.WrapLayout;
 
 public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 
@@ -20,7 +13,7 @@ public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 
 	/**
 	 * Create the panel.
-	 * 
+	 *
 	 * @param uiPlayManager
 	 */
 	public PlayersCardsPanel(UIPlayManager upm) {
@@ -32,7 +25,7 @@ public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 
 		panel = new JPanel();
 		scrollPane.setViewportView(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setLayout(new WrapLayout());
 
 		upm.registerHanabiChangeListener(this);
 	}
@@ -51,6 +44,7 @@ public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 				panel.add(playerPanel);
 			}
 		}
+		repaint(); // Si moins de joueurs, on doit effacer le bas
 	}
 
 }
