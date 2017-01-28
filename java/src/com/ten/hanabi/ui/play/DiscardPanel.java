@@ -59,8 +59,6 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 		panel.add(cluesStrikesPanel);
 
 		uiPlayManager.registerSituationChangeListener(this); // triggers onSituationChange thus revalidate
-		System.out.println(getSize());
-		System.out.println(panel.getSize());
 	}
 
 	@Override

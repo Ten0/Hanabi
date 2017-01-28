@@ -15,7 +15,7 @@ public class PlayFrame extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * 
+	 *
 	 * @param uiPlayManager
 	 */
 	public PlayFrame(UIPlayManager upm) {
@@ -29,7 +29,7 @@ public class PlayFrame extends JFrame {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.8);
+		splitPane.setResizeWeight(0.7);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
 		PlayersCardsPanel playersCardsPanel = new PlayersCardsPanel(upm);
@@ -37,7 +37,7 @@ public class PlayFrame extends JFrame {
 		splitPane.setRightComponent(playersCardsPanel);
 
 		JSplitPane board_options = new JSplitPane();
-		board_options.setResizeWeight(0.6);
+		board_options.setResizeWeight(0.4);
 		board_options.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setLeftComponent(board_options);
 
@@ -48,7 +48,7 @@ public class PlayFrame extends JFrame {
 		board_options.setLeftComponent(clues_board);
 
 		JSplitPane board_discard = new JSplitPane();
-		board_discard.setResizeWeight(0.3);
+		board_discard.setResizeWeight(0);
 		board_discard.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		clues_board.setRightComponent(board_discard);
 
