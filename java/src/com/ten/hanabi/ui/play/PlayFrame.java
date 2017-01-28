@@ -47,17 +47,15 @@ public class PlayFrame extends JFrame {
 		clues_board.setMinimumSize(new Dimension(800, 400));
 		board_options.setLeftComponent(clues_board);
 
-		JSplitPane board_discard = new JSplitPane();
-		board_discard.setResizeWeight(0);
-		board_discard.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		JPanel board_discard = new JPanel(new BorderLayout());
 		clues_board.setRightComponent(board_discard);
 
 		JPanel boardPanel = new BoardPanel(upm);
 		boardPanel.setBorder(new EmptyBorder(20, 10, 10, 20));
-		board_discard.setLeftComponent(boardPanel);
+		board_discard.add(boardPanel, BorderLayout.NORTH);
 
 		JPanel discardPanel = new DiscardPanel(upm);
-		board_discard.setRightComponent(discardPanel);
+		board_discard.add(discardPanel, BorderLayout.CENTER);
 
 		JSplitPane log_options = new JSplitPane();
 		log_options.setResizeWeight(0.5);
