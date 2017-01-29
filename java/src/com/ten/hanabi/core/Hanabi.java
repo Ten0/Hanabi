@@ -1,6 +1,7 @@
 package com.ten.hanabi.core;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
@@ -10,7 +11,7 @@ public class Hanabi {
 	private final Deck deck;
 	private final RuleSet ruleSet;
 	private final ArrayList<Player> players;
-
+	private final TreeMap<Integer, Situation> situationDP = new TreeMap<Integer, Situation>();
 	private ArrayList<Play> plays = new ArrayList<Play>();
 
 	public Hanabi(Player... players) {
@@ -75,7 +76,10 @@ public class Hanabi {
 	}
 
 	public Situation getSituation(int turn) throws InvalidPlayException {
-		return new Situation(this, turn);
+		if(!situationDP.containsKey(turn)) {
+			situationDP.put(turn, new Situation(this, turn));
+		}
+		return situationDP.get(turn);
 	}
 
 	public boolean savePlay(Play play) {
