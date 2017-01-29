@@ -1,6 +1,7 @@
 package com.ten.hanabi.core;
 
 import com.ten.hanabi.core.clues.*;
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
 public class Player {
@@ -37,7 +38,7 @@ public class Player {
 	/*
 	 * public Hand getCards() { return getCards(hanabi.getTurn()); } public Hand getCards(int untilTurn) { return new
 	 * Hand(this, untilTurn); }
-	 * 
+	 *
 	 * public int getNbOfCards() { return getCards().size(); }
 	 */
 
@@ -49,15 +50,15 @@ public class Player {
 		return id;
 	}
 
-	public void place(int cardId) {
+	public void place(int cardId) throws InvalidPlayException {
 		hanabi.savePlay(new PlacePlay(this, cardId));
 	}
 
-	public void discard(int cardId) {
+	public void discard(int cardId) throws InvalidPlayException {
 		hanabi.savePlay(new DiscardPlay(this, cardId));
 	}
 
-	public void clue(Player toPlayer, Clue clue) {
+	public void clue(Player toPlayer, Clue clue) throws InvalidPlayException {
 		hanabi.savePlay(new CluePlay(this, toPlayer, clue));
 	}
 }

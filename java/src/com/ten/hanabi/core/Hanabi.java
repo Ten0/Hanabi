@@ -60,6 +60,7 @@ public class Hanabi {
 	}
 
 	public Play getPlay(int turn) {
+		if(turn == 0) { return null; }
 		return plays.get(turn - 1);
 	}
 
@@ -86,15 +87,8 @@ public class Hanabi {
 		}
 	}
 
-	public boolean savePlay(Play play) {
-		boolean valid = false;
-		try {
-			if(getSituation().canPlay(play))
-				valid = true;
-		} catch (InvalidPlayException e) {
-		}
-
-		plays.add(play);
-		return valid;
+	public void savePlay(Play play) throws InvalidPlayException {
+		if(getSituation().canPlay(play))
+			plays.add(play);
 	}
 }

@@ -17,7 +17,7 @@ public class GameEngineTest {
 
 	private static Hanabi h = new Hanabi(ps);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		so.println(h.getDeck());
 
 		printState();
