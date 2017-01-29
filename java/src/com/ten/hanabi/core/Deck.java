@@ -166,4 +166,8 @@ public class Deck implements Iterable<Card> {
 	public RuleSet getRuleSet() {
 		return ruleSet;
 	}
+
+	public boolean isLocked() {
+		return locked;
+	}
 }

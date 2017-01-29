@@ -76,10 +76,14 @@ public class Hanabi {
 	}
 
 	public Situation getSituation(int turn) throws InvalidPlayException {
-		if(!situationDP.containsKey(turn)) {
-			situationDP.put(turn, new Situation(this, turn));
+		if(deck.isLocked()) {
+			if(!situationDP.containsKey(turn)) {
+				situationDP.put(turn, new Situation(this, turn));
+			}
+			return situationDP.get(turn);
+		} else {
+			return new Situation(this, turn);
 		}
-		return situationDP.get(turn);
 	}
 
 	public boolean savePlay(Play play) {
