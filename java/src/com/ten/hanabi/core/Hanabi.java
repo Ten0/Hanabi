@@ -58,7 +58,7 @@ public class Hanabi {
 		return ruleSet.getNbOfCardsPerPlayer(getPlayerCount());
 	}
 
-	Play getPlay(int turn) {
+	public Play getPlay(int turn) {
 		return plays.get(turn - 1);
 	}
 

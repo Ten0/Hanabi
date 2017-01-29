@@ -19,10 +19,19 @@ public class UIPlayManager {
 	}
 
 	void loadHanabi(Hanabi h) throws InvalidPlayException {
+		loadHanabi(h, h.getTurn());
+	}
+
+	void loadHanabi(Hanabi h, int turn) throws InvalidPlayException {
 		this.hanabi = h;
-		this.situation = hanabi.getSituation();
+		this.situation = hanabi.getSituation(turn);
 		situationChangeListeners.clear();
 		this.notifyHanabiChange();
+	}
+	
+	void goToTurn(int turn) throws InvalidPlayException {
+		this.situation = hanabi.getSituation(turn);
+		this.notifySituationChange();
 	}
 
 	void registerHanabiChangeListener(HanabiChangeListener hcl) {

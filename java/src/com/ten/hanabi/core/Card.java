@@ -33,4 +33,26 @@ public class Card implements Comparable<Card> {
 		int compareColor = this.getColor().compareTo(other.getColor());
 		return compareColor != 0 ? compareColor : this.getNumber() - other.getNumber();
 	}
+
+	public static Card fromSmall(String s) throws Exception {
+		if(s != null) {
+			Color color = null;
+			int number = -1;
+			for(Color c : Color.values()) {
+				if(s.contains(c.smallName())) {
+					color = c;
+					break;
+				}
+			}
+			for(int i = 1; i <= 5; i++) {
+				if(s.contains(Integer.toString(i))) {
+					number = i;
+					break;
+				}
+			}
+			if(color != null && number > 0)
+				return new Card(color, number);
+		}
+		throw new Exception("Invalid string to generate card: " + s);
+	}
 }

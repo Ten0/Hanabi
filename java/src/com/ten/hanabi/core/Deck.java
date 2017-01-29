@@ -20,10 +20,17 @@ public class Deck implements Iterable<Card> {
 
 	public Deck(RuleSet ruleSet, boolean lock) {
 		this.ruleSet = ruleSet;
-		this.cards = new ArrayList<Card>();
+
+		int deckSize = ruleSet.getDeckSize();
+		this.cards = new ArrayList<Card>(deckSize);
+		for(int i = 0; i < deckSize; i++)
+			cards.add(null);
+
 		if(lock) {
 			try {
-				autoComplete(true);
+				autoComplete();
+				shuffle();
+				locked = true;
 			} catch (InvalidDeckException e) {
 				// Impossible puisque le jeu est vide à la base
 				throw new RuntimeException(e);
@@ -32,6 +39,7 @@ public class Deck implements Iterable<Card> {
 	}
 
 	public void lock() throws InvalidDeckException {
+		if(locked) { return; }
 		checkCoherence();
 		locked = true;
 	}
@@ -41,7 +49,7 @@ public class Deck implements Iterable<Card> {
 			throw new RuntimeException("Trying to edit a locked deck.");
 	}
 
-	private void checkCoherence() throws InvalidDeckException {
+	public void checkCoherence() throws InvalidDeckException {
 		checkCoherence(false);
 	}
 
@@ -57,7 +65,6 @@ public class Deck implements Iterable<Card> {
 	}
 
 	private void checkCoherence(boolean autoComplete) throws InvalidDeckException {
-		int startSize = this.size();
 		HashMap<Color, HashMap<Integer, Integer>> counts = new HashMap<Color, HashMap<Integer, Integer>>();
 		for(Card c : this) {
 			if(counts.get(c.getColor()) == null)
@@ -73,16 +80,17 @@ public class Deck implements Iterable<Card> {
 				int count = cc.getOrDefault(number, 0);
 				neededCardCount += neededCount;
 				if(autoComplete && count < neededCount) {
+					int id = 0;
 					while(count < neededCount) {
-						this.add(new Card(color, number));
+						while(this.getCard(id) != null)
+							id++;
+						this.setCard(id, new Card(color, number));
 						count++;
 					}
 				} else if(count != neededCount)
 					throw new InvalidDeckException();
 			}
 		}
-		if(autoComplete)
-			this.shuffle(startSize);
 		if(neededCardCount != this.size())
 			throw new InvalidDeckException();
 	}
@@ -130,6 +138,8 @@ public class Deck implements Iterable<Card> {
 	}
 
 	public Card getCard(int id) {
+		if(id >= this.size())
+			return null;
 		return cards.get(id);
 	}
 
@@ -139,7 +149,7 @@ public class Deck implements Iterable<Card> {
 
 	@Override
 	public Iterator<Card> iterator() {
-		return Collections.unmodifiableCollection(cards).iterator();
+		return cards.stream().filter(x -> x != null).iterator();
 	}
 
 	@Override

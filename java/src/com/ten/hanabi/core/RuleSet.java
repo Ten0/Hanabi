@@ -53,4 +53,8 @@ public class RuleSet {
 	public int getNbCardsForNumber(int n) {
 		return n == 1 ? 3 : n == 5 ? 1 : 2;
 	}
+
+	public int getDeckSize() {
+		return isMultiEnabled() ? 60 : 50;
+	}
 }
