@@ -1,3 +1,7 @@
 /bin/
 .classpath
 .project
+java.iml
+/out/
+/.idea/
+.history
