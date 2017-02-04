@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.ten.hanabi.core.clues.Clue;
-import com.ten.hanabi.core.plays.*;
 
 public class Hand implements Iterable<Card> {
 
@@ -22,8 +21,6 @@ public class Hand implements Iterable<Card> {
 	}
 
 	void pick(Situation s, Card c) {
-		if(c == null)
-			return;
 		cards.add(0, c);
 		cardsKnowlege.add(0, new CardKnowlege(s, s.getTurn()));
 	}
