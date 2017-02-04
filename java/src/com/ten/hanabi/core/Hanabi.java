@@ -1,8 +1,6 @@
 package com.ten.hanabi.core;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
-
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
@@ -11,8 +9,7 @@ public class Hanabi {
 	private final Deck deck;
 	private final RuleSet ruleSet;
 	private final ArrayList<Player> players;
-	private final TreeMap<Integer, Situation> situationDP = new TreeMap<Integer, Situation>();
-	private ArrayList<Play> plays = new ArrayList<Play>();
+	private Variant variant = new Variant(this);
 
 	public Hanabi(Player... players) {
 		this(new RuleSet(), players);
@@ -60,12 +57,11 @@ public class Hanabi {
 	}
 
 	public Play getPlay(int turn) {
-		if(turn == 0) { return null; }
-		return plays.get(turn - 1);
+		return getVariant().getPlay(turn);
 	}
 
 	public int getTurn() {
-		return plays.size();
+		return getVariant().getTurn();
 	}
 
 	public RuleSet getRuleSet() {
@@ -77,18 +73,18 @@ public class Hanabi {
 	}
 
 	public Situation getSituation(int turn) throws InvalidPlayException {
-		if(deck.isLocked()) {
-			if(!situationDP.containsKey(turn)) {
-				situationDP.put(turn, new Situation(this, turn));
-			}
-			return situationDP.get(turn);
-		} else {
-			return new Situation(this, turn);
-		}
+		return getVariant().getSituation(turn);
 	}
 
 	public void savePlay(Play play) throws InvalidPlayException {
-		if(getSituation().canPlay(play))
-			plays.add(play);
+		getVariant().savePlay(play);
+	}
+
+	public Variant getVariant() {
+		return variant;
+	}
+
+	public void setVariant(Variant variant) {
+		this.variant = variant;
 	}
 }

@@ -12,6 +12,7 @@ import com.ten.hanabi.core.plays.*;
 public class Situation {
 
 	private final Hanabi hanabi;
+	private final Variant variant;
 	private int turn;
 
 	private int clues;
@@ -28,9 +29,10 @@ public class Situation {
 	 */
 	private int lastCardPicked = -1;
 
-	Situation(Hanabi hanabi) {
+	Situation(Variant variant) {
 		// Instanciation
-		this.hanabi = hanabi;
+		this.hanabi = variant.getHanabi();
+		this.variant = variant;
 		placedCards = new HashSet<Card>();
 		discardedCards = new HashSet<Card>();
 		placedOnColor = new HashMap<Color, Integer>();
@@ -53,8 +55,8 @@ public class Situation {
 		cardId = hanabi.getNbOfCardsPerPlayer() * hanabi.getPlayerCount();
 	}
 
-	Situation(Hanabi hanabi, int endTurn) throws InvalidPlayException {
-		this(hanabi);
+	Situation(Variant variant, int endTurn) throws InvalidPlayException {
+		this(variant);
 
 		// Run all turns and update
 		while(turn < endTurn) {
@@ -63,12 +65,12 @@ public class Situation {
 	}
 
 	private void nextTurn() throws InvalidPlayException {
-		turn++;
-		Play p = hanabi.getPlay(turn);
+		Play p = variant.getPlay(turn + 1);
 		checkPlayValidity(p);
+		turn++;
 		if(p instanceof CardPlay) {
 			// Remove card from hand
-			Hand hand = hands.get(getPlayingPlayerId());
+			Hand hand = hands.get(p.getPlayer().getId());
 			Card playedCard = hand.play(((CardPlay) p).getPlacement());
 
 			// Place it where it belongs
@@ -98,8 +100,20 @@ public class Situation {
 			lastCardPicked = turn;
 	}
 
-	private int getPlayingPlayerId() {
-		return (getTurn() - 1) % hanabi.getPlayerCount();
+	public int getPlayingPlayerId(int turn) {
+		return turn % hanabi.getPlayerCount();
+	}
+
+	public int getPlayingPlayerId() {
+		return getPlayingPlayerId(getTurn());
+	}
+
+	public Player getPlayingPlayer(int turn) {
+		return hanabi.getPlayer(getPlayingPlayerId(turn));
+	}
+
+	public Player getPlayingPlayer() {
+		return getPlayingPlayer(getTurn());
 	}
 
 	public boolean canPlay(Play play) {
@@ -201,5 +215,9 @@ public class Situation {
 
 	public Collection<Card> getDiscardedCards() {
 		return Collections.unmodifiableCollection(discardedCards);
+	}
+
+	public Variant getVariant() {
+		return variant;
 	}
 }
