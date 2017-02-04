@@ -5,9 +5,14 @@ import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.util.Timer;
+
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.ten.hanabi.core.*;
+import com.ten.hanabi.core.plays.*;
 import com.ten.hanabi.ui.Utils;
 
 import java.awt.Font;
@@ -18,11 +23,16 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 	private JPanel cardsPanel;
 	private JLabel nameLabel;
 
+	private Situation situation;
+
+	private Timer timer;
+
 	/**
 	 * Create the panel.
 	 */
 	public PlayerPanel(UIPlayManager upm, Player p) {
 		setLayout(new BorderLayout(0, 0));
+		setBorder(false);
 
 		JPanel namePanel = new JPanel();
 		namePanel.setBorder(new EmptyBorder(5, 5, 3, 5));
@@ -43,19 +53,81 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 		upm.registerSituationChangeListener(this);
 	}
 
-	@Override
-	public void onSituationChange(Situation s) {
+	private void setCards(Situation s) {
 		cardsPanel.removeAll();
 		if(s != null) {
 			for(Card c : s.getHand(player)) {
-				cardsPanel.add(new JLabel(new ImageIcon(Utils.getCardImage(c))));
+				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(c)));
+				cardP.setBorder(new LineBorder(java.awt.Color.GRAY, 3, true));
+				cardsPanel.add(cardP);
 			}
 		} else {
 			for(int i = 0; i < 4; i++) {
-				cardsPanel.add(new JLabel(new ImageIcon(Utils.getCardBackImage())));
+				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardBackImage()));
+				cardP.setBorder(new LineBorder(java.awt.Color.GRAY, 3, true));
+				cardsPanel.add(cardP);
 			}
 		}
 		cardsPanel.revalidate();
+	}
+
+	private void border(int cardId, java.awt.Color color) {
+		((JLabel) cardsPanel.getComponent(cardId)).setBorder(new LineBorder(color, 3, true));
+		cardsPanel.revalidate();
+	}
+
+	private void setBorder(boolean myTurn) {
+		Border currentBorder = this.getBorder();
+		if((currentBorder == null || currentBorder instanceof EmptyBorder) && myTurn) {
+			this.setBorder(new LineBorder(java.awt.Color.DARK_GRAY, 3, true));
+		} else if((currentBorder == null || currentBorder instanceof LineBorder) && !myTurn) {
+			this.setBorder(new EmptyBorder(3, 3, 3, 3));
+		}
+	}
+
+	@Override
+	public void onSituationChange(Situation s) {
+		if(timer != null) {
+			timer.cancel();
+			timer = null;
+			setCards(situation);
+		}
+		if(s == null) {
+			setCards(null);
+		} else {
+			this.setBorder(s.getPlayingPlayer() == player);
+			if(situation != null && s.getVariant() == situation.getVariant()) {
+				if(s.getTurn() == situation.getTurn() + 1 && situation.getPlayingPlayer() == player) {
+					situation = s;
+					// C'était le tour de ce joueur
+					Play p = s.getVariant().getPlay(situation.getTurn());
+					if(p instanceof CardPlay) {
+						// On fait l'animation
+						CardPlay cp = (CardPlay) p;
+						border(cp.getPlacement(),
+								(cp instanceof PlacePlay ? java.awt.Color.GREEN : java.awt.Color.RED));
+
+						this.timer = new Timer();
+						timer.schedule(new java.util.TimerTask() {
+							@Override
+							public void run() {
+								setCards(s);
+								timer = null;
+							}
+						}, 2500);
+					} else {
+						setCards(s);
+					}
+					return;
+				} else if(s.getPlayingPlayer() == player) {
+
+				}
+			} else {
+				setCards(s);
+			}
+		}
+		situation = s;
+
 	}
 
 }
