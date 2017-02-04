@@ -69,7 +69,8 @@ public class Hand implements Iterable<Card> {
 	public String toString() {
 		String s = "";
 		for(int i = 0; i < this.size(); i++) {
-			s += this.get(i);
+			Card c = this.get(i);
+			s += c == null ? "??" : c.toString();
 			if(i != this.size() - 1)
 				s += " ";
 		}
@@ -79,7 +80,8 @@ public class Hand implements Iterable<Card> {
 	public String toDetailedString() {
 		String s = "";
 		for(int i = 0; i < this.size(); i++) {
-			s += this.get(i) + "(" + getKnowlege(i) + ")";
+			Card c = this.get(i);
+			s += (c == null ? "??" : c.toString()) + "(" + getKnowlege(i) + ")";
 			if(i != this.size() - 1)
 				s += " ";
 		}
