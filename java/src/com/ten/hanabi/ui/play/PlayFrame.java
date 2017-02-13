@@ -2,13 +2,17 @@ package com.ten.hanabi.ui.play;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
-public class PlayFrame extends JFrame {
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
+
+public class PlayFrame extends JFrame implements KeyListener {
 
 	UIPlayManager uiPlayManager;
 	private JSplitPane splitPane;
@@ -22,6 +26,10 @@ public class PlayFrame extends JFrame {
 		super();
 		setTitle("Hanabi - Game");
 		uiPlayManager = upm;
+
+		addKeyListener(this);
+		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
 
 		getContentPane().setEnabled(false);
 		setBounds(100, 100, 1243, 762);
@@ -60,6 +68,31 @@ public class PlayFrame extends JFrame {
 		JSplitPane log_options = new JSplitPane();
 		log_options.setResizeWeight(0.5);
 		board_options.setRightComponent(log_options);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		try {
+			if(e.getKeyCode() == KeyEvent.VK_HOME) {
+				uiPlayManager.goToTurn(0);
+			} else if(e.getKeyCode() == KeyEvent.VK_END) {
+				uiPlayManager.goToEnd();
+			} else if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_DOWN) {
+				uiPlayManager.nextTurn();
+			} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP) {
+				uiPlayManager.previousTurn();
+			}
+		} catch (InvalidPlayException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
 	}
 
 }

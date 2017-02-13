@@ -28,7 +28,7 @@ public class UIPlayManager {
 		situationChangeListeners.clear();
 		this.notifyHanabiChange();
 	}
-	
+
 	void goToTurn(int turn) throws InvalidPlayException {
 		this.situation = hanabi.getSituation(turn);
 		this.notifySituationChange();
@@ -62,5 +62,25 @@ public class UIPlayManager {
 		situationChangeListeners.parallelStream().forEach(scl -> {
 			scl.onSituationChange(situation);
 		});
+	}
+
+	boolean nextTurn() throws InvalidPlayException {
+		if(situation.getTurn() < hanabi.getTurn()) {
+			goToTurn(situation.getTurn() + 1);
+			return true;
+		} else
+			return false;
+	}
+
+	boolean previousTurn() throws InvalidPlayException {
+		if(situation.getTurn() > 0) {
+			goToTurn(situation.getTurn() - 1);
+			return true;
+		} else
+			return false;
+	}
+
+	void goToEnd() throws InvalidPlayException {
+		goToTurn(hanabi.getTurn());
 	}
 }

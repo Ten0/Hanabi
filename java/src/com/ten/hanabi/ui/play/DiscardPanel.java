@@ -72,6 +72,7 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 			}
 		}
 		panel.revalidate();
+		repaint();
 	}
 
 }

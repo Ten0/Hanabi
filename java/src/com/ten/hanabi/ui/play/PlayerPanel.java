@@ -97,30 +97,32 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 		} else {
 			this.setBorder(s.getPlayingPlayer() == player);
 			if(situation != null && s.getVariant() == situation.getVariant()) {
-				if(s.getTurn() == situation.getTurn() + 1 && situation.getPlayingPlayer() == player) {
-					situation = s;
-					// C'était le tour de ce joueur
-					Play p = s.getVariant().getPlay(situation.getTurn());
-					if(p instanceof CardPlay) {
-						// On fait l'animation
-						CardPlay cp = (CardPlay) p;
-						border(cp.getPlacement(),
-								(cp instanceof PlacePlay ? java.awt.Color.GREEN : java.awt.Color.RED));
+				if(s.getTurn() == situation.getTurn() + 1) {
+					if(situation.getPlayingPlayer() == player) {
+						situation = s;
+						// C'était le tour de ce joueur
+						Play p = s.getVariant().getPlay(situation.getTurn());
+						if(p instanceof CardPlay) {
+							// On fait l'animation
+							CardPlay cp = (CardPlay) p;
+							border(cp.getPlacement(),
+									(cp instanceof PlacePlay ? java.awt.Color.GREEN : java.awt.Color.RED));
 
-						this.timer = new Timer();
-						timer.schedule(new java.util.TimerTask() {
-							@Override
-							public void run() {
-								setCards(s);
-								timer = null;
-							}
-						}, 2500);
-					} else {
-						setCards(s);
+							this.timer = new Timer();
+							timer.schedule(new java.util.TimerTask() {
+								@Override
+								public void run() {
+									setCards(s);
+									timer = null;
+								}
+							}, 2500);
+						} else {
+							setCards(s);
+						}
+						return;
 					}
-					return;
-				} else if(s.getPlayingPlayer() == player) {
-
+				} else {
+					setCards(s);
 				}
 			} else {
 				setCards(s);

@@ -17,14 +17,6 @@ public class PlayMain {
 
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);
-
-		int turn = 0;
-		while(turn < h.getTurn()) {
-			Thread.sleep(5000);
-			turn++;
-			System.out.println(h.getPlay(turn));
-			upm.goToTurn(turn);
-		}
 	}
 
 }
