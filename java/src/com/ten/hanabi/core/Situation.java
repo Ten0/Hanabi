@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
@@ -18,8 +16,8 @@ public class Situation {
 	private int clues;
 	private int strikes;
 	private final HashMap<Color, Integer> placedOnColor;
-	private final HashSet<Card> placedCards;
-	private final HashSet<Card> discardedCards;
+	private final ArrayList<Card> placedCards;
+	private final ArrayList<Card> discardedCards;
 	private final ArrayList<Hand> hands;
 
 	/** The id of the next card to be picked in the deck */
@@ -33,8 +31,8 @@ public class Situation {
 		// Instanciation
 		this.hanabi = variant.getHanabi();
 		this.variant = variant;
-		placedCards = new HashSet<Card>();
-		discardedCards = new HashSet<Card>();
+		placedCards = new ArrayList<Card>();
+		discardedCards = new ArrayList<Card>();
 		placedOnColor = new HashMap<Color, Integer>();
 		for(Color color : hanabi.getRuleSet().getEnabledColors()) {
 			placedOnColor.put(color, 0);
