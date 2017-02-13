@@ -55,4 +55,8 @@ public class Card implements Comparable<Card> {
 		}
 		throw new Exception("Invalid string to generate card: " + s);
 	}
+
+	public int getCluesAddedOnPlay() {
+		return number == 5 ? 1 : 0;
+	}
 }

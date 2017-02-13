@@ -80,6 +80,7 @@ public class Situation {
 				if(this.canBePlaced(playedCard)) {
 					placedOnColor.put(playedCard.getColor(), placedOnColor.get(playedCard.getColor()) + 1);
 					placedCards.add(playedCard);
+					clues += playedCard.getCluesAddedOnPlay();
 				} else {
 					strikes++;
 					discardedCards.add(playedCard);
