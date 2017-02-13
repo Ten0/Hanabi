@@ -9,7 +9,8 @@ public class PlayMain {
 
 	public static void main(String[] args) throws Exception {
 		// Hanabi h = new Hanabi(new Player(), new Player());
-		Hanabi h = new SeenHanabi(new File("../games/g3.hanabi")).getFinalHanabi();
+		File seenFile = new File("../games/g4.hanabi");
+		Hanabi h = new SeenHanabi(seenFile).getFinalHanabi();
 		h.getDeck().checkCoherence();
 
 		UIPlayManager upm = new UIPlayManager();
@@ -17,6 +18,15 @@ public class PlayMain {
 
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);
+
+		while(true) {
+			Thread.sleep(2000);
+			Hanabi h2 = new SeenHanabi(seenFile).getFinalHanabi();
+			if(h2.getTurn() > h.getTurn()) {
+				h = h2;
+				upm.loadHanabi(h);
+			}
+		}
 	}
 
 }
