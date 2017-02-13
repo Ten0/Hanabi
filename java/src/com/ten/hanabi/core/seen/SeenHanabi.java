@@ -33,7 +33,7 @@ public class SeenHanabi {
 		try {
 			Scanner scanner = new Scanner(gameFile);
 			String line = scanner.nextLine();
-			while(!line.equals("")) {
+			while(line != null && !line.equals("")) {
 				addPlayer(new Player(line));
 				line = scanner.nextLine();
 			}
