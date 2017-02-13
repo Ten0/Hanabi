@@ -1,0 +1,70 @@
+Alain
+Thomas
+Anne
+
+0 C 1 1
+1 P 0 1B
+2 C 3 0
+0 C 5 2
+1 P 1 1Y
+2 D 3 4W
+0 D 4 4B
+1 C 5 0
+2 D 3 3W #clue2?
+0 D 2 2G
+1 C R 0
+2 P 0 4R #mb
+0 C W 2
+1 C G 0
+2 P 0 1W
+0 C Y 2
+1 C 1 0
+2 C 4 1
+0 P 0 1G
+1 C 4 2
+2 D 2 4Y #
+0 C B 2
+1 D 3 3G
+2 P 0 2B
+0 C B 1
+1 P 0 3B
+2 D 1 2R
+0 C 2 2
+1 P 1 4B
+2 P 0 2Y
+0 C B 1
+1 P 1 5B
+2 C W 0
+0 P 4 3Y
+1 D 2 3R
+2 C 1 0
+0 P 0 1R
+1 D 2 1G
+2 P 1 2W
+0 P 3 2R
+1 C W 2 #should I have discarded?
+2 D 1 1Y
+0 P 4 3W
+1 C W 0
+2 P 1 4W
+0 P 0 5W
+1 D 2 3B
+2 C R 1
+0 C G 2
+1 P 4 4Y
+2 D 1 1R
+0 P 4 5Y
+1 C G 0
+2 C 3 0
+0 P 0 2G
+1 D 3 1B
+2 C R 1
+0 P 1 3G
+1 P 0 3R
+2 P 2 4G
+0 D 4 4G
+1 P 4 4R
+
+2W 1B 1G 1R
+3Y 1W 2Y 1Y
+2B 1W 5G 5R

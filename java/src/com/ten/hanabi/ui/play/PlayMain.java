@@ -9,7 +9,7 @@ public class PlayMain {
 
 	public static void main(String[] args) throws Exception {
 		// Hanabi h = new Hanabi(new Player(), new Player());
-		Hanabi h = new SeenHanabi(new File("../games/g1.hanabi")).getFinalHanabi();
+		Hanabi h = new SeenHanabi(new File("../games/g3.hanabi")).getFinalHanabi();
 		h.getDeck().checkCoherence();
 
 		UIPlayManager upm = new UIPlayManager();
