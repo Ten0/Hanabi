@@ -23,6 +23,8 @@ public class Deck implements Iterable<Card> {
 
 		int deckSize = ruleSet.getDeckSize();
 		this.cards = new ArrayList<Card>(deckSize);
+		for(int i = 0; i < deckSize; i++)
+			cards.add(null);
 
 		if(lock) {
 			try {

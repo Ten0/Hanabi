@@ -33,10 +33,13 @@ public class Hand implements Iterable<Card> {
 	void receiveClue(Clue c) {
 		for(int i = 0; i < size(); i++) {
 			CardKnowlege ck = cardsKnowlege.get(i);
-			if(c.matches(cards.get(i)))
-				ck.knowClue(c);
-			else
-				ck.knowNegativeClue(c);
+			Card card = cards.get(i);
+			if(card != null) {
+				if(c.matches(card))
+					ck.knowClue(c);
+				else
+					ck.knowNegativeClue(c);
+			}
 		}
 	}
 

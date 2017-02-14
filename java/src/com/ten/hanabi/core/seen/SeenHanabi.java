@@ -6,27 +6,32 @@ import java.util.Scanner;
 
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.Clue;
+import com.ten.hanabi.core.exceptions.InvalidDeckException;
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
 public class SeenHanabi {
 
 	private final ArrayList<Player> players = new ArrayList<Player>();
 	private final ArrayList<SeenHand> hands = new ArrayList<SeenHand>();
-	private final ArrayList<Play> plays = new ArrayList<Play>();
 	private final Deck deck;
 	private final RuleSet ruleSet;
+	private final Hanabi hanabi;
+	private final Variant variant;
 	private int cardId = 0;
 
 	public SeenHanabi(Player... players) {
 		ruleSet = new RuleSet();
 		deck = new Deck(ruleSet, false);
 		for(Player p : players) {
-			this.players.add(p);
+			addPlayer(p);
 		}
+		hanabi = new Hanabi(ruleSet, deck, players);
+		variant = hanabi.getVariant();
 		generateInitialHands();
 	}
 
-	public SeenHanabi(File gameFile) throws Exception {
+	public SeenHanabi(File gameFile) throws InvalidSeenException {
 		ruleSet = new RuleSet();
 		deck = new Deck(ruleSet, false);
 
@@ -37,6 +42,8 @@ public class SeenHanabi {
 				addPlayer(new Player(line));
 				line = scanner.nextLine();
 			}
+			hanabi = new Hanabi(ruleSet, deck, players.toArray(new Player[players.size()]));
+			variant = hanabi.getVariant();
 
 			generateInitialHands();
 
@@ -79,22 +86,16 @@ public class SeenHanabi {
 
 	}
 
-	public Hanabi getFinalHanabi() throws Exception {
-		try {
-			deck.autoComplete(true);
-			Hanabi hanabi = new Hanabi(ruleSet, deck, players.toArray(new Player[players.size()]));
-			for(Play p : plays) {
-				hanabi.savePlay(p);
-			}
-			return hanabi;
-
-		} catch (Exception e) {
-			throw new InvalidSeenException(e);
-		}
-
+	public Hanabi getFinalHanabi() throws InvalidDeckException {
+		deck.autoComplete(true);
+		return getHanabi();
 	}
 
-	private void addPlay(int pId, Play play, Card card) {
+	public Hanabi getHanabi() {
+		return hanabi;
+	}
+
+	private void addPlay(int pId, Play play, Card card) throws InvalidPlayException {
 		if(play instanceof CardPlay) {
 			SeenHand hand = hands.get(pId);
 			hand.play(((CardPlay) play).getPlacement(), card);
@@ -102,7 +103,7 @@ public class SeenHanabi {
 				hand.pick(cardId++);
 			}
 		}
-		plays.add(play);
+		variant.savePlay(play);
 	}
 
 	private void addPlayer(Player p) {
