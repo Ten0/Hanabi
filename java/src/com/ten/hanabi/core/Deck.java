@@ -29,7 +29,6 @@ public class Deck implements Iterable<Card> {
 		if(lock) {
 			try {
 				autoComplete();
-				shuffle();
 				locked = true;
 			} catch (InvalidDeckException e) {
 				// Impossible puisque le jeu est vide à la base
@@ -73,6 +72,7 @@ public class Deck implements Iterable<Card> {
 			cc.put(c.getNumber(), cc.getOrDefault(c.getNumber(), 0) + 1);
 		}
 		int neededCardCount = 0;
+		ArrayList<Card> cardsToAdd = new ArrayList<Card>();
 		for(Color color : ruleSet.getEnabledColors()) {
 			HashMap<Integer, Integer> cc = counts.getOrDefault(color, new HashMap<Integer, Integer>());
 			for(int number = 1; number <= 5; number++) {
@@ -80,15 +80,22 @@ public class Deck implements Iterable<Card> {
 				int count = cc.getOrDefault(number, 0);
 				neededCardCount += neededCount;
 				if(autoComplete && count < neededCount) {
-					int id = 0;
 					while(count < neededCount) {
-						while(this.getCard(id) != null)
-							id++;
-						this.setCard(id, new Card(color, number));
+						cardsToAdd.add(new Card(color, number));
 						count++;
 					}
 				} else if(count != neededCount)
 					throw new InvalidDeckException();
+			}
+		}
+
+		if(autoComplete) {
+			Collections.shuffle(cardsToAdd);
+			int id = 0;
+			for(Card c : cardsToAdd) {
+				while(this.getCard(id) != null)
+					id++;
+				this.setCard(id, c);
 			}
 		}
 		if(neededCardCount != this.size())
