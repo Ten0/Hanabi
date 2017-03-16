@@ -95,7 +95,7 @@ public class Situation {
 		}
 		clues += p.getCluesAdded();
 		cardId += p.getNbCardsPicked();
-		if(cardId >= hanabi.getDeck().size())
+		if(lastCardPicked < 0 && cardId >= hanabi.getDeck().size())
 			lastCardPicked = turn;
 	}
 
@@ -172,7 +172,7 @@ public class Situation {
 	}
 
 	public boolean isGameOver() {
-		return isGameLost() || (lastCardPicked >= 0 && (getTurn() - lastCardPicked) > hanabi.getPlayerCount()
+		return isGameLost() || (lastCardPicked >= 0 && (getTurn() - lastCardPicked) >= hanabi.getPlayerCount()
 				* hanabi.getRuleSet().getNbTurnsPerPlayerAfterLastCard());
 	}
 
