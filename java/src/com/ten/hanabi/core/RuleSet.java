@@ -18,7 +18,7 @@ public class RuleSet {
 		return multi;
 	}
 
-	private boolean isColorEnabled(Color c) {
+	public boolean isColorEnabled(Color c) {
 		return multi || c != Color.MULTI;
 	}
 
@@ -56,5 +56,9 @@ public class RuleSet {
 
 	public int getDeckSize() {
 		return isMultiEnabled() ? 60 : 50;
+	}
+
+	public boolean canGiveEmptyClues() {
+		return true;
 	}
 }

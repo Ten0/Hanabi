@@ -1,6 +1,8 @@
 package com.ten.hanabi.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.ten.hanabi.core.clues.Clue;
@@ -47,6 +49,10 @@ public class Hand implements Iterable<Card> {
 		return cards.get(id);
 	}
 
+	public Collection<CardKnowlege> getKnowleges() {
+		return Collections.unmodifiableCollection(cardsKnowlege);
+	}
+
 	public CardKnowlege getKnowlege(int id) {
 		return cardsKnowlege.get(id);
 	}
@@ -89,5 +95,17 @@ public class Hand implements Iterable<Card> {
 				s += " ";
 		}
 		return s;
+	}
+
+	public int getConcernedCardsCount(Clue c) {
+		int count = 0;
+		for(int i = 0; i < size(); i++) {
+			Card card = cards.get(i);
+			if(card != null) {
+				if(c.matches(card))
+					count++;
+			}
+		}
+		return count;
 	}
 }

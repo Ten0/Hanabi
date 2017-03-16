@@ -8,6 +8,7 @@ public abstract class CardPlay extends Play {
 
 	CardPlay(Player player, int placement) {
 		super(player);
+		assert (placement >= 0);
 		this.placement = placement;
 	}
 

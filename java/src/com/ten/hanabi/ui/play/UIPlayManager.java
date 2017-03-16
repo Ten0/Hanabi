@@ -4,16 +4,18 @@ import java.util.HashSet;
 
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import com.ten.hanabi.play.HanabiChangeListener;
+import com.ten.hanabi.play.SituationChangeListener;
 
-public class UIPlayManager {
+public class UIPlayManager implements SituationChangeListener, HanabiChangeListener {
 
-	Hanabi hanabi;
-	Situation situation;
+	private Hanabi hanabi;
+	private Situation situation;
 
 	private final HashSet<SituationChangeListener> situationChangeListeners;
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
 
-	UIPlayManager() {
+	public UIPlayManager() {
 		situationChangeListeners = new HashSet<SituationChangeListener>();
 		hanabiChangeListeners = new HashSet<HanabiChangeListener>();
 	}
@@ -82,5 +84,24 @@ public class UIPlayManager {
 
 	void goToEnd() throws InvalidPlayException {
 		goToTurn(hanabi.getTurn());
+	}
+
+	@Override
+	public void onHanabiChange(Hanabi hanabi) {
+		try {
+			loadHanabi(hanabi);
+		} catch (InvalidPlayException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void onSituationChange(Situation s) {
+		try {
+			situation = hanabi.getSituation();
+		} catch (InvalidPlayException e) {
+			throw new RuntimeException(e);
+		}
+		notifySituationChange();
 	}
 }

@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import com.ten.hanabi.core.*;
+import com.ten.hanabi.play.HanabiChangeListener;
 import com.ten.hanabi.ui.WrapLayout;
 
 public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {

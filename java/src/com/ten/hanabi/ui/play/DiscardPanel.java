@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import com.ten.hanabi.core.*;
+import com.ten.hanabi.play.HanabiChangeListener;
+import com.ten.hanabi.play.SituationChangeListener;
 import com.ten.hanabi.ui.Utils;
 import com.ten.hanabi.ui.WrapLayout;
 

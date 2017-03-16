@@ -13,6 +13,7 @@ import javax.swing.border.LineBorder;
 
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.plays.*;
+import com.ten.hanabi.play.SituationChangeListener;
 import com.ten.hanabi.ui.Utils;
 
 import java.awt.Font;

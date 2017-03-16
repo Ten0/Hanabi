@@ -1,4 +1,4 @@
-package com.ten.hanabi.ui.play;
+package com.ten.hanabi.play;
 
 import com.ten.hanabi.core.Hanabi;
 
