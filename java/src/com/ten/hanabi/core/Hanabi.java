@@ -1,6 +1,8 @@
 package com.ten.hanabi.core;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
@@ -15,8 +17,20 @@ public class Hanabi {
 		this(new RuleSet(), players);
 	}
 
+	public Hanabi(List<Player> players) {
+		this(players.toArray(new Player[players.size()]));
+	}
+
+	public Hanabi(RuleSet ruleSet, List<Player> players) {
+		this(ruleSet, new Deck(ruleSet), players.toArray(new Player[players.size()]));
+	}
+
 	public Hanabi(RuleSet ruleSet, Player... players) {
 		this(ruleSet, new Deck(ruleSet), players);
+	}
+
+	public Hanabi(RuleSet ruleSet, Deck deck, List<Player> players) {
+		this(ruleSet, deck, players.toArray(new Player[players.size()]));
 	}
 
 	public Hanabi(RuleSet ruleSet, Deck deck, Player... players) {
