@@ -4,6 +4,7 @@ import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 
+/** Un bot avec une heuristique très basique pour tester */
 public class StupidBot extends Bot {
 
 	@Override

@@ -4,6 +4,7 @@ import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 
+/** Le bot qui regarde ses cartes pour jouer */
 public class CheatingBot extends Bot {
 
 	@Override
@@ -14,7 +15,7 @@ public class CheatingBot extends Bot {
 
 		// Si on a une carte jouable on la joue
 		for(int i = h.size() - 1; i >= 0; i--) {
-			Card c = h.get(i);
+			Card c = h.get(i); // Here is the cheat
 			if(s.canBePlaced(c)) {
 				p.place(i);
 				return;
@@ -45,7 +46,7 @@ public class CheatingBot extends Bot {
 		// Sinon si on peut défausser, on défausse une carte qui ne sert à rien
 		if(s.getClues() < hanabi.getRuleSet().getMaxNumberOfClues()) {
 			for(int i = h.size() - 1; i >= 0; i--) {
-				Card c = h.get(i);
+				Card c = h.get(i); // And here is the cheat again
 				if(!s.canCardBeUseful(c)) {
 					p.discard(i);
 					return;

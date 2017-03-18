@@ -9,7 +9,6 @@ import com.ten.hanabi.ui.play.UIPlayManager;
 public class BotTest {
 
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
 		Player[] players = new Player[4];
 		Bot[] bots = new Bot[players.length];
 		for(int i = 0; i < players.length; i++) {
