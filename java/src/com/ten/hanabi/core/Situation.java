@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
@@ -189,7 +190,39 @@ public class Situation {
 	}
 
 	public boolean canCardBeUseful(Card card) {
-		return card.getNumber() > getNumberAtColor(card.getColor());
+		if(card.getNumber() <= getNumberAtColor(card.getColor()))
+			return false;
+		int colorDead = colorDead(card.getColor());
+		assert (colorDead != card.getNumber());
+		if(colorDead > 0 && colorDead < card.getNumber())
+			return false;
+		return true;
+	}
+
+	/**
+	 * Calculates whether the given color is dead, that is, whether there is a number for which all the cards of that
+	 * color with that number were discarded, and what is the lower such number (i.e. at what point the color is dead)
+	 *
+	 * @return The lowest number of a card discarded too much, or 0 if there is no such card
+	 */
+	private int colorDead(Color color) {
+		HashMap<Integer, Integer> counts = new HashMap<>();
+		for(Card c : hanabi.getDeck()) {
+			if(c.getColor() == color) {
+				counts.put(c.getNumber(), counts.getOrDefault(c.getNumber(), 0) + 1);
+			}
+		}
+		for(Card c : getDiscardedCards()) {
+			if(c.getColor() == color) {
+				counts.put(c.getNumber(), counts.get(c.getNumber()) - 1);
+			}
+		}
+		for(Entry<Integer, Integer> x : counts.entrySet()) { // entrySet retourne les Entries triées en ordre croissant
+			assert (x.getValue() >= 0);
+			if(x.getValue() == 0)
+				return x.getKey();
+		}
+		return 0;
 	}
 
 	public boolean isCardUsed(Card card) {
