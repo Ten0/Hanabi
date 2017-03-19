@@ -2,6 +2,7 @@
 .classpath
 .project
 java.iml
+java.eml
 /out/
 /.idea/
 .history

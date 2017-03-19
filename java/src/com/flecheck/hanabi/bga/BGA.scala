@@ -3,6 +3,8 @@ package com.flecheck.hanabi.bga
 import java.util
 
 import com.ten.hanabi.core._
+import com.ten.hanabi.core.clues.{ColorClue, NumberClue}
+import com.ten.hanabi.core.plays.{DiscardPlay, PlacePlay}
 
 import scala.util.matching.Regex
 import scala.collection.JavaConverters._
@@ -50,6 +52,7 @@ object BGA {
 
 
     var playersM: mutable.Map[String, Player] = scala.collection.mutable.Map[String,Player]()
+
     val players: util.List[Player] = normalizedPlayerList.map{case (id,name) => val p = new Player(name); playersM += (name -> p) ; p }.asJava
     val rs: RuleSet = new RuleSet(multi)
     val deck: Deck = new Deck(rs, false)
@@ -98,6 +101,50 @@ object BGA {
       deck.setCard(fromBGAId(id), card)
     }
     deck.lock()
+
+    // Mains initiales
+    val hands = new java.util.HashMap[Int, java.util.ArrayList[Int]]()
+    val nPlayers = players.size
+    val nbOfCardsPerPlayer = hanabi.getNbOfCardsPerPlayer
+    for {
+      playerId <- 0 until nPlayers
+      hand = hands.getOrDefault(playerId, new util.ArrayList[Int]())
+      i <- 0 until nbOfCardsPerPlayer
+    } yield {
+      hand.add(0, playerId + i * nPlayers) // Ajoute au début de la liste
+    }
+
+    var cardId = 0
+    plays.foreach {
+      case PlayCard(p, c, _) => {
+        val hand = hands.get(playersM(p).getId)
+        val cardPos = hand.indexOf(fromBGAId(c))
+        hand.remove(cardPos)
+        hand.add(cardId)
+        cardId += 1
+
+        hanabi.savePlay(new PlacePlay(playersM(p), cardPos))
+      }
+      case DiscardCard(p, c, _) => {
+        val hand = hands.get(playersM(p).getId)
+        val cardPos = hand.indexOf(fromBGAId(c))
+        hand.remove(cardPos)
+        hand.add(cardId)
+        cardId += 1
+
+        hanabi.savePlay(new DiscardPlay(playersM(p), cardPos))
+
+      }
+      case GiveValue(p, t, v) => {
+        playersM(p).clue(playersM(t),new NumberClue(v.toInt))
+      }
+      case GiveColor(p, t, c) => {
+        playersM(p).clue(playersM(t),new ColorClue(Color.values()(c.toInt - 1)))
+
+      }
+      case _ =>
+    }
+    hanabi
   }
 
 }
