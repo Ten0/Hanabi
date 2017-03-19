@@ -108,12 +108,12 @@ object BGA {
     val nbOfCardsPerPlayer = hanabi.getNbOfCardsPerPlayer
     for {
       playerId <- 0 until nPlayers
-      hand = hands.getOrDefault(playerId, new util.ArrayList[Int]())
+      handU = hands.putIfAbsent(playerId, new util.ArrayList[Int]())
+      hand = hands.get(playerId)
       i <- 0 until nbOfCardsPerPlayer
     } yield {
       hand.add(0, playerId + i * nPlayers) // Ajoute au début de la liste
     }
-
     var cardId = 0
     plays.foreach {
       case PlayCard(p, c, _) => {
