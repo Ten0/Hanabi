@@ -20,11 +20,11 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		hanabiChangeListeners = new HashSet<HanabiChangeListener>();
 	}
 
-	void loadHanabi(Hanabi h) throws InvalidPlayException {
+	public void loadHanabi(Hanabi h) throws InvalidPlayException {
 		loadHanabi(h, h.getTurn());
 	}
 
-	void loadHanabi(Hanabi h, int turn) throws InvalidPlayException {
+	public void loadHanabi(Hanabi h, int turn) throws InvalidPlayException {
 		this.hanabi = h;
 		this.situation = hanabi.getSituation(turn);
 		situationChangeListeners.clear();

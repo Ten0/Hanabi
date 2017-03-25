@@ -20,7 +20,7 @@ object BGA {
     "TournoiEnLigneuser" -> "84407922",
     "TournoiEnLigneauth" -> "f2256199a3cb5924cac9cd1def02a9ab")
 
-  def getGameById(id: Int): Any = {
+  def getGameById(id: Int): Hanabi = {
     val content1: String = Utils.getUrl("https://fr.boardgamearena.com/gamereview?table=" + id.toString, cookies = cookies)
 
     val regUrl: Regex = """href="(?<url>.*?)" class="choosePlayerLink""".r
@@ -114,13 +114,14 @@ object BGA {
     } yield {
       hand.add(0, playerId + i * nPlayers) // Ajoute au début de la liste
     }
-    var cardId = 0
+    var cardId = nbOfCardsPerPlayer*nPlayers
+    try{
     plays.foreach {
       case PlayCard(p, c, _) => {
         val hand = hands.get(playersM(p).getId)
         val cardPos = hand.indexOf(fromBGAId(c))
         hand.remove(cardPos)
-        hand.add(cardId)
+        hand.add(0, cardId)
         cardId += 1
 
         hanabi.savePlay(new PlacePlay(playersM(p), cardPos))
@@ -129,7 +130,7 @@ object BGA {
         val hand = hands.get(playersM(p).getId)
         val cardPos = hand.indexOf(fromBGAId(c))
         hand.remove(cardPos)
-        hand.add(cardId)
+        hand.add(0, cardId)
         cardId += 1
 
         hanabi.savePlay(new DiscardPlay(playersM(p), cardPos))
@@ -143,7 +144,7 @@ object BGA {
 
       }
       case _ =>
-    }
+    }}catch {case e => }
     hanabi
   }
 
