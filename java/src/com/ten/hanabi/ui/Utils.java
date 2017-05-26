@@ -16,7 +16,13 @@ public class Utils {
 
 	private static final String resourcePackage = "/com/ten/hanabi/ui/img/";
 
+	public static double RESCALE = 0.75;
+
 	public static Image getScaledImage(Image srcImg, int w, int h, int fromw, int fromh, int tow, int toh) {
+		// Rescaling for small screens
+		w = (int) (RESCALE * w);
+		h = (int) (RESCALE * h);
+
 		int origW = srcImg.getWidth(null);
 		int origH = srcImg.getHeight(null);
 		if(origW < 0 || origH < 0)
