@@ -85,7 +85,7 @@ public class Deck implements Iterable<Card> {
 						count++;
 					}
 				} else if(count != neededCount)
-					throw new InvalidDeckException();
+					throw new InvalidDeckException(count + " " + new Card(color, number));
 			}
 		}
 
@@ -99,7 +99,7 @@ public class Deck implements Iterable<Card> {
 			}
 		}
 		if(neededCardCount != this.size())
-			throw new InvalidDeckException();
+			throw new InvalidDeckException("Deck has " + size() + " cards");
 	}
 
 	/**

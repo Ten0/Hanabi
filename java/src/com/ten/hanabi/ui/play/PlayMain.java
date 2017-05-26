@@ -10,7 +10,7 @@ public class PlayMain {
 	public static void main(String[] args) throws Exception {
 		// Hanabi h = new Hanabi(new Player(), new Player());
 		File seenFile = new File("../games/g4.hanabi");
-		Hanabi h = new SeenHanabi(seenFile).getHanabi();
+		Hanabi h = new SeenHanabi(seenFile).getFinalHanabi();
 		// Hanabi h = BGA.getGameById(28441973);
 
 		UIPlayManager upm = new UIPlayManager();
