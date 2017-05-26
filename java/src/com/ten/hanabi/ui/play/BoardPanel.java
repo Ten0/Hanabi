@@ -25,6 +25,7 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 	private JLabel nbStrikes;
 	private JPanel cluesStrikesPanel;
 	private JLabel deckLabel;
+	private JPanel deckPanel;
 
 	/**
 	 * Create the panel.
@@ -55,11 +56,15 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		nbStrikes.setIcon(new ImageIcon(Utils.rescaleBasic(Utils.getImageForFile("/com/ten/hanabi/ui/img/miss.png"))));
 		cluesStrikesPanel.add(nbStrikes);
 
+		deckPanel = new JPanel();
+
 		deckLabel = new JLabel(new ImageIcon(Utils.getCardBackImage()));
 		Font deckSizeFont = new Font("Lato Black", Font.BOLD, (int) (Utils.RESCALE * 50));
 		deckLabel.setFont(deckSizeFont);
 		deckLabel.setForeground(new java.awt.Color(0xea, 0xef, 0xe6));
 		deckLabel.setHorizontalTextPosition(JLabel.CENTER); // Text on image
+		deckLabel.setBorder(new LineBorder(java.awt.Color.BLACK, 3, true));
+		deckPanel.add(deckLabel);
 
 		upm.registerHanabiChangeListener(this);
 	}
@@ -71,7 +76,7 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 			add(colorPanels.get(c));
 		}
 		add(cluesStrikesPanel);
-		add(deckLabel);
+		add(deckPanel);
 		uiPlayManager.registerSituationChangeListener(this); // triggers onSituationChange thus revalidate
 	}
 
