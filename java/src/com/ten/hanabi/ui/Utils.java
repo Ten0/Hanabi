@@ -18,6 +18,14 @@ public class Utils {
 
 	public static double RESCALE = 0.75;
 
+	public static Image rescaleBasic(Image srcImg) {
+		if(RESCALE == 1)
+			return srcImg;
+		int w = srcImg.getWidth(null);
+		int h = srcImg.getHeight(null);
+		return getScaledImage(srcImg, w, h, 0, 0, w, h);
+	}
+
 	public static Image getScaledImage(Image srcImg, int w, int h, int fromw, int fromh, int tow, int toh) {
 		// Rescaling for small screens
 		w = (int) (RESCALE * w);

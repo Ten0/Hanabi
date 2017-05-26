@@ -43,15 +43,15 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		cluesStrikesPanel = new JPanel();
 		cluesStrikesPanel.setLayout(new GridLayout(2, 1, 0, 0));
 
-		Font cluesStrikesFont = new Font("Lato Black", Font.BOLD, 40);
+		Font cluesStrikesFont = new Font("Lato Black", Font.BOLD, (int) (Utils.RESCALE * 40));
 		nbClues = new JLabel();
 		nbClues.setFont(cluesStrikesFont);
-		nbClues.setIcon(new ImageIcon(BoardPanel.class.getResource("/com/ten/hanabi/ui/img/clue.png")));
+		nbClues.setIcon(new ImageIcon(Utils.rescaleBasic(Utils.getImageForFile("/com/ten/hanabi/ui/img/clue.png"))));
 		cluesStrikesPanel.add(nbClues);
 
 		nbStrikes = new JLabel();
 		nbStrikes.setFont(cluesStrikesFont);
-		nbStrikes.setIcon(new ImageIcon(BoardPanel.class.getResource("/com/ten/hanabi/ui/img/miss.png")));
+		nbStrikes.setIcon(new ImageIcon(Utils.rescaleBasic(Utils.getImageForFile("/com/ten/hanabi/ui/img/miss.png"))));
 		cluesStrikesPanel.add(nbStrikes);
 
 		upm.registerHanabiChangeListener(this);
