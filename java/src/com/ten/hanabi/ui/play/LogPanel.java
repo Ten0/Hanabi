@@ -21,7 +21,8 @@ public class LogPanel extends JPanel implements SituationChangeListener {
 	public LogPanel(UIPlayManager upm) {
 		setLayout(new BorderLayout(0, 0));
 
-		textArea = new JTextArea("default");
+		textArea = new JTextArea();
+		textArea.setFocusable(false);
 
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		add(scrollPane);
@@ -32,7 +33,7 @@ public class LogPanel extends JPanel implements SituationChangeListener {
 	@Override
 	public void onSituationChange(Situation s) {
 		if(s == null) {
-			textArea.setText("snull");
+			textArea.setText("");
 		} else {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			PrintStream ps = new PrintStream(baos);
