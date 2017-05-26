@@ -59,6 +59,6 @@ public class RuleSet {
 	}
 
 	public boolean canGiveEmptyClues() {
-		return true;
+		return false;
 	}
 }
