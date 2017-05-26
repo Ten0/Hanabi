@@ -122,8 +122,15 @@ public class Situation {
 		int newClues = clues + play.getCluesAdded();
 		if(newClues < 0 || newClues > hanabi.getRuleSet().getMaxNumberOfClues())
 			return false; // Invalid clue count
-		if(strikes >= hanabi.getRuleSet().getNbStrikesUntilDeath())
+		if(isGameOver())
 			return false; // Game is already over
+		if(!hanabi.getRuleSet().canGiveEmptyClues()) {
+			if(play instanceof CluePlay) {
+				CluePlay cp = (CluePlay) play;
+				if(hands.get(cp.getReceiver().getId()).getConcernedCardsCount(cp.getClue()) <= 0)
+					return false; // Empty clues are not allowed
+			}
+		}
 		return true;
 	}
 
@@ -138,6 +145,13 @@ public class Situation {
 			throw new InvalidPlayException(play, "clues>" + maxClues);
 		if(isGameOver())
 			throw new InvalidPlayException(play, "Game is already over");
+		if(!hanabi.getRuleSet().canGiveEmptyClues()) {
+			if(play instanceof CluePlay) {
+				CluePlay cp = (CluePlay) play;
+				if(hands.get(cp.getReceiver().getId()).getConcernedCardsCount(cp.getClue()) <= 0)
+					throw new InvalidPlayException(play, "Empty clues are not allowed");
+			}
+		}
 	}
 
 	public boolean canBePlaced(Card playedCard) {
