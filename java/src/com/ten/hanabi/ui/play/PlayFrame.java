@@ -68,6 +68,9 @@ public class PlayFrame extends JFrame implements KeyListener {
 		JSplitPane log_options = new JSplitPane();
 		log_options.setResizeWeight(0.5);
 		board_options.setRightComponent(log_options);
+
+		LogPanel logPanel = new LogPanel(upm);
+		log_options.setLeftComponent(logPanel);
 	}
 
 	@Override
