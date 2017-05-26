@@ -45,27 +45,25 @@ public class Utils {
 		return resizedImg;
 	}
 
-	private static HashMap<Color, Image> CTokenImageDP = new HashMap<>();
+	private static HashMap<String, Image> imageDP = new HashMap<>();
 
-	public static Image getTokenImage(Color c) {
-		if(!CTokenImageDP.containsKey(c)) {
-			String name = c == Color.MULTI ? "Multicolor" : c.smallName() + c.name().toLowerCase().substring(1);
-			String filename = resourcePackage + "Token" + name + ".png";
+	public static Image getImageForFile(String filename) {
+		if(!imageDP.containsKey(filename)) {
 			ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(filename));
-			CTokenImageDP.put(c, ii.getImage());
+			imageDP.put(filename, ii.getImage());
 		}
-		return CTokenImageDP.get(c);
+		return imageDP.get(filename);
+
 	}
 
-	private static HashMap<Integer, Image> NTokenImageDP = new HashMap<>();
+	public static Image getTokenImage(Color c) {
+		String name = c == Color.MULTI ? "Multicolor" : c.smallName() + c.name().toLowerCase().substring(1);
+		String filename = resourcePackage + "Token" + name + ".png";
+		return getImageForFile(filename);
+	}
 
 	public static Image getTokenImage(int n) {
-		if(!NTokenImageDP.containsKey(n)) {
-			String filename = resourcePackage + "Token" + n + ".png";
-			ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(filename));
-			NTokenImageDP.put(n, ii.getImage());
-		}
-		return NTokenImageDP.get(n);
+		return getImageForFile(resourcePackage + "Token" + n + ".png");
 	}
 
 	public static void drawCardKnowlege(Image img, CardKnowlege ck) {
@@ -108,10 +106,10 @@ public class Utils {
 	public static Image getCardImage(Card c, CardKnowlege ck, int w, int h) {
 		if(c == null)
 			return getCardBackImage(ck, w, h);
-		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(resourcePackage + "cards.png"));
+		Image cardsImage = getImageForFile(resourcePackage + "cards.png");
 		int x = 65 * (c.getNumber() - 1);
 		int y = 100 * (c.getColor().ordinal());
-		Image image = getScaledImage(ii.getImage(), w, h, x, y, x + 65, y + 100);
+		Image image = getScaledImage(cardsImage, w, h, x, y, x + 65, y + 100);
 		if(ck != null) {
 			drawCardKnowlege(image, ck);
 		}
@@ -127,8 +125,7 @@ public class Utils {
 	}
 
 	public static Image getCardBackImage(CardKnowlege ck, int w, int h) {
-		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(resourcePackage + "cardBack.png"));
-		Image image = getScaledImage(ii.getImage(), w, h, 0, 0, 81, 125);
+		Image image = getScaledImage(getImageForFile(resourcePackage + "cardBack.png"), w, h, 0, 0, 81, 125);
 		if(ck != null) {
 			drawCardKnowlege(image, ck);
 		}
@@ -140,7 +137,7 @@ public class Utils {
 	}
 
 	public static Image getCardSmallImage(Card c, int w, int h) {
-		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(resourcePackage + "cardsSmall.png"));
+		Image cardsImage = getImageForFile(resourcePackage + "cardsSmall.png");
 		int x, y;
 		if(c != null) {
 			x = 50 * (c.getNumber());
@@ -149,6 +146,6 @@ public class Utils {
 			x = 0;
 			y = 50 * 5;
 		}
-		return getScaledImage(ii.getImage(), w, h, x, y, x + 50, y + 50);
+		return getScaledImage(cardsImage, w, h, x, y, x + 50, y + 50);
 	}
 }
