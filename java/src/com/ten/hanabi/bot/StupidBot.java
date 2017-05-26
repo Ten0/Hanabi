@@ -48,7 +48,25 @@ public class StupidBot extends Bot {
 			}
 		}
 
-		// Sinon si on peut défausser, on défausse la carte la plus à gauche sur laquelle on n'a pas reçu d'indice
+		// Sinon si on peut défausser, on défausse la carte la plus à droite qui ne peut plus servir
+		if(s.getClues() < hanabi.getRuleSet().getMaxNumberOfClues()) {
+			for(int i = h.size() - 1; i >= 0; i--) {
+				CardKnowlege ck = h.getKnowlege(i);
+				boolean canDiscard = true;
+				for(Card c : ck.getPossibleCardsWithoutDupplicates()) {
+					if(s.canCardBeUseful(c)) {
+						canDiscard = false;
+						break;
+					}
+				}
+				if(canDiscard) {
+					p.discard(i);
+					return;
+				}
+			}
+		}
+
+		// Sinon si on peut défausser, on défausse la carte la plus à droite sur laquelle on n'a pas reçu d'indice
 		if(s.getClues() < hanabi.getRuleSet().getMaxNumberOfClues()) {
 			for(int i = h.size() - 1; i >= 0; i--) {
 				CardKnowlege ck = h.getKnowlege(i);
