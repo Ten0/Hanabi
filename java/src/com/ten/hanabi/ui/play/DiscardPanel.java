@@ -21,7 +21,6 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 
 	UIPlayManager uiPlayManager;
 	HashMap<Color, JPanel> colorPanels = new HashMap<Color, JPanel>();
-	private JPanel cluesStrikesPanel;
 	private JPanel panel;
 
 	public DiscardPanel(UIPlayManager upm) {
@@ -33,7 +32,7 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 		add(scrollPane, BorderLayout.CENTER);
 
 		panel = new JPanel();
-		panel.setLayout(new GridLayout(1, Color.values().length + 1, 5, 0));
+		panel.setLayout(new GridLayout(1, Color.values().length + 2, 5, 0));
 		scrollPane.setViewportView(panel);
 
 		for(Color c : Color.values()) {
@@ -42,9 +41,6 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 
 			colorPanels.put(c, cColorPanel);
 		}
-
-		cluesStrikesPanel = new JPanel();
-		cluesStrikesPanel.setLayout(new GridLayout(2, 1, 0, 0));
 
 		upm.registerHanabiChangeListener(this);
 	}
@@ -55,7 +51,8 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 		for(Color c : ((hanabi == null) ? Arrays.asList(Color.values()) : hanabi.getRuleSet().getEnabledColors())) {
 			panel.add(colorPanels.get(c));
 		}
-		panel.add(cluesStrikesPanel);
+		panel.add(new JPanel()); // clues/strikes
+		panel.add(new JPanel()); // deck
 
 		uiPlayManager.registerSituationChangeListener(this); // triggers onSituationChange thus revalidate
 	}
