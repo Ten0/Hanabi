@@ -4,10 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-
+import java.util.HashMap;
 import javax.swing.ImageIcon;
 
 import com.ten.hanabi.core.Card;
+import com.ten.hanabi.core.CardKnowlege;
+import com.ten.hanabi.core.Color;
 import com.ten.hanabi.ui.play.PlayerPanel;
 
 public class Utils {
@@ -37,26 +39,94 @@ public class Utils {
 		return resizedImg;
 	}
 
-	public static Image getCardImage(Card c) {
-		return getCardImage(c, 98, 150);
+	private static HashMap<Color, Image> CTokenImageDP = new HashMap<>();
+
+	public static Image getTokenImage(Color c) {
+		if(!CTokenImageDP.containsKey(c)) {
+			String name = c == Color.MULTI ? "Multicolor" : c.smallName() + c.name().toLowerCase().substring(1);
+			String filename = resourcePackage + "Token" + name + ".png";
+			ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(filename));
+			CTokenImageDP.put(c, ii.getImage());
+		}
+		return CTokenImageDP.get(c);
 	}
 
-	public static Image getCardImage(Card c, int w, int h) {
+	private static HashMap<Integer, Image> NTokenImageDP = new HashMap<>();
+
+	public static Image getTokenImage(int n) {
+		if(!NTokenImageDP.containsKey(n)) {
+			String filename = resourcePackage + "Token" + n + ".png";
+			ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(filename));
+			NTokenImageDP.put(n, ii.getImage());
+		}
+		return NTokenImageDP.get(n);
+	}
+
+	public static void drawCardKnowlege(Image img, CardKnowlege ck) {
+		if(ck == null)
+			return;
+		int W = img.getWidth(null);
+		int H = img.getHeight(null);
+
+		int h = H / 4;
+		int w = h;
+
+		Graphics2D g2 = ((BufferedImage) img).createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+		Color c = ck.getColorFromClues();
+		if(c != null) {
+			Image cImg = getTokenImage(c);
+			g2.drawImage(cImg, W / 10, (H - h) / 2, h, w, null);
+		}
+
+		int n = ck.getNumberFromClues();
+		if(n > 0) {
+			Image nImg = getTokenImage(n);
+			g2.drawImage(nImg, W - W / 10 - w, (H - h) / 2, h, w, null);
+		}
+
+		g2.dispose();
+
+		return;
+	}
+
+	public static Image getCardImage(Card c) {
+		return getCardImage(c, null);
+	}
+
+	public static Image getCardImage(Card c, CardKnowlege ck) {
+		return getCardImage(c, ck, 98, 150);
+	}
+
+	public static Image getCardImage(Card c, CardKnowlege ck, int w, int h) {
 		if(c == null)
-			return getCardBackImage(w, h);
+			return getCardBackImage(ck, w, h);
 		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(resourcePackage + "cards.png"));
 		int x = 65 * (c.getNumber() - 1);
 		int y = 100 * (c.getColor().ordinal());
-		return getScaledImage(ii.getImage(), w, h, x, y, x + 65, y + 100);
+		Image image = getScaledImage(ii.getImage(), w, h, x, y, x + 65, y + 100);
+		if(ck != null) {
+			drawCardKnowlege(image, ck);
+		}
+		return image;
 	}
 
 	public static Image getCardBackImage() {
-		return getCardImage(null);
+		return getCardImage(null, null);
 	}
 
-	public static Image getCardBackImage(int w, int h) {
+	public static Image getCardBackImage(CardKnowlege ck) {
+		return getCardImage(null, ck);
+	}
+
+	public static Image getCardBackImage(CardKnowlege ck, int w, int h) {
 		ImageIcon ii = new ImageIcon(PlayerPanel.class.getResource(resourcePackage + "cardBack.png"));
-		return getScaledImage(ii.getImage(), w, h, 0, 0, 81, 125);
+		Image image = getScaledImage(ii.getImage(), w, h, 0, 0, 81, 125);
+		if(ck != null) {
+			drawCardKnowlege(image, ck);
+		}
+		return image;
 	}
 
 	public static Image getCardSmallImage(Card c) {

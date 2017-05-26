@@ -57,8 +57,11 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 	private void setCards(Situation s) {
 		cardsPanel.removeAll();
 		if(s != null) {
-			for(Card c : s.getHand(player)) {
-				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(c)));
+			Hand h = s.getHand(player);
+			for(int i = 0; i < h.size(); i++) {
+				Card c = h.get(i);
+				CardKnowlege ck = h.getKnowlege(i);
+				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(c, ck)));
 				cardP.setBorder(new LineBorder(java.awt.Color.GRAY, 3, true));
 				cardsPanel.add(cardP);
 			}
@@ -121,6 +124,8 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 							setCards(s);
 						}
 						return;
+					} else {
+						setCards(s); // Necessary because we also draw clues information
 					}
 				} else {
 					setCards(s);

@@ -54,6 +54,7 @@ public class CardKnowlege {
 		return (situation.getTurn() - turnEntered) / situation.getHanabi().getPlayerCount();
 	}
 
+	/** Limited to clues, won't count cards */
 	public TreeSet<Color> getPossibleColors() {
 		Iterator<Color> it = possibleColors.iterator();
 		while(it.hasNext()) {
