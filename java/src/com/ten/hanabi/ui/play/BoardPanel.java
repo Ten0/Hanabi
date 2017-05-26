@@ -24,13 +24,14 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 	private JLabel nbClues;
 	private JLabel nbStrikes;
 	private JPanel cluesStrikesPanel;
+	private JLabel deckLabel;
 
 	/**
 	 * Create the panel.
 	 */
 	public BoardPanel(UIPlayManager upm) {
 		uiPlayManager = upm;
-		setLayout(new GridLayout(1, Color.values().length + 1, 5, 0));
+		setLayout(new GridLayout(1, Color.values().length + 2, 5, 0));
 
 		for(Color c : Color.values()) {
 			JPanel cColorPanel = new JPanel();
@@ -54,6 +55,12 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		nbStrikes.setIcon(new ImageIcon(Utils.rescaleBasic(Utils.getImageForFile("/com/ten/hanabi/ui/img/miss.png"))));
 		cluesStrikesPanel.add(nbStrikes);
 
+		deckLabel = new JLabel(new ImageIcon(Utils.getCardBackImage()));
+		Font deckSizeFont = new Font("Lato Black", Font.BOLD, (int) (Utils.RESCALE * 50));
+		deckLabel.setFont(deckSizeFont);
+		deckLabel.setForeground(new java.awt.Color(0xea, 0xef, 0xe6));
+		deckLabel.setHorizontalTextPosition(JLabel.CENTER); // Text on image
+
 		upm.registerHanabiChangeListener(this);
 	}
 
@@ -64,6 +71,7 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 			add(colorPanels.get(c));
 		}
 		add(cluesStrikesPanel);
+		add(deckLabel);
 		uiPlayManager.registerSituationChangeListener(this); // triggers onSituationChange thus revalidate
 	}
 
@@ -82,9 +90,11 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		if(s == null) {
 			nbClues.setText("<Clues>");
 			nbStrikes.setText("<Strikes>");
+			deckLabel.setText("<NB Cards>");
 		} else {
 			nbClues.setText(Integer.toString(s.getClues()));
 			nbStrikes.setText(Integer.toString(s.getStrikes()));
+			deckLabel.setText(Integer.toString(s.getNbCardsLeftInDeck()));
 		}
 		revalidate();
 	}

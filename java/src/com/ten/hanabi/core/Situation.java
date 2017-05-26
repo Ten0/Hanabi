@@ -252,4 +252,8 @@ public class Situation {
 	public Variant getVariant() {
 		return variant;
 	}
+
+	public int getNbCardsLeftInDeck() {
+		return Math.max(0, hanabi.getDeck().size() - cardId);
+	}
 }
