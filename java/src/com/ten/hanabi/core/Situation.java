@@ -124,7 +124,7 @@ public class Situation {
 			return false; // Invalid clue count
 		if(isGameOver())
 			return false; // Game is already over
-		if(!hanabi.getRuleSet().canGiveEmptyClues()) {
+		if(!hanabi.getRuleSet().canGiveEmptyClues() && hanabi.getDeck().isLocked()) {
 			if(play instanceof CluePlay) {
 				CluePlay cp = (CluePlay) play;
 				if(hands.get(cp.getReceiver().getId()).getConcernedCardsCount(cp.getClue()) <= 0)
@@ -145,7 +145,7 @@ public class Situation {
 			throw new InvalidPlayException(play, "clues>" + maxClues);
 		if(isGameOver())
 			throw new InvalidPlayException(play, "Game is already over");
-		if(!hanabi.getRuleSet().canGiveEmptyClues()) {
+		if(!hanabi.getRuleSet().canGiveEmptyClues() && hanabi.getDeck().isLocked()) {
 			if(play instanceof CluePlay) {
 				CluePlay cp = (CluePlay) play;
 				if(hands.get(cp.getReceiver().getId()).getConcernedCardsCount(cp.getClue()) <= 0)
