@@ -187,8 +187,11 @@ public class Situation {
 	}
 
 	public boolean isGameOver() {
-		return isGameLost() || (lastCardPicked >= 0 && (getTurn() - lastCardPicked) >= hanabi.getPlayerCount()
-				* hanabi.getRuleSet().getNbTurnsPerPlayerAfterLastCard());
+		return isGameLost()
+				|| (lastCardPicked >= 0 && (getTurn() - lastCardPicked) >= hanabi.getPlayerCount()
+						* hanabi.getRuleSet().getNbTurnsPerPlayerAfterLastCard())
+				|| hanabi.getRuleSet().getEnabledColors().stream()
+						.allMatch(c -> getNumberAtColor(c) == 5 || colorDead(c) == getNumberAtColor(c) + 1);
 	}
 
 	public int getScore() {
@@ -221,10 +224,8 @@ public class Situation {
 	 */
 	private int colorDead(Color color) {
 		HashMap<Integer, Integer> counts = new HashMap<>();
-		for(Card c : hanabi.getDeck()) {
-			if(c.getColor() == color) {
-				counts.put(c.getNumber(), counts.getOrDefault(c.getNumber(), 0) + 1);
-			}
+		for(int i = 1; i <= 5; i++) {
+			counts.put(i, hanabi.getRuleSet().getNbCardsForNumber(i));
 		}
 		for(Card c : getDiscardedCards()) {
 			if(c.getColor() == color) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 import com.ten.hanabi.core.exceptions.InvalidDeckException;
 
@@ -176,5 +177,13 @@ public class Deck implements Iterable<Card> {
 
 	public boolean isLocked() {
 		return locked;
+	}
+
+	public Stream<Card> stream() {
+		return cards.stream();
+	}
+
+	public Stream<Card> parallelStream() {
+		return cards.parallelStream();
 	}
 }
