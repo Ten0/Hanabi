@@ -26,7 +26,14 @@ public class BotTest {
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);
 
+		long startTime = System.currentTimeMillis();
+
 		pm.notifyPlay();
+
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
+		System.out.println("Game generated in " + elapsedTime + "ms");
+
 	}
 
 }
