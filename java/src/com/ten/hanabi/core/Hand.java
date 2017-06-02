@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import com.ten.hanabi.core.clues.Clue;
+import com.ten.hanabi.core.exceptions.UnknownCardException;
 
 public class Hand implements Iterable<Card> {
 
@@ -97,14 +98,15 @@ public class Hand implements Iterable<Card> {
 		return s;
 	}
 
-	public int getConcernedCardsCount(Clue c) {
+	public int getConcernedCardsCount(Clue c) throws UnknownCardException {
 		int count = 0;
 		for(int i = 0; i < size(); i++) {
 			Card card = cards.get(i);
 			if(card != null) {
 				if(c.matches(card))
 					count++;
-			}
+			} else
+				throw new UnknownCardException();
 		}
 		return count;
 	}
