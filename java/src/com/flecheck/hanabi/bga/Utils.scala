@@ -29,6 +29,16 @@ object Utils {
     connection.setRequestProperty("Cookie",cookiesStr)
     //headers.foreach { case (key,data) => connection.setRequestProperty(key,data)}
     val inputStream = connection.getInputStream
+
+    // Invalid UTF-8 encoding fix
+    import java.nio.charset.CodingErrorAction
+    import scala.io.Codec
+
+    implicit val codec = Codec("UTF-8")
+    codec.onMalformedInput(CodingErrorAction.REPLACE)
+    codec.onUnmappableCharacter(CodingErrorAction.REPLACE)
+    //
+
     val content = io.Source.fromInputStream(inputStream).mkString
     if (inputStream != null) inputStream.close
     content
