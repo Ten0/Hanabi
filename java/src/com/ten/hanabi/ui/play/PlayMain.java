@@ -1,17 +1,15 @@
 package com.ten.hanabi.ui.play;
 
-import java.io.File;
-
+import com.flecheck.hanabi.bga.BGA;
 import com.ten.hanabi.core.*;
-import com.ten.hanabi.core.seen.SeenHanabi;
 
 public class PlayMain {
 
 	public static void main(String[] args) throws Exception {
 		// Hanabi h = new Hanabi(new Player(), new Player());
-		File seenFile = new File("../games/g4.hanabi");
-		Hanabi h = new SeenHanabi(seenFile).getFinalHanabi();
-		// Hanabi h = BGA.getGameById(28441973);
+		//File seenFile = new File("../games/g4.hanabi");
+		//Hanabi h = new SeenHanabi(seenFile).getFinalHanabi();
+		Hanabi h = BGA.getGameById(28441973);
 
 		UIPlayManager upm = new UIPlayManager();
 		upm.loadHanabi(h, 0);

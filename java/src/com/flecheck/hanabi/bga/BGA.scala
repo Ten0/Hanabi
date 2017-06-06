@@ -22,24 +22,24 @@ object BGA {
 
   def getGameById(id: Int): Hanabi = {
     val content1: String = Utils.getUrl("https://fr.boardgamearena.com/gamereview?table=" + id.toString, cookies = cookies)
-
+    
     val regUrl: Regex = """href="(?<url>.*?)" class="choosePlayerLink""".r
     val regPlays: Regex = """g_gamelogs = (?<json>.*);""".r
     val regSetup: Regex = """completesetup.*"socketio", (?<json>.*}), \{""".r
 
     val nUrl: String = regUrl findFirstMatchIn content1 match {
-      case Some(x) => x.group("url")
+      case Some(x) => x.subgroups.head
       case None => throw BGALoadException("Can't match replay url regex for game " + id)
     }
 
     val content2 = Utils.getUrl("https://fr.boardgamearena.com/" + nUrl, cookies = cookies)
     val playsS: String = regPlays findFirstMatchIn content2 match {
-      case Some(x) => x.group("json")
+      case Some(x) => x.subgroups.head
       case None => throw BGALoadException("Can't match plays regex for game " + id)
     }
 
     val setup: String = regSetup findFirstMatchIn content2 match {
-      case Some(x) => x.group("json")
+      case Some(x) => x.subgroups.head
       case None => throw BGALoadException("Can't match setup regex for game " + id)
     }
 
