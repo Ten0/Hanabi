@@ -43,7 +43,7 @@ object BGA {
       case None => throw BGALoadException("Can't match setup regex for game " + id)
     }
 
-    val (playerList,startingPlayer,playerOrder,multi,handCards,deckCards) = JsonParser.jsonToSetup(setup)
+    val (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards) = JsonParser.jsonToSetup(setup)
     val plays: Seq[Play] = JsonParser.jsonToPlays(playsS)
 
     val orderedPlayerList = playerOrder.map(j => playerList.find{case (id, _) => id == j}.get)
@@ -54,7 +54,7 @@ object BGA {
     var playersM: mutable.Map[String, Player] = scala.collection.mutable.Map[String,Player]()
 
     val players: util.List[Player] = normalizedPlayerList.map{case (id,name) => val p = new Player(name); playersM += (name -> p) ; p }.asJava
-    val rs: RuleSet = new RuleSet(multi)
+    val rs: RuleSet = new RuleSet(multi, cardNumberVariant)
     val deck: Deck = new Deck(rs, false)
     val hanabi: Hanabi = new Hanabi(rs,deck,players)
     val cardPlay: Map[String, (Int, Int)] = plays.filter{_.isInstanceOf[CardInfo]}.asInstanceOf[Seq[CardInfo]].map{ x => (x.card , x.cardInfo)}.toMap

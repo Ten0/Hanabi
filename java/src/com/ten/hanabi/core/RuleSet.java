@@ -5,13 +5,21 @@ import java.util.ArrayList;
 public class RuleSet {
 
 	public final boolean multi;
+	public final boolean cardNumberVariant;
 
 	public RuleSet() {
 		multi = false;
+		cardNumberVariant = false;
 	}
 
 	public RuleSet(boolean multi) {
 		this.multi = multi;
+		cardNumberVariant = false;
+	}
+	
+	public RuleSet(boolean multi, boolean cardNumberVariant) {
+		this.multi = multi;
+		this.cardNumberVariant = cardNumberVariant;
 	}
 
 	public boolean isMultiEnabled() {
@@ -23,6 +31,8 @@ public class RuleSet {
 	}
 
 	public int getNbOfCardsPerPlayer(int playerCount) {
+		if(cardNumberVariant)
+			return 8 - playerCount;
 		return playerCount < 4 ? 5 : 4;
 	}
 

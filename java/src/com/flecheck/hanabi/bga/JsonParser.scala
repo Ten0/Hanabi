@@ -13,7 +13,7 @@ object JsonParser {
 
 
   case class Card(id: String, color: String, num: String)
-  def jsonToSetup(raw: String): (List[(String, String)], String, List[String], Boolean, List[(String, Int, Int)], List[(String, Int, Int)]) = {
+  def jsonToSetup(raw: String): (List[(String, String)], String, List[String], Boolean, Boolean, List[(String, Int, Int)], List[(String, Int, Int)]) = {
     val json = parse(raw)
     implicit val formats = DefaultFormats
 
@@ -44,8 +44,9 @@ object JsonParser {
 
     val JObject(typeGameI) = (json \ "colors")
     val multi = typeGameI.length match {case 5 => false; case 6 => true}
+    val cardNumberVariant = handCards.length/playerList.length match {case 3 => true; case 6 => true; case _ => false}
 
-    (playerList,startingPlayer,playerOrder,multi,handCards,deckCards)
+    (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards)
 
   }
   def jsonToPlays(raw: String): Seq[Play] = {
