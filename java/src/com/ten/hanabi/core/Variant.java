@@ -11,7 +11,7 @@ public class Variant {
 	private ArrayList<Play> plays = new ArrayList<Play>();
 	private TreeMap<Integer, Situation> situationDP = new TreeMap<Integer, Situation>();
 
-	Variant(Hanabi hanabi) {
+	public Variant(Hanabi hanabi) {
 		this.hanabi = hanabi;
 	}
 
