@@ -7,8 +7,10 @@ import java.nio.file.Paths;
 
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.*;
+import com.ten.hanabi.core.exceptions.*;
 import com.ten.hanabi.core.plays.*;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.security.*;
 
 public class XMLSerializer {
@@ -41,9 +43,13 @@ public class XMLSerializer {
 		Files.write(Paths.get(filename), s.getBytes());
 	}
 
-	public static Hanabi loadHanabi(String filename) {
+	public static Hanabi loadHanabi(String filename)
+			throws XStreamException, InvalidDeckException, InvalidPlayException {
 		init();
 		Object o = xstream.fromXML(new File(filename));
-		return (Hanabi) o;
+		Hanabi h = (Hanabi) o;
+		h.getDeck().checkCoherence();
+		h.getVariant().getSituation(); // To check for invalid plays
+		return h;
 	}
 }
