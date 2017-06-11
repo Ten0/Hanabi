@@ -16,7 +16,7 @@ public class Utils {
 
 	private static final String resourcePackage = "/com/ten/hanabi/ui/img/";
 
-	public static double RESCALE = 0.75;
+	public static double RESCALE = 1;
 
 	public static Image rescaleBasic(Image srcImg) {
 		if(RESCALE == 1)
