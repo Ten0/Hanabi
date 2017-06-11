@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class RuleSet {
 
-	public final boolean multi;
-	public final boolean cardNumberVariant;
+	private final boolean multi;
+	private final boolean cardNumberVariant;
 
 	public RuleSet() {
 		multi = false;
@@ -16,7 +16,7 @@ public class RuleSet {
 		this.multi = multi;
 		cardNumberVariant = false;
 	}
-	
+
 	public RuleSet(boolean multi, boolean cardNumberVariant) {
 		this.multi = multi;
 		this.cardNumberVariant = cardNumberVariant;
