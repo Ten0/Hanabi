@@ -8,9 +8,9 @@ import com.ten.hanabi.core.plays.*;
 
 public class Hanabi {
 
-	private final Deck deck;
 	private final RuleSet ruleSet;
 	private final ArrayList<Player> players;
+	private final Deck deck;
 	private Variant variant = new Variant(this);
 
 	public Hanabi(Player... players) {

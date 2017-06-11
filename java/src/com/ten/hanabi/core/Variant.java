@@ -9,7 +9,7 @@ import com.ten.hanabi.core.plays.Play;
 public class Variant {
 	private final Hanabi hanabi;
 	private ArrayList<Play> plays = new ArrayList<Play>();
-	private TreeMap<Integer, Situation> situationDP = new TreeMap<Integer, Situation>();
+	private TreeMap<Integer, Situation> situationDP;
 
 	public Variant(Hanabi hanabi) {
 		this.hanabi = hanabi;
@@ -34,6 +34,8 @@ public class Variant {
 
 	public Situation getSituation(int turn) throws InvalidPlayException {
 		if(hanabi.getDeck().isLocked()) {
+			if(situationDP == null)
+				situationDP = new TreeMap<Integer, Situation>();
 			if(!situationDP.containsKey(turn)) {
 				situationDP.put(turn, new Situation(this, turn));
 			}
