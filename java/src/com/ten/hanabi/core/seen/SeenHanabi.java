@@ -35,8 +35,9 @@ public class SeenHanabi {
 		ruleSet = new RuleSet();
 		deck = new Deck(ruleSet, false);
 
+		Scanner scanner = null;
 		try {
-			Scanner scanner = new Scanner(gameFile);
+			scanner = new Scanner(gameFile);
 			String line = scanner.nextLine();
 			while(line != null && !line.equals("")) {
 				addPlayer(new Player(line));
@@ -82,6 +83,9 @@ public class SeenHanabi {
 
 		} catch (Exception e) {
 			throw new InvalidSeenException(e);
+		} finally {
+			if(scanner != null)
+				scanner.close();
 		}
 
 	}
