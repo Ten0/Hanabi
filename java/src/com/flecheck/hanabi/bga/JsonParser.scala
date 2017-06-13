@@ -74,11 +74,11 @@ object JsonParser {
   def parsePlay(playT: String,play: JValue): List[Play] = {
     implicit val formats = DefaultFormats
     playT match {
-      case "giveColor" => List(GiveColor((play \ "player_name").extract[String] , (play \ "target_name").extract[String] , (play \ "color").extract[String]))
-      case "giveValue" => List(GiveValue((play \ "player_name").extract[String] , (play \ "target_name").extract[String] , (play \ "value").extract[String]))
-      case "playCard" => List(PlayCard((play \ "player_name").extract[String], (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
-      case "missCard" => List(PlayCard((play \ "player_name").extract[String], (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
-      case "discardCard" => List(DiscardCard((play \ "player_name").extract[String], (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
+      case "giveColor" => List(GiveColor((play \ "player_name").extract[String], (play \ "player_id").extract[String].toInt , (play \ "color").extract[String]))
+      case "giveValue" => List(GiveValue((play \ "player_name").extract[String], (play \ "player_id").extract[String].toInt , (play \ "value").extract[String]))
+      case "playCard" => List(PlayCard((play \ "player_id").extract[String].toInt, (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
+      case "missCard" => List(PlayCard((play \ "player_id").extract[String].toInt, (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
+      case "discardCard" => List(DiscardCard((play \ "player_id").extract[String].toInt, (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
       case "revealCards" => {
         val JObject(a) = play \ "cards"
         for {

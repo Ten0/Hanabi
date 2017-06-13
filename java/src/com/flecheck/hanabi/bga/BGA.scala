@@ -123,29 +123,29 @@ object BGA {
     try{
     plays.foreach {
       case PlayCard(p, c, _) => {
-        val hand = hands.get(playersM(p).getId)
+        val hand = hands.get(playersIdM(p).getId)
         val cardPos = hand.indexOf(fromBGAId(c))
         hand.remove(cardPos)
         hand.add(0, cardId)
         cardId += 1
 
-        hanabi.savePlay(new PlacePlay(playersM(p), cardPos))
+        hanabi.savePlay(new PlacePlay(playersIdM(p), cardPos))
       }
       case DiscardCard(p, c, _) => {
-        val hand = hands.get(playersM(p).getId)
+        val hand = hands.get(playersIdM(p).getId)
         val cardPos = hand.indexOf(fromBGAId(c))
         hand.remove(cardPos)
         hand.add(0, cardId)
         cardId += 1
 
-        hanabi.savePlay(new DiscardPlay(playersM(p), cardPos))
+        hanabi.savePlay(new DiscardPlay(playersIdM(p), cardPos))
 
       }
       case GiveValue(p, t, v) => {
-        playersM(p).clue(playersM(t),new NumberClue(v.toInt))
+        playersM(p).clue(playersIdM(t),new NumberClue(v.toInt))
       }
       case GiveColor(p, t, c) => {
-        playersM(p).clue(playersM(t),new ColorClue(Color.values()(c.toInt - 1)))
+        playersM(p).clue(playersIdM(t),new ColorClue(Color.values()(c.toInt - 1)))
 
       }
       case _ =>
