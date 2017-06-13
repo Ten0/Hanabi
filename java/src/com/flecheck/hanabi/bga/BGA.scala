@@ -149,7 +149,8 @@ object BGA {
 
       }
       case _ =>
-    }}catch {case e => }
+    }
+    }catch {case e => e.printStackTrace()}
     hanabi
   }
 
