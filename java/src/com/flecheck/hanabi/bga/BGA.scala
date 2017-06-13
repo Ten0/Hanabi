@@ -43,7 +43,7 @@ object BGA {
       case None => throw BGALoadException("Can't match setup regex for game " + id)
     }
 
-    val (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards) = JsonParser.jsonToSetup(setup)
+    val (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards,handFillOrder) = JsonParser.jsonToSetup(setup)
     val plays: Seq[Play] = JsonParser.jsonToPlays(playsS)
 
     val orderedPlayerList = playerOrder.map(j => playerList.find{case (id, _) => id == j}.get)
@@ -52,13 +52,18 @@ object BGA {
 
 
     var playersM: mutable.Map[String, Player] = scala.collection.mutable.Map[String,Player]()
+    var playersIdM: mutable.Map[Int, Player] = scala.collection.mutable.Map[Int,Player]()
 
-    val players: util.List[Player] = normalizedPlayerList.map{case (id,name) => val p = new Player(name); playersM += (name -> p) ; p }.asJava
+    val players: util.List[Player] = normalizedPlayerList.map{ case (id,name) =>
+      val p = new Player(name)
+      playersM += (name -> p)
+      playersIdM += (id.toInt -> p)
+      p
+    }.asJava
     val rs: RuleSet = new RuleSet(multi, cardNumberVariant)
     val deck: Deck = new Deck(rs, false)
     val hanabi: Hanabi = new Hanabi(rs,deck,players)
     val cardPlay: Map[String, (Int, Int)] = plays.filter{_.isInstanceOf[CardInfo]}.asInstanceOf[Seq[CardInfo]].map{ x => (x.card , x.cardInfo)}.toMap
-
 
     def fromBGAId(BGAid: String): Int = {
       val id = deck.size() - BGAid.toInt
@@ -66,9 +71,9 @@ object BGA {
       var ret = id
       if(id < nbCardsDealtAtStart) {
         import com.flecheck.hanabi.bga.Utils.ExtendedInt
-        val decaledHands = (id - (startingPlayerPos * hanabi.getNbOfCardsPerPlayer )) +% players.size * hanabi.getNbOfCardsPerPlayer
-        val player = decaledHands / hanabi.getNbOfCardsPerPlayer
-        val handPos = decaledHands % hanabi.getNbOfCardsPerPlayer
+        val bgaPlayer = id / hanabi.getNbOfCardsPerPlayer // joueur 0,1,2... dans l'ordre des hand002 hand003 hand001
+        val player = playersIdM(handFillOrder(bgaPlayer)).getId
+        val handPos = id % hanabi.getNbOfCardsPerPlayer
         ret = player + handPos * players.size
       }
       ret

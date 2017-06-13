@@ -13,7 +13,7 @@ object JsonParser {
 
 
   case class Card(id: String, color: String, num: String)
-  def jsonToSetup(raw: String): (List[(String, String)], String, List[String], Boolean, Boolean, List[(String, Int, Int)], List[(String, Int, Int)]) = {
+  def jsonToSetup(raw: String): (List[(String, String)], String, List[String], Boolean, Boolean, List[(String, Int, Int)], List[(String, Int, Int)], List[Int]) = {
     val json = parse(raw)
     implicit val formats = DefaultFormats
 
@@ -23,7 +23,7 @@ object JsonParser {
     val JArray(order) = json \ "playerorder"
     val playerOrder = order.map(_.extract[String])
 
-    val hands = json filterField{ case (r"hand.*",_) => true case _ => false}
+    val hands = json filterField{ case (r"hand\d*",_) => true case _ => false}
     val handCards = for {
       JField(_,JObject(hand)) <- hands
       JField(_,card) <- hand
@@ -31,6 +31,8 @@ object JsonParser {
       color = card \ "type"
       num = card \ "type_arg"
     } yield { (id.extract[String] ,color.extract[String].toInt ,num.extract[String].toInt )}
+
+    val handFillOrder = for { (name, _) <- hands } yield name.substring(4).toInt;
 
     val JObject(deck) = json \ "deck"
     val deckCards = for {
@@ -46,7 +48,7 @@ object JsonParser {
     val multi = typeGameI.length match {case 5 => false; case 6 => true}
     val cardNumberVariant = handCards.length/playerList.length match {case 3 => true; case 6 => true; case _ => false}
 
-    (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards)
+    (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards,handFillOrder)
 
   }
   def jsonToPlays(raw: String): Seq[Play] = {
