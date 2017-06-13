@@ -60,7 +60,7 @@ object BGA {
       playersIdM += (id.toInt -> p)
       p
     }.asJava
-    val rs: RuleSet = new RuleSet(multi, cardNumberVariant)
+    val rs: RuleSet = new RuleSet(multi, cardNumberVariant, true)
     val deck: Deck = new Deck(rs, false)
     val hanabi: Hanabi = new Hanabi(rs,deck,players)
     val cardPlay: Map[String, (Int, Int)] = plays.filter{_.isInstanceOf[CardInfo]}.asInstanceOf[Seq[CardInfo]].map{ x => (x.card , x.cardInfo)}.toMap

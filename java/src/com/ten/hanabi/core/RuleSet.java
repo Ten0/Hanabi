@@ -6,20 +6,18 @@ public class RuleSet {
 
 	private final boolean multi;
 	private final boolean cardNumberVariant;
+	private final boolean emptyCluesAllowed;
 
 	public RuleSet() {
 		multi = false;
 		cardNumberVariant = false;
+		emptyCluesAllowed = false;
 	}
 
-	public RuleSet(boolean multi) {
-		this.multi = multi;
-		cardNumberVariant = false;
-	}
-
-	public RuleSet(boolean multi, boolean cardNumberVariant) {
+	public RuleSet(boolean multi, boolean cardNumberVariant, boolean emptyCluesAllowed) {
 		this.multi = multi;
 		this.cardNumberVariant = cardNumberVariant;
+		this.emptyCluesAllowed = emptyCluesAllowed;
 	}
 
 	public boolean isMultiEnabled() {
@@ -69,6 +67,6 @@ public class RuleSet {
 	}
 
 	public boolean canGiveEmptyClues() {
-		return false;
+		return emptyCluesAllowed;
 	}
 }
