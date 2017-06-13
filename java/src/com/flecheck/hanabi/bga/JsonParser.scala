@@ -54,7 +54,7 @@ object JsonParser {
   def jsonToPlays(raw: String): Seq[Play] = {
     implicit val formats = DefaultFormats
 
-    val playTypeList = List("giveColor","playCard","giveValue","discardCard","revealCards")
+    val playTypeList = List("giveColor","playCard","missCard","giveValue","discardCard","revealCards")
 
     val JObject(json) = parse(raw) \ "data" \ "data" \\ "data"
     val plays = for {
@@ -77,6 +77,7 @@ object JsonParser {
       case "giveColor" => List(GiveColor((play \ "player_name").extract[String] , (play \ "target_name").extract[String] , (play \ "color").extract[String]))
       case "giveValue" => List(GiveValue((play \ "player_name").extract[String] , (play \ "target_name").extract[String] , (play \ "value").extract[String]))
       case "playCard" => List(PlayCard((play \ "player_name").extract[String], (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
+      case "missCard" => List(PlayCard((play \ "player_name").extract[String], (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
       case "discardCard" => List(DiscardCard((play \ "player_name").extract[String], (play \ "card_id").extract[String], ((play \ "color").extract[String].toInt, (play \ "value").extract[String].toInt)))
       case "revealCards" => {
         val JObject(a) = play \ "cards"
