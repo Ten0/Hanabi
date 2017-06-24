@@ -79,29 +79,30 @@ object BGA {
       ret
     }
 
-    def fromBGACard(id: String, colorS: Int, numS: Int): (Int,Int) = {
-      val color = colorS.toInt
-      val num = numS.toInt
+    def fromBGACard(id: String, colorS: Int, numS: Int): (Card) = {
+      var color = colorS.toInt - 1
+      var num = numS.toInt
+      if (num == 6) {
+            val (color2, num2) = cardPlay.getOrElse(id, (-1,-1))
+            color = color2-1; num = num2;
+      }
       num match {
-          case 6 => {
-            val (color, num) = cardPlay(id)
-            (color -1 , num)
-          }
-          case _ => (color -1 , num)
+        case -1 =>
+          null
+        case _ =>
+          new Card(Color.values()(color), num)
       }
     }
 
     for {
       (id,colorBGA,numBGA) <- deckCards
-      (color,num) = fromBGACard(id,colorBGA,numBGA)
-      card = new Card(Color.values()(color),num)
+      card = fromBGACard(id,colorBGA,numBGA)
     } yield {
       deck.setCard(fromBGAId(id), card)
     }
     for {
       (id,colorBGA,numBGA) <- handCards
-      (color,num) = fromBGACard(id,colorBGA,numBGA)
-      card = new Card(Color.values()(color),num)
+      card = fromBGACard(id,colorBGA,numBGA)
     } yield {
       deck.setCard(fromBGAId(id), card)
     }
