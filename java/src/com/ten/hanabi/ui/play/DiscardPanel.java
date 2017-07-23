@@ -43,6 +43,7 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 		}
 
 		upm.registerHanabiChangeListener(this);
+		upm.registerSituationChangeListener(this);
 	}
 
 	@Override
@@ -53,8 +54,6 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 		}
 		panel.add(new JPanel()); // clues/strikes
 		panel.add(new JPanel()); // deck
-
-		uiPlayManager.registerSituationChangeListener(this); // triggers onSituationChange thus revalidate
 	}
 
 	@Override

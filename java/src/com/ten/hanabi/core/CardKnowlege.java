@@ -50,6 +50,10 @@ public class CardKnowlege {
 			throw new InvalidClueException(clue, "Data on a card is incoherent, no possibilities left");
 	}
 
+	public int getTurnEntered() {
+		return turnEntered;
+	}
+
 	public int getAge() {
 		return (situation.getTurn() - turnEntered) / situation.getHanabi().getPlayerCount();
 	}

@@ -19,7 +19,6 @@ import javax.swing.border.LineBorder;
 
 public class BoardPanel extends JPanel implements HanabiChangeListener, SituationChangeListener {
 
-	UIPlayManager uiPlayManager;
 	HashMap<Color, JPanel> colorPanels = new HashMap<Color, JPanel>();
 	private JLabel nbClues;
 	private JLabel nbStrikes;
@@ -31,7 +30,6 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 	 * Create the panel.
 	 */
 	public BoardPanel(UIPlayManager upm) {
-		uiPlayManager = upm;
 		setLayout(new GridLayout(1, Color.values().length + 2, 5, 0));
 
 		for(Color c : Color.values()) {
@@ -67,6 +65,7 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		deckPanel.add(deckLabel);
 
 		upm.registerHanabiChangeListener(this);
+		upm.registerSituationChangeListener(this);
 	}
 
 	@Override
@@ -77,7 +76,6 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		}
 		add(cluesStrikesPanel);
 		add(deckPanel);
-		uiPlayManager.registerSituationChangeListener(this); // triggers onSituationChange thus revalidate
 	}
 
 	@Override

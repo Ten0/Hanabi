@@ -11,11 +11,13 @@ import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import javax.swing.JTabbedPane;
 
 public class PlayFrame extends JFrame implements KeyListener {
 
 	UIPlayManager uiPlayManager;
 	private JSplitPane splitPane;
+	private CardInfoPanel cardInfoPanel;
 
 	/**
 	 * Create the frame.
@@ -71,6 +73,12 @@ public class PlayFrame extends JFrame implements KeyListener {
 
 		LogPanel logPanel = new LogPanel(upm);
 		log_options.setLeftComponent(logPanel);
+
+		JTabbedPane infos_options = new JTabbedPane(JTabbedPane.TOP);
+		log_options.setRightComponent(infos_options);
+
+		cardInfoPanel = new CardInfoPanel(upm);
+		infos_options.addTab("Card info", null, cardInfoPanel, null);
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.ten.hanabi.ui.play;
 
+import java.awt.Component;
 import java.util.HashSet;
+
+import javax.swing.JPanel;
 
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
@@ -12,12 +15,24 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private Hanabi hanabi;
 	private Situation situation;
 
+	/** null if no card is selected */
+	private Player selectedCardPlayer;
+	/** -1 if no card is selected */
+	private int selectedCardIdInHand = -1;
+
 	private final HashSet<SituationChangeListener> situationChangeListeners;
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
+	private final HashSet<SelectedCardChangeListener> selectedCardChangeListeners;
 
 	public UIPlayManager() {
 		situationChangeListeners = new HashSet<SituationChangeListener>();
 		hanabiChangeListeners = new HashSet<HanabiChangeListener>();
+		selectedCardChangeListeners = new HashSet<SelectedCardChangeListener>();
+	}
+
+	private void setHanabi(Hanabi h, int turn) throws InvalidPlayException {
+		this.hanabi = h;
+		setSituation(hanabi.getSituation(turn));
 	}
 
 	public void loadHanabi(Hanabi h) throws InvalidPlayException {
@@ -25,15 +40,32 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	public void loadHanabi(Hanabi h, int turn) throws InvalidPlayException {
-		this.hanabi = h;
-		this.situation = hanabi.getSituation(turn);
-		situationChangeListeners.clear();
+		setHanabi(h, turn);
 		this.notifyHanabiChange();
 	}
 
+	private void setSituation(Situation situation) {
+		this.situation = situation;
+		setSelectedCard(null, -1);
+	}
+
 	void goToTurn(int turn) throws InvalidPlayException {
-		this.situation = hanabi.getSituation(turn);
+		setSituation(hanabi.getSituation(turn));
 		this.notifySituationChange();
+	}
+
+	private void setSelectedCard(Player player, int pos) {
+		if(pos < 0)
+			player = null;
+		if(player == null)
+			pos = -1;
+		selectedCardPlayer = player;
+		selectedCardIdInHand = pos;
+	}
+
+	public void selectCard(Player player, int pos) {
+		setSelectedCard(player, pos);
+		notifySelectedCardChange();
 	}
 
 	void registerHanabiChangeListener(HanabiChangeListener hcl) {
@@ -49,6 +81,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		hanabiChangeListeners.parallelStream().forEach(hcl -> {
 			hcl.onHanabiChange(hanabi);
 		});
+		this.notifySituationChange();
 	}
 
 	void registerSituationChangeListener(SituationChangeListener scl) {
@@ -63,6 +96,22 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private void notifySituationChange() {
 		situationChangeListeners.parallelStream().forEach(scl -> {
 			scl.onSituationChange(situation);
+		});
+		this.notifySelectedCardChange();
+	}
+
+	void registerSelectedCardChangeListener(SelectedCardChangeListener sccl) {
+		selectedCardChangeListeners.add(sccl);
+		sccl.onSelectedCardChange(selectedCardPlayer, selectedCardIdInHand);
+	}
+
+	void unregisterSelectedCardChangeListener(SelectedCardChangeListener sccl) {
+		selectedCardChangeListeners.remove(sccl);
+	}
+
+	private void notifySelectedCardChange() {
+		selectedCardChangeListeners.parallelStream().forEach(sccl -> {
+			sccl.onSelectedCardChange(selectedCardPlayer, selectedCardIdInHand);
 		});
 	}
 
@@ -97,11 +146,37 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 
 	@Override
 	public void onSituationChange(Situation s) {
-		try {
-			situation = hanabi.getSituation();
-		} catch (InvalidPlayException e) {
-			throw new RuntimeException(e);
-		}
+		if(s.getHanabi() != hanabi)
+			throw new RuntimeException();
+		setSituation(s);
 		notifySituationChange();
+	}
+
+	public Situation getSituation() {
+		return situation;
+	}
+
+	public Player getSelectedCardPlayer() {
+		return selectedCardPlayer;
+	}
+
+	public int getSelectedCardIdInHand() {
+		return selectedCardIdInHand;
+	}
+
+	public void unregister(Component comp) {
+		if(comp instanceof JPanel) {
+			for(Component comp2 : ((JPanel) comp).getComponents())
+				unregister(comp2);
+		}
+		if(comp instanceof HanabiChangeListener) {
+			unregisterHanabiChangeListener((HanabiChangeListener) comp);
+		}
+		if(comp instanceof SituationChangeListener) {
+			unregisterSituationChangeListener((SituationChangeListener) comp);
+		}
+		if(comp instanceof SelectedCardChangeListener) {
+			unregisterSelectedCardChangeListener((SelectedCardChangeListener) comp);
+		}
 	}
 }

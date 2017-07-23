@@ -33,6 +33,8 @@ public class PlayersCardsPanel extends JPanel implements HanabiChangeListener {
 
 	@Override
 	public void onHanabiChange(Hanabi hanabi) {
+		// Unregister components before removing them
+		uiPlayManager.unregister(panel);
 		panel.removeAll();
 		if(hanabi != null) {
 			for(Player p : hanabi.getPlayers()) {

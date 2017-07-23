@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Timer;
 
 import javax.swing.border.Border;
@@ -18,7 +20,9 @@ import com.ten.hanabi.ui.Utils;
 
 import java.awt.Font;
 
-public class PlayerPanel extends JPanel implements SituationChangeListener {
+public class PlayerPanel extends JPanel implements SituationChangeListener, SelectedCardChangeListener {
+	private UIPlayManager uiPlayManager;
+
 	private Player player;
 
 	private JPanel cardsPanel;
@@ -32,6 +36,9 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 	 * Create the panel.
 	 */
 	public PlayerPanel(UIPlayManager upm, Player p) {
+		uiPlayManager = upm;
+		player = p;
+
 		setLayout(new BorderLayout(0, 0));
 		setBorder(false);
 
@@ -49,9 +56,8 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 		add(cardsPanel, BorderLayout.CENTER);
 		cardsPanel.setLayout(new GridLayout(1, 5, 5, 0));
 
-		player = p;
-
 		upm.registerSituationChangeListener(this);
+		upm.registerSelectedCardChangeListener(this);
 	}
 
 	private void setCards(Situation s) {
@@ -63,6 +69,13 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 				CardKnowlege ck = h.getKnowlege(i);
 				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(c, ck)));
 				cardP.setBorder(new LineBorder(java.awt.Color.GRAY, 3, true));
+				final int cardId = i;
+				cardP.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						uiPlayManager.selectCard(player, cardId);
+					}
+				});
 				cardsPanel.add(cardP);
 			}
 		} else {
@@ -86,6 +99,20 @@ public class PlayerPanel extends JPanel implements SituationChangeListener {
 			this.setBorder(new LineBorder(java.awt.Color.DARK_GRAY, 3, true));
 		} else if((currentBorder == null || currentBorder instanceof LineBorder) && !myTurn) {
 			this.setBorder(new EmptyBorder(3, 3, 3, 3));
+		}
+	}
+
+	int cardSelectedHere = -1;
+
+	@Override
+	public void onSelectedCardChange(Player player, int pos) {
+		if(cardSelectedHere >= 0) {
+			border(cardSelectedHere, java.awt.Color.GRAY);
+			cardSelectedHere = -1;
+		}
+		if(player == this.player) {
+			border(pos, java.awt.Color.ORANGE);
+			this.cardSelectedHere = pos;
 		}
 	}
 
