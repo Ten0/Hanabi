@@ -45,8 +45,12 @@ public class XMLSerializer {
 
 	public static Hanabi loadHanabi(String filename)
 			throws XStreamException, InvalidDeckException, InvalidPlayException {
+		return loadHanabi(new File(filename));
+	}
+
+	public static Hanabi loadHanabi(File file) throws XStreamException, InvalidDeckException, InvalidPlayException {
 		init();
-		Object o = xstream.fromXML(new File(filename));
+		Object o = xstream.fromXML(file);
 		Hanabi h = (Hanabi) o;
 		h.getDeck().checkCoherence();
 		h.getVariant().getSituation(); // To check for invalid plays
