@@ -7,11 +7,10 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 
 import com.ten.hanabi.core.*;
-import com.ten.hanabi.play.SituationChangeListener;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 
-public class CardInfoPanel extends JPanel implements SituationChangeListener, SelectedCardChangeListener {
+public class CardInfoPanel extends JPanel implements SelectedCardChangeListener {
 	private JEditorPane infoTextZone;
 	private UIPlayManager uiPlayManager;
 
@@ -29,24 +28,12 @@ public class CardInfoPanel extends JPanel implements SituationChangeListener, Se
 		JScrollPane scrollPane = new JScrollPane(infoTextZone);
 		add(scrollPane);
 
-		upm.registerSituationChangeListener(this);
 		upm.registerSelectedCardChangeListener(this);
 	}
 
 	@Override
-	public void onSelectedCardChange(Player player, int pos) {
-		update();
-	}
-
-	@Override
-	public void onSituationChange(Situation s) {
-		update();
-	}
-
-	private void update() {
+	public void onSelectedCardChange(Player player, int cardIdInHand) {
 		Situation situation = uiPlayManager.getSituation();
-		Player player = uiPlayManager.getSelectedCardPlayer();
-		int cardIdInHand = uiPlayManager.getSelectedCardIdInHand();
 		if(situation == null) {
 			infoTextZone.setText("");
 		} else if(player == null || cardIdInHand < 0) {
