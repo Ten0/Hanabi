@@ -91,9 +91,9 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 			colorPanels.put(c, cColorPanel);
 		}
 		if(s == null) {
-			nbClues.setText("<Clues>");
-			nbStrikes.setText("<Strikes>");
-			deckLabel.setText("<NB Cards>");
+			nbClues.setText("");
+			nbStrikes.setText("");
+			deckLabel.setText("X");
 		} else {
 			nbClues.setText(Integer.toString(s.getClues()));
 			nbStrikes.setText(Integer.toString(s.getStrikes()));

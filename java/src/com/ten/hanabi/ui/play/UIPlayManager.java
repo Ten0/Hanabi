@@ -116,7 +116,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	boolean nextTurn() throws InvalidPlayException {
-		if(situation.getTurn() < hanabi.getTurn()) {
+		if(hanabi != null && situation.getTurn() < hanabi.getTurn()) {
 			goToTurn(situation.getTurn() + 1);
 			return true;
 		} else
@@ -124,7 +124,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	boolean previousTurn() throws InvalidPlayException {
-		if(situation.getTurn() > 0) {
+		if(hanabi != null && situation.getTurn() > 0) {
 			goToTurn(situation.getTurn() - 1);
 			return true;
 		} else
@@ -132,7 +132,8 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	void goToEnd() throws InvalidPlayException {
-		goToTurn(hanabi.getTurn());
+		if(hanabi != null)
+			goToTurn(hanabi.getTurn());
 	}
 
 	@Override

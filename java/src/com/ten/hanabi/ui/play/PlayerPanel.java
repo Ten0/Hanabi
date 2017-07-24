@@ -98,6 +98,8 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 	}
 
 	private void cardBorder(int cardId) {
+		if(cardId < 0)
+			return;
 		cardBorder(((JLabel) cardsPanel.getComponent(cardId)), cardId);
 		cardsPanel.revalidate();
 	}
@@ -129,7 +131,7 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 			cardSelectedHere = -1;
 			cardBorder(previousSelectedCard);
 		}
-		if(player == this.player) {
+		if(player != null && player == this.player) {
 			this.cardSelectedHere = pos;
 			cardBorder(pos);
 		}
