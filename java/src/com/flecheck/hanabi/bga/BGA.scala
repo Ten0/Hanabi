@@ -12,7 +12,7 @@ import scala.collection.immutable.Seq
 import scala.collection.mutable
 
 
-case class BGALoadException (s: String) extends Exception
+case class BGALoadException (s: String) extends Exception(s)
 
 object BGA {
 
