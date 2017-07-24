@@ -78,7 +78,11 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 				cardP.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						uiPlayManager.selectCard(player, cardId);
+						if(uiPlayManager.getSelectedCardPlayer() == player
+								&& uiPlayManager.getSelectedCardIdInHand() == cardId)
+							uiPlayManager.selectCard(null, -1);
+						else
+							uiPlayManager.selectCard(player, cardId);
 					}
 				});
 				cardsPanel.add(cardP);
