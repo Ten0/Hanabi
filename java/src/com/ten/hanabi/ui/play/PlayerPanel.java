@@ -32,6 +32,11 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 
 	private Timer timer;
 
+	// Card border data
+	int cardSelectedHere = -1;
+	int cardJustPlaced = -1;
+	int cardJustDiscarded = -1;
+
 	/**
 	 * Create the panel.
 	 */
@@ -68,7 +73,7 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 				Card c = h.get(i);
 				CardKnowlege ck = h.getKnowlege(i);
 				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(c, ck)));
-				cardP.setBorder(new LineBorder(java.awt.Color.GRAY, 3, true));
+				cardBorder(cardP, i);
 				final int cardId = i;
 				cardP.addMouseListener(new MouseAdapter() {
 					@Override
@@ -88,9 +93,20 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 		cardsPanel.revalidate();
 	}
 
-	private void border(int cardId, java.awt.Color color) {
-		((JLabel) cardsPanel.getComponent(cardId)).setBorder(new LineBorder(color, 3, true));
+	private void cardBorder(int cardId) {
+		cardBorder(((JLabel) cardsPanel.getComponent(cardId)), cardId);
 		cardsPanel.revalidate();
+	}
+
+	private void cardBorder(JLabel cardP, int cardId) {
+		java.awt.Color color = java.awt.Color.GRAY;
+		if(cardSelectedHere == cardId)
+			color = java.awt.Color.ORANGE;
+		if(cardJustPlaced == cardId)
+			color = java.awt.Color.GREEN;
+		else if(cardJustDiscarded == cardId)
+			color = java.awt.Color.RED;
+		cardP.setBorder(new LineBorder(color, 3, true));
 	}
 
 	private void setBorder(boolean myTurn) {
@@ -102,26 +118,28 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 		}
 	}
 
-	int cardSelectedHere = -1;
-
 	@Override
 	public void onSelectedCardChange(Player player, int pos) {
 		if(cardSelectedHere >= 0) {
-			border(cardSelectedHere, java.awt.Color.GRAY);
+			int previousSelectedCard = cardSelectedHere;
 			cardSelectedHere = -1;
+			cardBorder(previousSelectedCard);
 		}
 		if(player == this.player) {
-			border(pos, java.awt.Color.ORANGE);
 			this.cardSelectedHere = pos;
+			cardBorder(pos);
 		}
 	}
 
 	@Override
 	public void onSituationChange(Situation s) {
+		boolean timerCancelled = false;
 		if(timer != null) {
 			timer.cancel();
 			timer = null;
-			setCards(situation);
+			cardJustPlaced = -1;
+			cardJustDiscarded = -1;
+			timerCancelled = true;
 		}
 		if(s == null) {
 			setCards(null);
@@ -130,19 +148,26 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 			if(situation != null && s.getVariant() == situation.getVariant()) {
 				if(s.getTurn() == situation.getTurn() + 1) {
 					if(situation.getPlayingPlayer() == player) {
+						if(timerCancelled)
+							setCards(situation);
 						situation = s;
 						// C'était le tour de ce joueur
 						Play p = s.getVariant().getPlay(situation.getTurn());
 						if(p instanceof CardPlay) {
 							// On fait l'animation
 							CardPlay cp = (CardPlay) p;
-							border(cp.getPlacement(),
-									(cp instanceof PlacePlay ? java.awt.Color.GREEN : java.awt.Color.RED));
+							if(cp instanceof PlacePlay)
+								cardJustPlaced = cp.getPlacement();
+							else
+								cardJustDiscarded = cp.getPlacement();
+							cardBorder(cp.getPlacement());
 
 							this.timer = new Timer();
 							timer.schedule(new java.util.TimerTask() {
 								@Override
 								public void run() {
+									cardJustPlaced = -1;
+									cardJustDiscarded = -1;
 									setCards(s);
 									timer = null;
 								}
