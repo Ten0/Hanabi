@@ -17,7 +17,6 @@ public class PlayFrame extends JFrame implements KeyListener {
 
 	UIPlayManager uiPlayManager;
 	private JSplitPane splitPane;
-	private CardInfoPanel cardInfoPanel;
 
 	/**
 	 * Create the frame.
@@ -77,7 +76,7 @@ public class PlayFrame extends JFrame implements KeyListener {
 		JTabbedPane infos_options = new JTabbedPane(JTabbedPane.TOP);
 		log_options.setRightComponent(infos_options);
 
-		cardInfoPanel = new CardInfoPanel(upm);
+		CardInfoPanel cardInfoPanel = new CardInfoPanel(upm);
 		infos_options.addTab("Card info", null, cardInfoPanel, null);
 	}
 
