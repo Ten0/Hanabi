@@ -10,6 +10,8 @@ import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.NumberFormat;
 
 import javax.swing.JLabel;
@@ -24,7 +26,7 @@ import com.ten.hanabi.ui.ExceptionDialog;
 
 import javax.swing.JButton;
 
-public class OpenFrame extends JDialog implements ChangeListener, ActionListener {
+public class OpenFrame extends JDialog implements ChangeListener, ActionListener, KeyListener {
 
 	private UIPlayManager uiPlayManager;
 	private JTabbedPane tabbedPane;
@@ -53,8 +55,7 @@ public class OpenFrame extends JDialog implements ChangeListener, ActionListener
 		JLabel gameIdLabel = new JLabel("Game ID: ");
 		bgaChooser.add(gameIdLabel);
 
-		NumberFormat format = NumberFormat.getInstance();
-		NumberFormatter formatter = new NumberFormatter(format);
+		NumberFormatter formatter = new NumberFormatter(NumberFormat.getInstance());
 		formatter.setValueClass(Integer.class);
 		formatter.setMinimum(0);
 		formatter.setMaximum(Integer.MAX_VALUE);
@@ -62,7 +63,7 @@ public class OpenFrame extends JDialog implements ChangeListener, ActionListener
 		// If you want the value to be committed on each keystroke instead of focus lost
 		formatter.setCommitsOnValidEdit(true);
 		gameIdField = new JFormattedTextField(formatter);
-		gameIdField.addActionListener(this); // TODO: doesn't work because formater is filtering
+		gameIdField.addKeyListener(this);
 		bgaChooser.add(gameIdField);
 		gameIdField.setColumns(10);
 
@@ -93,21 +94,41 @@ public class OpenFrame extends JDialog implements ChangeListener, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("yo");
 		if(e.getSource() == openButton || e.getSource() == fileChooser || e.getSource() == gameIdField) {
-			try {
-				Hanabi h;
-				if(tabbedPane.getSelectedIndex() == 0) {
-					h = XMLSerializer.loadHanabi(fileChooser.getSelectedFile());
-				} else { // BGA
-					h = BGA.getGameById(Integer.parseInt(gameIdField.getText().replaceAll("[^0-9]", "")));
-				}
-				uiPlayManager.loadHanabi(h, 0); // 1er tour
-			} catch (Exception ex) {
-				new ExceptionDialog(this, "Error while loading game",
-						"Please make sure the game you are loading is valid", ex).setVisible(true);
+			openGame();
+		} else {
+			this.dispose();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			openGame();
+		}
+	}
+
+	private void openGame() {
+		try {
+			Hanabi h;
+			if(tabbedPane.getSelectedIndex() == 0) {
+				h = XMLSerializer.loadHanabi(fileChooser.getSelectedFile());
+			} else { // BGA
+				h = BGA.getGameById(Integer.parseInt(gameIdField.getText().replaceAll("[^0-9]", "")));
 			}
+			uiPlayManager.loadHanabi(h, 0); // 1er tour
+		} catch (Exception ex) {
+			new ExceptionDialog(this, "Error while loading game", "Please make sure the game you are loading is valid",
+					ex).setVisible(true);
 		}
 		this.dispose();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
 	}
 }
