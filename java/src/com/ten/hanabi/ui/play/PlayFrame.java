@@ -20,7 +20,6 @@ import javax.swing.JTabbedPane;
 public class PlayFrame extends JFrame implements KeyListener {
 
 	UIPlayManager uiPlayManager;
-	private JSplitPane splitPane;
 
 	/**
 	 * Create the frame.
@@ -42,7 +41,7 @@ public class PlayFrame extends JFrame implements KeyListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		splitPane = new JSplitPane();
+		JSplitPane splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.7);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -60,6 +59,9 @@ public class PlayFrame extends JFrame implements KeyListener {
 		clues_board.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		clues_board.setMinimumSize(new Dimension(800, 400));
 		board_options.setLeftComponent(clues_board);
+
+		CluesPanel cluesPanel = new CluesPanel(upm);
+		clues_board.setLeftComponent(cluesPanel);
 
 		JPanel board_discard = new JPanel(new BorderLayout());
 		clues_board.setRightComponent(board_discard);
