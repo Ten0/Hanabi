@@ -100,7 +100,7 @@ public class OpenFrame extends JDialog implements ChangeListener, ActionListener
 				if(tabbedPane.getSelectedIndex() == 0) {
 					h = XMLSerializer.loadHanabi(fileChooser.getSelectedFile());
 				} else { // BGA
-					h = BGA.getGameById(Integer.parseInt(gameIdField.getText().replaceAll(" ", "")));
+					h = BGA.getGameById(Integer.parseInt(gameIdField.getText().replaceAll("[^0-9]", "")));
 				}
 				uiPlayManager.loadHanabi(h, 0); // 1er tour
 			} catch (Exception ex) {
