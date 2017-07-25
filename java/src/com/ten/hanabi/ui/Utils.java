@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.TreeSet;
+
 import javax.swing.ImageIcon;
 
 import com.ten.hanabi.core.Card;
@@ -86,7 +88,15 @@ public class Utils {
 		Graphics2D g2 = ((BufferedImage) img).createGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-		Color c = ck.getColorFromClues();
+		TreeSet<Color> pc = ck.getPossibleColors();
+		Color c = null;
+		if(pc.size() == 1) {
+			c = pc.first();
+		} else if(pc.size() == 2 && pc.contains(Color.MULTI)) { // Draw color even if possibly multi
+			c = pc.first();
+			if(c == Color.MULTI) // Should never be true because multi is last, but we never know, may be changed later
+				c = pc.last();
+		}
 		if(c != null) {
 			Image cImg = getTokenImage(c);
 			g2.drawImage(cImg, W / 10, (H - h) / 2, h, w, null);
