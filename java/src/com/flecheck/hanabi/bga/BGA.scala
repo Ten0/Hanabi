@@ -151,7 +151,7 @@ object BGA {
       }
       case _ =>
     }
-    }catch {case e => e.printStackTrace()}
+    }catch {case e : Throwable => e.printStackTrace()}
     hanabi
   }
 
