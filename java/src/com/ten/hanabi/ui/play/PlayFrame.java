@@ -33,7 +33,8 @@ public class PlayFrame extends JFrame implements KeyListener {
 		setFocusTraversalKeysEnabled(false);
 
 		getContentPane().setEnabled(false);
-		setBounds(100, 100, 1243, 762);
+		setSize(1243, 762);
+		setLocationByPlatform(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -78,6 +79,8 @@ public class PlayFrame extends JFrame implements KeyListener {
 
 		CardInfoPanel cardInfoPanel = new CardInfoPanel(upm);
 		infos_options.addTab("Card info", null, cardInfoPanel, null);
+
+		pack();
 	}
 
 	@Override
@@ -91,6 +94,11 @@ public class PlayFrame extends JFrame implements KeyListener {
 				uiPlayManager.nextTurn();
 			} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP) {
 				uiPlayManager.previousTurn();
+			} else if(e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
+				OpenFrame openFrame = new OpenFrame(this, uiPlayManager);
+				if(e.getKeyChar() == 'O') // BGA
+					openFrame.setTab(1);
+				openFrame.setVisible(true);
 			}
 		} catch (InvalidPlayException ex) {
 			ex.printStackTrace();
