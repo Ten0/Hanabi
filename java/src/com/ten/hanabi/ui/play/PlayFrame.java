@@ -5,12 +5,16 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import com.ten.hanabi.serialization.XMLSerializer;
+import com.ten.hanabi.ui.ExceptionDialog;
+
 import javax.swing.JTabbedPane;
 
 public class PlayFrame extends JFrame implements KeyListener {
@@ -99,6 +103,17 @@ public class PlayFrame extends JFrame implements KeyListener {
 				if(e.getKeyChar() == 'O') // BGA
 					openFrame.setTab(1);
 				openFrame.setVisible(true);
+			} else if(e.getKeyChar() == 's') {
+				JFileChooser chooser = new JFileChooser();
+				int retrival = chooser.showSaveDialog(null);
+				if(retrival == JFileChooser.APPROVE_OPTION) {
+					try {
+						XMLSerializer.toXML(uiPlayManager.getHanabi(), chooser.getSelectedFile().getAbsolutePath());
+					} catch (Exception ex) {
+						new ExceptionDialog(this, "Error while saving game",
+								"Make sure the location you are writing to is valid", ex).setVisible(true);
+					}
+				}
 			}
 		} catch (InvalidPlayException ex) {
 			ex.printStackTrace();

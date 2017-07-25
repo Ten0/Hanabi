@@ -180,4 +180,8 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 			unregisterSelectedCardChangeListener((SelectedCardChangeListener) comp);
 		}
 	}
+
+	public Hanabi getHanabi() {
+		return hanabi;
+	}
 }
