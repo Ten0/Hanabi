@@ -99,7 +99,7 @@ public class SeenHanabi {
 		return hanabi;
 	}
 
-	private void addPlay(int pId, Play play, Card card) throws InvalidPlayException {
+	private void addPlay(int pId, Play play, Card card) throws InvalidPlayException, InvalidDeckException {
 		if(play instanceof CardPlay) {
 			SeenHand hand = hands.get(pId);
 			hand.play(((CardPlay) play).getPlacement(), card);

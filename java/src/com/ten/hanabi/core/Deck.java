@@ -110,17 +110,19 @@ public class Deck implements Iterable<Card> {
 	 * @param card
 	 *            The card you want to put at that place
 	 * @return Whether there was no card at that position (false if it replaced a card)
+	 * @throws InvalidDeckException
 	 */
-	public boolean setCard(int id, Card card) {
+	public boolean setCard(int id, Card card) throws InvalidDeckException {
 		checkUnlocked();
+		if(card != null && !ruleSet.isColorEnabled(card.getColor()))
+			throw new InvalidDeckException("Color " + card.getColor().name() + " is disabled");
 		while(cards.size() <= id)
 			cards.add(null);
 		return cards.set(id, card) == null;
 	}
 
-	public void add(Card card) {
-		checkUnlocked();
-		cards.add(card);
+	public void add(Card card) throws InvalidDeckException {
+		setCard(cards.size(), card);
 	}
 
 	public void shuffle() {

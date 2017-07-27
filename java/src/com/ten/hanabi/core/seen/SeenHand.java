@@ -3,6 +3,7 @@ package com.ten.hanabi.core.seen;
 import java.util.ArrayList;
 
 import com.ten.hanabi.core.*;
+import com.ten.hanabi.core.exceptions.InvalidDeckException;
 
 public class SeenHand {
 
@@ -20,7 +21,7 @@ public class SeenHand {
 		cardsPos.add(0, position);
 	}
 
-	int play(int id, Card c) {
+	int play(int id, Card c) throws InvalidDeckException {
 		seenHanabi.getDeck().setCard(cardsPos.get(id), c);
 		return cardsPos.remove(id);
 	}
