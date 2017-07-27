@@ -110,13 +110,15 @@ public class OpenFrame extends JDialog implements ChangeListener, ActionListener
 
 	private void openGame() {
 		try {
-			Hanabi h;
+			Hanabi h = null;
 			if(tabbedPane.getSelectedIndex() == 0) {
-				h = XMLSerializer.loadHanabi(fileChooser.getSelectedFile());
+				if(fileChooser.getSelectedFile() != null)
+					h = XMLSerializer.loadHanabi(fileChooser.getSelectedFile());
 			} else { // BGA
 				h = BGA.getGameById(Integer.parseInt(gameIdField.getText().replaceAll("[^0-9]", "")));
 			}
-			uiPlayManager.loadHanabi(h, 0); // 1er tour
+			if(h != null)
+				uiPlayManager.loadHanabi(h, 0); // 1er tour
 		} catch (Exception ex) {
 			new ExceptionDialog(this, "Error while loading game", "Please make sure the game you are loading is valid",
 					ex).setVisible(true);
