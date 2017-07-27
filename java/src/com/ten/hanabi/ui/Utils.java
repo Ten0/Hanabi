@@ -67,7 +67,8 @@ public class Utils {
 	}
 
 	public static Image getTokenImage(Color c) {
-		String name = c == Color.MULTI ? "Multicolor" : c.smallName() + c.name().toLowerCase().substring(1);
+		String name = (c == Color.MULTI || c == Color.MULTI_6TH_COLOR) ? "Multicolor"
+				: c.name().substring(0, 1) + c.name().toLowerCase().substring(1);
 		String filename = resourcePackage + "Token" + name + ".png";
 		return getImageForFile(filename);
 	}
@@ -126,7 +127,12 @@ public class Utils {
 			return getCardBackImage(ck, w, h);
 		Image cardsImage = getImageForFile(resourcePackage + "cards.png");
 		int x = 65 * (c.getNumber() - 1);
-		int y = 100 * (c.getColor().ordinal());
+
+		Color displayColor = c.getColor();
+		if(displayColor == Color.MULTI_6TH_COLOR)
+			displayColor = Color.MULTI;
+		int y = 100 * (displayColor.ordinal());
+
 		Image image = getScaledImage(cardsImage, w, h, x, y, x + 65, y + 100);
 		if(ck != null) {
 			drawCardKnowlege(image, ck);
@@ -158,8 +164,11 @@ public class Utils {
 		Image cardsImage = getImageForFile(resourcePackage + "cardsSmall.png");
 		int x, y;
 		if(c != null) {
+			Color displayColor = c.getColor();
+			if(displayColor == Color.MULTI_6TH_COLOR)
+				displayColor = Color.MULTI;
 			x = 50 * (c.getNumber());
-			y = 50 * (c.getColor().ordinal());
+			y = 50 * (displayColor.ordinal());
 		} else {
 			x = 0;
 			y = 50 * 5;

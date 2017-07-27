@@ -18,7 +18,7 @@ public class ColorClue extends Clue {
 
 	@Override
 	public String toString() {
-		return color.name();
+		return color.toString();
 	}
 
 	@Override

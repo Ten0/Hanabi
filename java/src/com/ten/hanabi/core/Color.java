@@ -6,12 +6,18 @@ public enum Color {
 	GREEN(java.awt.Color.GREEN),
 	BLUE(java.awt.Color.BLUE),
 	WHITE(java.awt.Color.GRAY),
-	MULTI(java.awt.Color.MAGENTA);
+	MULTI(java.awt.Color.MAGENTA),
+	MULTI_6TH_COLOR(java.awt.Color.MAGENTA);
 
 	private java.awt.Color awtColor;
 
 	private Color(java.awt.Color awtColor) {
 		this.awtColor = awtColor;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString().replaceAll("_.*", "");
 	}
 
 	public String smallName() {

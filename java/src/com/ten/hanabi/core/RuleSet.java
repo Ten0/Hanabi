@@ -5,17 +5,20 @@ import java.util.ArrayList;
 public class RuleSet {
 
 	private final boolean multi;
+	private final boolean multiIsNormalColor;
 	private final boolean cardNumberVariant;
 	private final boolean emptyCluesAllowed;
 
 	public RuleSet() {
 		multi = false;
+		multiIsNormalColor = false;
 		cardNumberVariant = false;
 		emptyCluesAllowed = false;
 	}
 
-	public RuleSet(boolean multi, boolean cardNumberVariant, boolean emptyCluesAllowed) {
+	public RuleSet(boolean multi, boolean multiIsNormalColor, boolean cardNumberVariant, boolean emptyCluesAllowed) {
 		this.multi = multi;
+		this.multiIsNormalColor = multiIsNormalColor;
 		this.cardNumberVariant = cardNumberVariant;
 		this.emptyCluesAllowed = emptyCluesAllowed;
 	}
@@ -25,7 +28,8 @@ public class RuleSet {
 	}
 
 	public boolean isColorEnabled(Color c) {
-		return multi || c != Color.MULTI;
+		return (c != Color.MULTI && c != Color.MULTI_6TH_COLOR) || (multi
+				&& ((!multiIsNormalColor && c == Color.MULTI) || (multiIsNormalColor && c == Color.MULTI_6TH_COLOR)));
 	}
 
 	public int getNbOfCardsPerPlayer(int playerCount) {

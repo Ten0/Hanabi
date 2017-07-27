@@ -12,7 +12,9 @@ import scala.collection.immutable.Seq
 import scala.collection.mutable
 
 
-case class BGALoadException (s: String) extends Exception(s)
+case class BGALoadException (s: String, ex: Throwable) extends Exception(s, ex) {
+  def this(s: String) = this(s, null)
+}
 
 object BGA {
 
@@ -29,18 +31,18 @@ object BGA {
 
     val nUrl: String = regUrl findFirstMatchIn content1 match {
       case Some(x) => x.subgroups.head
-      case None => throw BGALoadException("Can't match replay url regex for game " + id)
+      case None => throw new BGALoadException("Can't match replay url regex for game " + id)
     }
 
     val content2 = Utils.getUrl("https://fr.boardgamearena.com/" + nUrl, cookies = cookies)
     val playsS: String = regPlays findFirstMatchIn content2 match {
       case Some(x) => x.subgroups.head
-      case None => throw BGALoadException("Can't match plays regex for game " + id)
+      case None => throw new BGALoadException("Can't match plays regex for game " + id)
     }
 
     val setup: String = regSetup findFirstMatchIn content2 match {
       case Some(x) => x.subgroups.head
-      case None => throw BGALoadException("Can't match setup regex for game " + id)
+      case None => throw new BGALoadException("Can't match setup regex for game " + id)
     }
 
     val (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards,handFillOrder) = JsonParser.jsonToSetup(setup)
@@ -60,7 +62,19 @@ object BGA {
       playersIdM += (id.toInt -> p)
       p
     }.asJava
-    val rs: RuleSet = new RuleSet(multi, cardNumberVariant, true)
+    var multiIsNormalColor = false
+    if (multi) {
+      plays.foreach {
+        case GiveColor(p, t, c) => {
+          var color = Color.values()(c.toInt - 1)
+          if(color == Color.MULTI) {
+             multiIsNormalColor = true 
+          }
+        }
+        case _ =>
+      }
+    }
+    val rs: RuleSet = new RuleSet(multi, multiIsNormalColor, cardNumberVariant, true)
     val deck: Deck = new Deck(rs, false)
     val hanabi: Hanabi = new Hanabi(rs,deck,players)
     val cardPlay: Map[String, (Int, Int)] = plays.filter{_.isInstanceOf[CardInfo]}.asInstanceOf[Seq[CardInfo]].map{ x => (x.card , x.cardInfo)}.toMap
@@ -86,6 +100,8 @@ object BGA {
             val (color2, num2) = cardPlay.getOrElse(id, (-1,-1))
             color = color2-1; num = num2;
       }
+      if(multiIsNormalColor && color == Color.MULTI.ordinal())
+          color = Color.MULTI_6TH_COLOR.ordinal(); 
       num match {
         case -1 =>
           null
@@ -146,12 +162,15 @@ object BGA {
         playersM(p).clue(playersIdM(t),new NumberClue(v.toInt))
       }
       case GiveColor(p, t, c) => {
-        playersM(p).clue(playersIdM(t),new ColorClue(Color.values()(c.toInt - 1)))
+        var givenColor = Color.values()(c.toInt - 1)
+        if(givenColor == Color.MULTI)
+          givenColor = Color.MULTI_6TH_COLOR
+        playersM(p).clue(playersIdM(t),new ColorClue(givenColor))
 
       }
       case _ =>
     }
-    }catch {case e : Throwable => e.printStackTrace()}
+    }catch {case ex : Throwable => throw new BGALoadException("Error while creating game", ex)}
     hanabi
   }
 
