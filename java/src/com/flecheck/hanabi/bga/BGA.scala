@@ -79,8 +79,11 @@ object BGA {
     val hanabi: Hanabi = new Hanabi(rs,deck,players)
     val cardPlay: Map[String, (Int, Int)] = plays.filter{_.isInstanceOf[CardInfo]}.asInstanceOf[Seq[CardInfo]].map{ x => (x.card , x.cardInfo)}.toMap
 
+    // Old games started with id 2 instead of 1. Even weirder.
+    val oldGame = if (deckCards.head._1.toInt == 2) 1 else 0
+    
     def fromBGAId(BGAid: String): Int = {
-      val id = deck.size() - BGAid.toInt
+      val id = deck.size() - BGAid.toInt + oldGame
       val nbCardsDealtAtStart = hanabi.getNbOfCardsPerPlayer*players.size
       var ret = id
       if(id < nbCardsDealtAtStart) {
