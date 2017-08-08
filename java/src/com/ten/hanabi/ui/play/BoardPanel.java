@@ -71,7 +71,8 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 	@Override
 	public void onHanabiChange(Hanabi hanabi) {
 		removeAll();
-		for(Color c : ((hanabi == null) ? Arrays.asList(Color.values()) : hanabi.getRuleSet().getEnabledColors())) {
+		for(Color c : ((hanabi == null) ? new RuleSet(true, false, false, false) : hanabi.getRuleSet())
+				.getEnabledColors()) {
 			add(colorPanels.get(c));
 		}
 		add(cluesStrikesPanel);
@@ -80,7 +81,8 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 
 	@Override
 	public void onSituationChange(Situation s) {
-		for(Color c : ((s == null) ? Arrays.asList(Color.values()) : s.getHanabi().getRuleSet().getEnabledColors())) {
+		for(Color c : ((s == null) ? new RuleSet(true, false, false, false) : s.getHanabi().getRuleSet())
+				.getEnabledColors()) {
 			JPanel cColorPanel = colorPanels.get(c);
 			cColorPanel.removeAll();
 
