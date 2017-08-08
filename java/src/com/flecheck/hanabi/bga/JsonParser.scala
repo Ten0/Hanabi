@@ -71,6 +71,14 @@ object JsonParser {
   plays
   }
 
+  def getStartingPlayer(raw: String): Int = {
+    implicit val formas = DefaultFormats
+    val JObject(json) = parse(raw) \ "data" \ "data" \\ "data"
+
+    json.map{x => x match { case (_,JArray(a)) => a }}.flatten.filter{ x => x.\("type").extract[String] == "gameStateChange"}.map{x => x.\("args")}.filter{
+      x => x.\("name").extract[String] == "playerTurn"}.head.\("active_player").extract[String].toInt
+  }
+
   def parsePlay(playT: String,play: JValue): List[Play] = {
     implicit val formats = DefaultFormats
     playT match {

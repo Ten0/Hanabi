@@ -45,8 +45,13 @@ object BGA {
       case None => throw new BGALoadException("Can't match setup regex for game " + id)
     }
 
-    val (playerList,startingPlayer,playerOrder,multi,cardNumberVariant,handCards,deckCards,handFillOrder) = JsonParser.jsonToSetup(setup)
+    val (playerList,startingPlayerDeflt,playerOrder,multi,cardNumberVariant,handCards,deckCards,handFillOrder) = JsonParser.jsonToSetup(setup)
     val plays: Seq[Play] = JsonParser.jsonToPlays(playsS)
+ 
+    var startingPlayer = startingPlayerDeflt
+    try{
+      startingPlayer = JsonParser.getStartingPlayer(playsS).toString()
+    } catch { case ex: Throwable => ex.printStackTrace()} 
 
     val orderedPlayerList = playerOrder.map(j => playerList.find{case (id, _) => id == j}.get)
     val normalizedPlayerList = (orderedPlayerList ::: orderedPlayerList).dropWhile{case (id, _) => id != startingPlayer}.take(playerList.length)
