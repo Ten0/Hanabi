@@ -86,6 +86,9 @@ public class PlayFrame extends JFrame implements KeyListener {
 		CardInfoPanel cardInfoPanel = new CardInfoPanel(upm);
 		infos_options.addTab("Card info", null, cardInfoPanel, null);
 
+		OptionsPanel optionsPanel = new OptionsPanel(upm);
+		infos_options.addTab("Options", null, optionsPanel, null);
+
 		pack();
 	}
 

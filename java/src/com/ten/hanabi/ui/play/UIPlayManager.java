@@ -24,6 +24,14 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
 	private final HashSet<SelectedCardChangeListener> selectedCardChangeListeners;
 
+	public enum HiddenCardsMode {
+		NONE, ALL, CURRENT, MANUAL
+	}
+
+	private HiddenCardsMode hiddenCardsMode = HiddenCardsMode.NONE;
+
+	private Player playerWhoseCardsAreHidden = null; // Cards are hidden in the right hand side UI
+
 	public UIPlayManager() {
 		situationChangeListeners = new HashSet<SituationChangeListener>();
 		hanabiChangeListeners = new HashSet<HanabiChangeListener>();
@@ -183,5 +191,28 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 
 	public Hanabi getHanabi() {
 		return hanabi;
+	}
+
+	void setHiddenCardsMode(HiddenCardsMode hcm) {
+		if(hcm == HiddenCardsMode.MANUAL)
+			throw new RuntimeException("setPlayerWhoseCardsAreHidden should be used instead");
+		if(hcm != this.hiddenCardsMode) {
+			this.hiddenCardsMode = hcm;
+			this.playerWhoseCardsAreHidden = null;
+			this.notifySituationChange();
+		}
+	}
+
+	void setPlayerWhoseCardsAreHidden(Player player) {
+		if(playerWhoseCardsAreHidden != player) {
+			this.hiddenCardsMode = HiddenCardsMode.MANUAL;
+			this.playerWhoseCardsAreHidden = player;
+			this.notifySituationChange();
+		}
+	}
+
+	public boolean areCardsHidden(Player p) {
+		return hiddenCardsMode == HiddenCardsMode.ALL || p == playerWhoseCardsAreHidden // manual mode implicit
+				|| (hiddenCardsMode == HiddenCardsMode.CURRENT && p == situation.getPlayingPlayer());
 	}
 }

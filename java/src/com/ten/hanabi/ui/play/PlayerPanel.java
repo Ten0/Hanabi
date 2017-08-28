@@ -69,10 +69,11 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 		cardsPanel.removeAll();
 		if(s != null) {
 			Hand h = s.getHand(player);
+			boolean hideCards = uiPlayManager.areCardsHidden(player);
 			for(int i = 0; i < h.size(); i++) {
 				Card c = h.get(i);
 				CardKnowlege ck = h.getKnowlege(i);
-				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(c, ck)));
+				JLabel cardP = new JLabel(new ImageIcon(Utils.getCardImage(hideCards ? null : c, ck)));
 				cardBorder(cardP, i);
 				final int cardId = i;
 				cardP.addMouseListener(new MouseAdapter() {
