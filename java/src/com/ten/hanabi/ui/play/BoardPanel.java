@@ -10,7 +10,6 @@ import com.ten.hanabi.ui.Utils;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
