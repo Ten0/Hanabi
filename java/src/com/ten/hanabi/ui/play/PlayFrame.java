@@ -81,6 +81,7 @@ public class PlayFrame extends JFrame implements KeyListener {
 		log_options.setLeftComponent(logPanel);
 
 		JTabbedPane infos_options = new JTabbedPane(JTabbedPane.TOP);
+		infos_options.setFocusable(false);
 		log_options.setRightComponent(infos_options);
 
 		CardInfoPanel cardInfoPanel = new CardInfoPanel(upm);
