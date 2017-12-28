@@ -155,7 +155,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 
 	@Override
 	public void onSituationChange(Situation s) {
-		if(s.getHanabi() != hanabi)
+		if(s != null && s.getHanabi() != hanabi)
 			throw new RuntimeException();
 		setSituation(s);
 		notifySituationChange();

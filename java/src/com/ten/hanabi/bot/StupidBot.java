@@ -3,6 +3,7 @@ package com.ten.hanabi.bot;
 import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import com.ten.hanabi.core.plays.*;
 
 /** Un bot avec une heuristique très basique pour tester */
 public class StupidBot extends Bot {
@@ -79,8 +80,14 @@ public class StupidBot extends Bot {
 
 		// Sinon si on peut donner un indice, on le donne
 		if(s.getClues() > 0) {
-			p.clue(hanabi.getPlayer((p.getId() + 1) % hanabi.getPlayerCount()), new NumberClue(5));
-			return;
+			Player toPlayer = hanabi.getPlayer((p.getId() + 1) % hanabi.getPlayerCount());
+			for(int i = 5; i > 0; i--) {
+				Play play = new CluePlay(p, toPlayer, new NumberClue(5));
+				if(s.canPlay(play)) { // This is required due to possible empty clues not being allowed
+					hanabi.savePlay(play);
+					return;
+				}
+			}
 		}
 
 		// Sinon on défausse la carte la plus à droite

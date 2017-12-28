@@ -18,22 +18,20 @@ public class BotTest {
 
 		Hanabi h = new Hanabi(players);
 		PlayManager pm = new PlayManager(h, bots);
+		
+		long startTime = System.currentTimeMillis();
+		pm.notifyPlay(); // generates whole game
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
+		System.out.println("Game generated in " + elapsedTime + "ms");
 
+		// Display game
 		UIPlayManager upm = new UIPlayManager();
 		pm.registerHanabiChangeListener(upm);
 		pm.registerSituationChangeListener(upm);
 
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);
-
-		long startTime = System.currentTimeMillis();
-
-		pm.notifyPlay();
-
-		long stopTime = System.currentTimeMillis();
-		long elapsedTime = stopTime - startTime;
-		System.out.println("Game generated in " + elapsedTime + "ms");
-
 	}
 
 }

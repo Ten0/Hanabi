@@ -10,6 +10,7 @@ import com.ten.hanabi.core.exceptions.InvalidPlayException;
 public class PlayManager {
 
 	private Hanabi hanabi;
+	private Situation situation;
 
 	private final HashSet<SituationChangeListener> situationChangeListeners;
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
@@ -18,6 +19,12 @@ public class PlayManager {
 
 	public PlayManager(Hanabi hanabi, PlayingEntity... players) {
 		this.hanabi = hanabi;
+		try {
+			this.situation = hanabi.getVariant().getSituation();
+		} catch (InvalidPlayException e) {
+			// Should never happen because game shouldn't have started
+			throw new RuntimeException(e);
+		}
 		this.players = players;
 		for(PlayingEntity pe : players)
 			pe.setPlayManager(this);
@@ -32,9 +39,10 @@ public class PlayManager {
 
 	public void notifyPlay() throws InvalidPlayException {
 		Variant v = hanabi.getVariant();
-		Situation s = v.getSituation();
-		if(!s.isGameOver()) {
-			players[s.getPlayingPlayerId()].askPlay();
+		situation = v.getSituation();
+		notifySituationChange();
+		if(!situation.isGameOver()) {
+			players[situation.getPlayingPlayerId()].askPlay();
 		}
 	}
 
@@ -55,7 +63,7 @@ public class PlayManager {
 
 	public void registerSituationChangeListener(SituationChangeListener scl) {
 		situationChangeListeners.add(scl);
-		scl.onSituationChange(null);
+		scl.onSituationChange(situation);
 	}
 
 	void unregisterSituationChangeListener(SituationChangeListener scl) {
@@ -64,7 +72,7 @@ public class PlayManager {
 
 	private void notifySituationChange() {
 		situationChangeListeners.parallelStream().forEach(scl -> {
-			scl.onSituationChange(null);
+			scl.onSituationChange(situation);
 		});
 	}
 }
