@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import com.ten.hanabi.core.Color;
 import com.ten.hanabi.core.Hanabi;
+import com.ten.hanabi.core.RuleSet;
 import com.ten.hanabi.play.HanabiChangeListener;
 import com.ten.hanabi.ui.Utils;
 
@@ -27,13 +28,9 @@ public class CluesPanel extends JPanel implements HanabiChangeListener {
 	public void onHanabiChange(Hanabi hanabi) {
 		this.removeAll();
 		JPanel colorPanel = new JPanel(new FlowLayout());
-		if(hanabi == null) {
-			for(Color c : Color.values())
-				addToken(colorPanel, c);
-		} else {
-			for(Color c : hanabi.getRuleSet().getEnabledColors())
-				addToken(colorPanel, c);
-		}
+		for(Color c : (hanabi == null ? new RuleSet(true, false, false, false) : hanabi.getRuleSet())
+				.getEnabledColors())
+			addToken(colorPanel, c);
 		JPanel numberPanel = new JPanel(new FlowLayout());
 		for(int n = 1; n <= 5; n++) {
 			addToken(numberPanel, n);
