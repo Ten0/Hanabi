@@ -53,7 +53,7 @@ public class ExceptionDialog extends JDialog {
 	 * @wbp.parser.constructor
 	 */
 	public ExceptionDialog(Window parent, String errorLabelText, String errorDescription, Throwable e) {
-		super();
+		super(parent, JDialog.ModalityType.DOCUMENT_MODAL);
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));
 
