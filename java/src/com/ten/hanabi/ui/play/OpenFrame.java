@@ -96,7 +96,7 @@ public class OpenFrame extends JDialog implements ChangeListener, ActionListener
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == openButton || e.getSource() == fileChooser || e.getSource() == gameIdField) {
 			openGame();
-		} else {
+		} else { // Cancel button
 			this.dispose();
 		}
 	}
