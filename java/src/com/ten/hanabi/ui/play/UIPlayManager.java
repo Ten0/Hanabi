@@ -6,6 +6,7 @@ import java.util.HashSet;
 import javax.swing.JPanel;
 
 import com.ten.hanabi.core.*;
+import com.ten.hanabi.core.clues.Clue;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.play.HanabiChangeListener;
 import com.ten.hanabi.play.SituationChangeListener;
@@ -19,10 +20,12 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private Player selectedCardPlayer;
 	/** -1 if no card is selected */
 	private int selectedCardIdInHand = -1;
+	private Clue selectedClue = null;
 
 	private final HashSet<SituationChangeListener> situationChangeListeners;
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
 	private final HashSet<SelectedCardChangeListener> selectedCardChangeListeners;
+	private final HashSet<SelectedClueChangeListener> selectedClueChangeListeners;
 
 	public enum HiddenCardsMode {
 		NONE, ALL, CURRENT, MANUAL
@@ -36,10 +39,12 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		situationChangeListeners = new HashSet<SituationChangeListener>();
 		hanabiChangeListeners = new HashSet<HanabiChangeListener>();
 		selectedCardChangeListeners = new HashSet<SelectedCardChangeListener>();
+		selectedClueChangeListeners = new HashSet<SelectedClueChangeListener>();
 	}
 
 	private void setHanabi(Hanabi h, int turn) throws InvalidPlayException {
 		this.hanabi = h;
+		setSelectedClue(null);
 		setSituation(hanabi.getSituation(turn));
 	}
 
@@ -77,8 +82,21 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	public void selectCard(Player player, int pos) {
-		setSelectedCard(player, pos);
-		notifySelectedCardChange();
+		if(selectedCardPlayer != player || selectedCardIdInHand != pos) {
+			setSelectedCard(player, pos);
+			notifySelectedCardChange();
+		}
+	}
+
+	private void setSelectedClue(Clue c) {
+		this.selectedClue = c;
+	}
+
+	public void selectClue(Clue c) {
+		if(selectedClue != c) {
+			setSelectedClue(c);
+			notifySelectedClueChange();
+		}
 	}
 
 	void registerHanabiChangeListener(HanabiChangeListener hcl) {
@@ -125,6 +143,21 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private void notifySelectedCardChange() {
 		selectedCardChangeListeners.parallelStream().forEach(sccl -> {
 			sccl.onSelectedCardChange(selectedCardPlayer, selectedCardIdInHand);
+		});
+	}
+
+	void registerSelectedClueChangeListener(SelectedClueChangeListener sccl) {
+		selectedClueChangeListeners.add(sccl);
+		sccl.onSelectedClueChange(selectedClue);
+	}
+
+	void unregisterSelectedClueChangeListener(SelectedClueChangeListener sccl) {
+		selectedClueChangeListeners.remove(sccl);
+	}
+
+	private void notifySelectedClueChange() {
+		selectedClueChangeListeners.parallelStream().forEach(sccl -> {
+			sccl.onSelectedClueChange(selectedClue);
 		});
 	}
 
@@ -178,6 +211,10 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		return selectedCardIdInHand;
 	}
 
+	public Clue getSelectedClue() {
+		return selectedClue;
+	}
+
 	public void unregister(Component comp) {
 		if(comp instanceof JPanel) {
 			for(Component comp2 : ((JPanel) comp).getComponents())
@@ -191,6 +228,9 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		}
 		if(comp instanceof SelectedCardChangeListener) {
 			unregisterSelectedCardChangeListener((SelectedCardChangeListener) comp);
+		}
+		if(comp instanceof SelectedClueChangeListener) {
+			unregisterSelectedClueChangeListener((SelectedClueChangeListener) comp);
 		}
 	}
 
