@@ -52,7 +52,9 @@ public class XMLSerializer {
 		init();
 		Object o = xstream.fromXML(file);
 		Hanabi h = (Hanabi) o;
-		h.getDeck().checkCoherence();
+		Deck d = h.getDeck();
+		if(d.isLocked())
+			d.checkCoherence();
 		h.getVariant().getSituation(); // To check for invalid plays
 		return h;
 	}
