@@ -38,9 +38,10 @@ public class CluesPanel extends JPanel implements HanabiChangeListener, Selected
 	public void onHanabiChange(Hanabi hanabi) {
 		this.removeAll();
 		JPanel colorPanel = new JPanel(new FlowLayout());
-		for(Color c : (hanabi == null ? new RuleSet(true, false, false, false) : hanabi.getRuleSet())
+		for(Color c : (hanabi == null ? new RuleSet(true, true, false, false) : hanabi.getRuleSet())
 				.getEnabledColors()) {
-			addToken(colorPanel, c);
+			if(c != Color.MULTI)
+				addToken(colorPanel, c);
 		}
 		JPanel numberPanel = new JPanel(new FlowLayout());
 		for(int n = 1; n <= 5; n++) {
