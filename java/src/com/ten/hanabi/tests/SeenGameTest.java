@@ -7,7 +7,7 @@ import com.ten.hanabi.ui.play.*;
 public class SeenGameTest {
 
 	public static void main(String[] args) throws Exception {
-		String[] playerNames = new String[] { "Thomas", "Alain", "Anne" };
+		String[] playerNames = new String[] { "Alain", "Anne", "Thomas" };
 		Player[] players = new Player[playerNames.length];
 		UIPlayManager upm = new UIPlayManager();
 		RealPlayer[] realPlayers = new RealPlayer[playerNames.length];
@@ -24,8 +24,7 @@ public class SeenGameTest {
 		pm.notifyPlay(); // Let's start ! :)
 
 		// Display game
-		pm.registerHanabiChangeListener(upm);
-		pm.registerSituationChangeListener(upm);
+		upm.setPlayManager(pm);
 
 		PlayFrame pf = new PlayFrame(upm);
 		pf.setVisible(true);

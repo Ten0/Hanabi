@@ -36,4 +36,7 @@ public abstract class PlayingEntity {
 		playManager.notifyPlay();
 	}
 
+	/** What to do when the play manager asks to stop searching for something to play */
+	public abstract void cancelPlay();
+
 }

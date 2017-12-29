@@ -16,6 +16,7 @@ public class PlayManager {
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
 
 	private PlayingEntity[] players;
+	private PlayingEntity currentPlayer = null;
 
 	public PlayManager(Hanabi hanabi, PlayingEntity... players) {
 		this.hanabi = hanabi;
@@ -42,8 +43,10 @@ public class PlayManager {
 		situation = v.getSituation();
 		notifySituationChange();
 		if(!situation.isGameOver()) {
-			players[situation.getPlayingPlayerId()].askPlay();
-		}
+			currentPlayer = players[situation.getPlayingPlayerId()];
+			currentPlayer.askPlay();
+		} else
+			currentPlayer = null;
 	}
 
 	public void registerHanabiChangeListener(HanabiChangeListener hcl) {
@@ -74,5 +77,21 @@ public class PlayManager {
 		situationChangeListeners.parallelStream().forEach(scl -> {
 			scl.onSituationChange(situation);
 		});
+	}
+
+	public void rollback(int turn) {
+		if(currentPlayer != null)
+			currentPlayer.cancelPlay();
+		getHanabi().getVariant().rollback(turn);
+		try {
+			notifyPlay(); // Restart playing
+		} catch (InvalidPlayException e) {
+			throw new RuntimeException(e); // Shouldn't happen after rollback : previous game state should be valid
+		}
+		notifySituationChange();
+	}
+
+	public void rollback() {
+		rollback(getHanabi().getVariant().getTurn() - 1);
 	}
 }

@@ -22,7 +22,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AskCardValueDialog extends JDialog {
-	public AskCardValueDialog(final Window parent, final Deck deck, final int idInDeck) {
+	public AskCardValueDialog(final Window parent, final Deck deck, final int idInDeck, final boolean allowClose) {
 		super(parent, "Select card value", JDialog.ModalityType.DOCUMENT_MODAL);
 
 		setResizable(false);
@@ -31,7 +31,15 @@ public class AskCardValueDialog extends JDialog {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent ev) {
-				// Don't do anything
+				if(allowClose) { // Set card to null
+					try {
+						deck.setCard(idInDeck, null);
+						AskCardValueDialog.this.setVisible(false);
+						AskCardValueDialog.this.dispose();
+					} catch (InvalidDeckException e) {
+						throw new RuntimeException(e); // Shouldn't happen : null is always valid
+					}
+				} // Otherwise, just prevent closing by not doing anything
 			}
 		});
 
@@ -70,7 +78,7 @@ public class AskCardValueDialog extends JDialog {
 	public static void setIfRequired(PlayFrame playFrame, Deck deck, int idInDeck) {
 		if(deck.getCard(idInDeck) != null)
 			return;
-		AskCardValueDialog dialog = new AskCardValueDialog(playFrame, deck, idInDeck);
+		AskCardValueDialog dialog = new AskCardValueDialog(playFrame, deck, idInDeck, false);
 		dialog.setVisible(true);
 	}
 

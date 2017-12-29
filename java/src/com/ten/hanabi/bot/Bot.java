@@ -13,4 +13,9 @@ public abstract class Bot extends PlayingEntity {
 	}
 
 	protected abstract void play(Variant v, int turn) throws InvalidPlayException;
+
+	@Override
+	public void cancelPlay() {
+		// Nothing to do for simple bots
+	}
 }

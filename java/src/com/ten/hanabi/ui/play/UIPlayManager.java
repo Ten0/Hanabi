@@ -9,6 +9,7 @@ import com.ten.hanabi.core.*;
 import com.ten.hanabi.core.clues.Clue;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.play.HanabiChangeListener;
+import com.ten.hanabi.play.PlayManager;
 import com.ten.hanabi.play.SituationChangeListener;
 
 public class UIPlayManager implements SituationChangeListener, HanabiChangeListener {
@@ -39,7 +40,10 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private HiddenCardsMode hiddenCardsMode = HiddenCardsMode.NONE;
 
 	private Player playerWhoseCardsAreHidden = null; // Cards are hidden in the right hand side UI
+	/** The main playFrame. Useful to use as a reference when opening windows */
 	private PlayFrame playFrame;
+	/** PlayManager if we are currently running a game, null if only viewing */
+	private PlayManager playManager;
 
 	public UIPlayManager() {
 		situationChangeListeners = new HashSet<SituationChangeListener>();
@@ -291,5 +295,15 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 
 	PlayFrame getPlayFrame() {
 		return playFrame;
+	}
+
+	public void setPlayManager(PlayManager pm) {
+		playManager = pm;
+		pm.registerHanabiChangeListener(this);
+		pm.registerSituationChangeListener(this);
+	}
+
+	public PlayManager getPlayManager() {
+		return playManager;
 	}
 }

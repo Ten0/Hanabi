@@ -103,4 +103,9 @@ public class RealPlayer extends PlayingEntity
 		}
 	}
 
+	@Override
+	public void cancelPlay() {
+		upm.unregister(this);
+	}
+
 }

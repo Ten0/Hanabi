@@ -72,6 +72,8 @@ public class Situation {
 			// Remove card from hand
 			Hand hand = hands.get(p.getPlayer().getId());
 			Card playedCard = hand.play(((CardPlay) p).getPlacement());
+			if(playedCard == null)
+				throw new InvalidPlayException(p, "Cannot simulate the play of an unknown card");
 
 			// Place it where it belongs
 			if(p instanceof DiscardPlay) {

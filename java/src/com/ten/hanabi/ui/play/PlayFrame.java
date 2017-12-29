@@ -11,7 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
+import com.ten.hanabi.core.Card;
+import com.ten.hanabi.core.Deck;
+import com.ten.hanabi.core.Hanabi;
+import com.ten.hanabi.core.Situation;
+import com.ten.hanabi.core.clues.Clue;
+import com.ten.hanabi.core.exceptions.InvalidDeckException;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import com.ten.hanabi.play.PlayManager;
 import com.ten.hanabi.serialization.XMLSerializer;
 import com.ten.hanabi.ui.ExceptionDialog;
 
@@ -110,16 +117,67 @@ public class PlayFrame extends JFrame implements KeyListener {
 				if(e.getKeyChar() == 'O') // BGA
 					openFrame.setTab(1);
 				openFrame.setVisible(true);
-			} else if(e.getKeyChar() == 's') {
-				JFileChooser chooser = new JFileChooser();
-				int retrival = chooser.showSaveDialog(null);
-				if(retrival == JFileChooser.APPROVE_OPTION) {
+			} else if(e.getKeyChar() == 's' || e.getKeyChar() == 'S') {
+				boolean doSave = true;
+				if(e.getKeyChar() == 'S') {
 					try {
-						XMLSerializer.toXML(uiPlayManager.getHanabi(), chooser.getSelectedFile().getAbsolutePath());
-					} catch (Exception ex) {
-						new ExceptionDialog(this, "Error while saving game",
-								"Make sure the location you are writing to is valid", ex).setVisible(true);
+						uiPlayManager.getHanabi().getDeck().lock();
+					} catch (InvalidDeckException ex) {
+						new ExceptionDialog(this, "Could not lock deck", ex.getMessage(), ex).setVisible(true);
+						doSave = false;
 					}
+				}
+				if(doSave) {
+					JFileChooser chooser = new JFileChooser();
+					int retrival = chooser.showSaveDialog(null);
+					if(retrival == JFileChooser.APPROVE_OPTION) {
+						try {
+							XMLSerializer.toXML(uiPlayManager.getHanabi(), chooser.getSelectedFile().getAbsolutePath());
+						} catch (Exception ex) {
+							new ExceptionDialog(this, "Error while saving game",
+									"Make sure the location you are writing to is valid", ex).setVisible(true);
+						}
+					}
+				}
+			} else if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				PlayManager playManager = uiPlayManager.getPlayManager();
+				if(playManager != null) {
+					Hanabi h = uiPlayManager.getHanabi();
+					if(h != null && h.getVariant().getTurn() > 0)
+						playManager.rollback();
+				}
+			} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+				if(!uiPlayManager.getHanabi().getDeck().isLocked()) {
+					int selectedCard = uiPlayManager.getSelectedCardIdInHand();
+					if(selectedCard >= 0) {
+						int cardIdInDeck = uiPlayManager.getSituation().getHand(uiPlayManager.getSelectedCardPlayer())
+								.getIdInDeck(selectedCard);
+						final Deck deck = uiPlayManager.getHanabi().getDeck();
+						final Card oldCardValue = deck.getCard(cardIdInDeck);
+						new AskCardValueDialog(this, deck, cardIdInDeck, true).setVisible(true); // Will handle the card
+																									// value change
+						Situation currS = uiPlayManager.getSituation();
+						try {
+							currS.getVariant().getSituation();
+							uiPlayManager.onSituationChange(currS.getVariant().getSituation(currS.getTurn()));
+						} catch (InvalidPlayException ex) {
+							try {
+								deck.setCard(cardIdInDeck, oldCardValue); // rollback
+							} catch (InvalidDeckException e1) {
+								throw new RuntimeException(e1); // Should never happen, old deck was valid
+							}
+							new ExceptionDialog(this, "Error while changing card value", ex.getMessage(), ex)
+									.setVisible(true);
+						}
+
+					}
+				}
+			} else {
+				try {
+					Clue c = Clue.fromSmall(Character.toString(e.getKeyChar()));
+					uiPlayManager.selectClue(c);
+				} catch (Exception ex) { // Character doesn't match any clue
+					// It's ok, just drop the key press
 				}
 			}
 		} catch (InvalidPlayException ex) {

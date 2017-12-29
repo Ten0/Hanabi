@@ -57,4 +57,19 @@ public class Variant {
 	public Player getPlayingPlayer() {
 		return hanabi.getPlayingPlayer(getTurn());
 	}
+
+	public void rollback() {
+		if(!plays.isEmpty()) {
+			if(situationDP != null)
+				situationDP.remove(plays.size());
+			plays.remove(plays.size() - 1);
+		} else {
+			throw new RuntimeException("Cannot rollback game from turn 0");
+		}
+	}
+
+	public void rollback(int turn) {
+		while(getTurn() > turn)
+			rollback();
+	}
 }

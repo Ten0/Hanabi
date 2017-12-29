@@ -14,7 +14,7 @@ public abstract class Clue implements Comparable<Clue> {
 
 	public static Clue fromSmall(String s) throws Exception {
 		for(Color c : Color.values()) {
-			if(c.smallName().equals(s))
+			if(c != Color.MULTI && c.smallName().equalsIgnoreCase(s))
 				return new ColorClue(c);
 		}
 		for(int i = 1; i <= 5; i++) {
