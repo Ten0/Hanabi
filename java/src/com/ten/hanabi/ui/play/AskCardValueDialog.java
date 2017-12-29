@@ -47,7 +47,7 @@ public class AskCardValueDialog extends JDialog {
 
 		RuleSet rs = deck.getRuleSet();
 		ArrayList<Color> enabledColors = rs.getEnabledColors();
-		JPanel cardsPanel = new JPanel(new GridLayout(5, enabledColors.size(), 0, 0));
+		JPanel cardsPanel = new JPanel(new GridLayout(enabledColors.size(), 5, 0, 0));
 
 		for(Color c : enabledColors) {
 			for(int n = 1; n <= 5; n++) {
