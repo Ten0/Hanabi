@@ -112,6 +112,8 @@ public class PlayFrame extends JFrame implements KeyListener {
 				uiPlayManager.nextTurn();
 			} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_UP) {
 				uiPlayManager.previousTurn();
+			} else if(e.getKeyChar() == 'n') {
+				new NewGameDialog(this, uiPlayManager).setVisible(true);
 			} else if(e.getKeyChar() == 'o' || e.getKeyChar() == 'O') {
 				OpenFrame openFrame = new OpenFrame(this, uiPlayManager);
 				if(e.getKeyChar() == 'O') // BGA
