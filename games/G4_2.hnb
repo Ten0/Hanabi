@@ -1,0 +1,511 @@
+<Hanabi>
+  <ruleSet>
+    <multi>false</multi>
+    <multiIsNormalColor>false</multiIsNormalColor>
+    <cardNumberVariant>false</cardNumberVariant>
+    <emptyCluesAllowed>false</emptyCluesAllowed>
+  </ruleSet>
+  <players>
+    <Player>
+      <name>Alain</name>
+      <hanabi reference="../../.."/>
+      <id>0</id>
+    </Player>
+    <Player>
+      <name>Anne</name>
+      <hanabi reference="../../.."/>
+      <id>1</id>
+    </Player>
+    <Player>
+      <name>Thomas</name>
+      <hanabi reference="../../.."/>
+      <id>2</id>
+    </Player>
+  </players>
+  <deck>
+    <cards>
+      <Card>
+        <color>RED</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>5</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>5</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>5</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>2</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>5</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>WHITE</color>
+        <number>4</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>5</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>BLUE</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>YELLOW</color>
+        <number>3</number>
+      </Card>
+      <Card>
+        <color>GREEN</color>
+        <number>1</number>
+      </Card>
+      <Card>
+        <color>RED</color>
+        <number>2</number>
+      </Card>
+    </cards>
+    <ruleSet reference="../../ruleSet"/>
+    <locked>true</locked>
+  </deck>
+  <variant>
+    <hanabi reference="../.."/>
+    <plays>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[3]"/>
+        <clue class="NumberClue">
+          <number>1</number>
+        </clue>
+      </CluePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="NumberClue" reference="../../CluePlay/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>2</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player[3]"/>
+        <clue class="ColorClue">
+          <color>GREEN</color>
+        </clue>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="ColorClue" reference="../../CluePlay[3]/clue"/>
+      </CluePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="ColorClue">
+          <color>BLUE</color>
+        </clue>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="NumberClue">
+          <number>2</number>
+        </clue>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="NumberClue" reference="../../CluePlay[6]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>0</placement>
+      </DiscardPlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="ColorClue" reference="../../CluePlay[5]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>3</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>3</placement>
+      </DiscardPlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>2</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>3</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="NumberClue">
+          <number>5</number>
+        </clue>
+      </CluePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player"/>
+        <placement>4</placement>
+      </DiscardPlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="ColorClue">
+          <color>RED</color>
+        </clue>
+      </CluePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="ColorClue" reference="../../CluePlay[5]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>3</placement>
+      </DiscardPlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="NumberClue" reference="../../CluePlay[9]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>4</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="ColorClue" reference="../../CluePlay[3]/clue"/>
+      </CluePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player"/>
+        <placement>2</placement>
+      </DiscardPlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player[3]"/>
+        <clue class="NumberClue">
+          <number>4</number>
+        </clue>
+      </CluePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>2</placement>
+      </DiscardPlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player"/>
+        <placement>1</placement>
+      </DiscardPlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="NumberClue" reference="../../CluePlay[6]/clue"/>
+      </CluePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="ColorClue">
+          <color>WHITE</color>
+        </clue>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>3</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <toPlayer reference="../../../../players/Player"/>
+        <clue class="ColorClue" reference="../../CluePlay[10]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </DiscardPlay>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="NumberClue">
+          <number>3</number>
+        </clue>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>1</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </DiscardPlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>3</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <toPlayer reference="../../../../players/Player[3]"/>
+        <clue class="ColorClue" reference="../../CluePlay[10]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="NumberClue" reference="../../CluePlay[14]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>0</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </DiscardPlay>
+      <CluePlay>
+        <player reference="../../../../players/Player"/>
+        <toPlayer reference="../../../../players/Player[2]"/>
+        <clue class="NumberClue" reference="../../CluePlay[9]/clue"/>
+      </CluePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>2</placement>
+      </PlacePlay>
+      <DiscardPlay>
+        <player reference="../../../../players/Player[3]"/>
+        <placement>4</placement>
+      </DiscardPlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player"/>
+        <placement>4</placement>
+      </PlacePlay>
+      <PlacePlay>
+        <player reference="../../../../players/Player[2]"/>
+        <placement>2</placement>
+      </PlacePlay>
+    </plays>
+  </variant>
+</Hanabi>
