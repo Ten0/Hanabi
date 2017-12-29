@@ -22,10 +22,15 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private int selectedCardIdInHand = -1;
 	private Clue selectedClue = null;
 
+	public enum PanelClick {
+		BOARD, DISCARD
+	};
+
 	private final HashSet<SituationChangeListener> situationChangeListeners;
 	private final HashSet<HanabiChangeListener> hanabiChangeListeners;
 	private final HashSet<SelectedCardChangeListener> selectedCardChangeListeners;
 	private final HashSet<SelectedClueChangeListener> selectedClueChangeListeners;
+	private final HashSet<PanelClickListener> panelClickListeners;
 
 	public enum HiddenCardsMode {
 		NONE, ALL, CURRENT, MANUAL
@@ -34,12 +39,14 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private HiddenCardsMode hiddenCardsMode = HiddenCardsMode.NONE;
 
 	private Player playerWhoseCardsAreHidden = null; // Cards are hidden in the right hand side UI
+	private PlayFrame playFrame;
 
 	public UIPlayManager() {
 		situationChangeListeners = new HashSet<SituationChangeListener>();
 		hanabiChangeListeners = new HashSet<HanabiChangeListener>();
 		selectedCardChangeListeners = new HashSet<SelectedCardChangeListener>();
 		selectedClueChangeListeners = new HashSet<SelectedClueChangeListener>();
+		panelClickListeners = new HashSet<PanelClickListener>();
 	}
 
 	private void setHanabi(Hanabi h, int turn) throws InvalidPlayException {
@@ -161,6 +168,20 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		});
 	}
 
+	void registerPanelClickListener(PanelClickListener pcl) {
+		panelClickListeners.add(pcl);
+	}
+
+	void unregisterPanelClickListener(PanelClickListener pcl) {
+		panelClickListeners.remove(pcl);
+	}
+
+	public void notifyPanelClick(PanelClick panel) {
+		panelClickListeners.parallelStream().forEach(pcl -> {
+			pcl.onPanelClick(panel);
+		});
+	}
+
 	boolean nextTurn() throws InvalidPlayException {
 		if(hanabi != null && situation.getTurn() < hanabi.getTurn()) {
 			goToTurn(situation.getTurn() + 1);
@@ -215,7 +236,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		return selectedClue;
 	}
 
-	public void unregister(Component comp) {
+	public void unregister(Object comp) {
 		if(comp instanceof JPanel) {
 			for(Component comp2 : ((JPanel) comp).getComponents())
 				unregister(comp2);
@@ -231,6 +252,9 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		}
 		if(comp instanceof SelectedClueChangeListener) {
 			unregisterSelectedClueChangeListener((SelectedClueChangeListener) comp);
+		}
+		if(comp instanceof PanelClickListener) {
+			unregisterPanelClickListener((PanelClickListener) comp);
 		}
 	}
 
@@ -259,5 +283,13 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	public boolean areCardsHidden(Player p) {
 		return hiddenCardsMode == HiddenCardsMode.ALL || p == playerWhoseCardsAreHidden // manual mode implicit
 				|| (hiddenCardsMode == HiddenCardsMode.CURRENT && p == situation.getPlayingPlayer());
+	}
+
+	void setPlayFrame(PlayFrame playFrame) {
+		this.playFrame = playFrame;
+	}
+
+	PlayFrame getPlayFrame() {
+		return playFrame;
 	}
 }

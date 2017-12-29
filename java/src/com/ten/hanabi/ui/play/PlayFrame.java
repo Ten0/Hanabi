@@ -30,6 +30,7 @@ public class PlayFrame extends JFrame implements KeyListener {
 		super();
 		setTitle("Hanabi - Game");
 		uiPlayManager = upm;
+		upm.setPlayFrame(this);
 
 		addKeyListener(this);
 		setFocusable(true);

@@ -10,6 +10,8 @@ import com.ten.hanabi.ui.Utils;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -62,6 +64,13 @@ public class BoardPanel extends JPanel implements HanabiChangeListener, Situatio
 		deckLabel.setHorizontalTextPosition(JLabel.CENTER); // Text on image
 		deckLabel.setBorder(new LineBorder(java.awt.Color.BLACK, 3, true));
 		deckPanel.add(deckLabel);
+
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				upm.notifyPanelClick(UIPlayManager.PanelClick.BOARD);
+			}
+		});
 
 		upm.registerHanabiChangeListener(this);
 		upm.registerSituationChangeListener(this);

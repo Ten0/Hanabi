@@ -2,6 +2,8 @@ package com.ten.hanabi.ui.play;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -41,6 +43,13 @@ public class DiscardPanel extends JPanel implements HanabiChangeListener, Situat
 
 			colorPanels.put(c, cColorPanel);
 		}
+
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				upm.notifyPanelClick(UIPlayManager.PanelClick.DISCARD);
+			}
+		});
 
 		upm.registerHanabiChangeListener(this);
 		upm.registerSituationChangeListener(this);

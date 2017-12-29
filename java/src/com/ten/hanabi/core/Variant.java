@@ -49,4 +49,12 @@ public class Variant {
 		getSituation().checkPlayValidity(play);
 		plays.add(play);
 	}
+
+	public int getPlayingPlayerId() {
+		return hanabi.getPlayingPlayerId(getTurn());
+	}
+
+	public Player getPlayingPlayer() {
+		return hanabi.getPlayingPlayer(getTurn());
+	}
 }

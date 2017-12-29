@@ -100,20 +100,12 @@ public class Situation {
 			lastCardPicked = turn;
 	}
 
-	public int getPlayingPlayerId(int turn) {
-		return turn % hanabi.getPlayerCount();
-	}
-
 	public int getPlayingPlayerId() {
-		return getPlayingPlayerId(getTurn());
-	}
-
-	public Player getPlayingPlayer(int turn) {
-		return hanabi.getPlayer(getPlayingPlayerId(turn));
+		return hanabi.getPlayingPlayerId(getTurn());
 	}
 
 	public Player getPlayingPlayer() {
-		return getPlayingPlayer(getTurn());
+		return hanabi.getPlayingPlayer(getTurn());
 	}
 
 	public boolean canPlay(Play play) {
@@ -135,6 +127,8 @@ public class Situation {
 	}
 
 	public void checkPlayValidity(Play play) throws InvalidPlayException {
+		if(play == null)
+			throw new InvalidPlayException(play, "Null play.");
 		if(getPlayingPlayerId() != play.getPlayer().getId())
 			throw new InvalidPlayException(play, "Not this player's turn");
 		int newClues = clues + play.getCluesAdded();

@@ -101,4 +101,12 @@ public class Hanabi {
 	public void setVariant(Variant variant) {
 		this.variant = variant;
 	}
+
+	public int getPlayingPlayerId(int turn) {
+		return turn % getPlayerCount();
+	}
+
+	public Player getPlayingPlayer(int turn) {
+		return getPlayer(getPlayingPlayerId(turn));
+	}
 }
