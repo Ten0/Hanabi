@@ -45,7 +45,8 @@ public class Situation {
 		for(Player player : hanabi.getPlayers()) {
 			Hand hand = new Hand(player);
 			for(int i = 0; i < hanabi.getNbOfCardsPerPlayer(); i++) {
-				hand.pick(this, hanabi.getDeck().getCard(player.getId() + i * hanabi.getPlayerCount()));
+				int cardId = player.getId() + i * hanabi.getPlayerCount();
+				hand.pick(this, hanabi.getDeck().getCard(cardId), cardId);
 			}
 			hands.add(hand);
 		}
@@ -88,7 +89,7 @@ public class Situation {
 
 			// Pick a new card if deck is not empty
 			if(cardId < hanabi.getDeck().size())
-				hand.pick(this, hanabi.getDeck().getCard(cardId));
+				hand.pick(this, hanabi.getDeck().getCard(cardId), cardId);
 		} else if(p instanceof CluePlay) {
 			CluePlay cPlay = (CluePlay) p;
 			// Update info known on cards in that hand

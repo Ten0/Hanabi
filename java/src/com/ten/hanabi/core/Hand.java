@@ -13,6 +13,7 @@ public class Hand implements Iterable<Card> {
 	private final Hanabi hanabi;
 	private final Player player;
 	private final ArrayList<Card> cards;
+	private final ArrayList<Integer> cardsIdInDeck;
 
 	private final ArrayList<CardKnowlege> cardsKnowlege;
 
@@ -20,16 +21,19 @@ public class Hand implements Iterable<Card> {
 		this.player = player;
 		this.hanabi = player.getHanabi();
 		this.cards = new ArrayList<Card>();
+		this.cardsIdInDeck = new ArrayList<Integer>();
 		this.cardsKnowlege = new ArrayList<CardKnowlege>();
 	}
 
-	void pick(Situation s, Card c) {
+	void pick(Situation s, Card c, int idInDeck) {
 		cards.add(0, c);
 		cardsKnowlege.add(0, new CardKnowlege(s, s.getTurn()));
+		cardsIdInDeck.add(0, idInDeck);
 	}
 
 	Card play(int id) {
 		cardsKnowlege.remove(id);
+		cardsIdInDeck.remove(id);
 		return cards.remove(id);
 	}
 
@@ -109,5 +113,9 @@ public class Hand implements Iterable<Card> {
 				throw new UnknownCardException();
 		}
 		return count;
+	}
+
+	public int getIdInDeck(int cardId) {
+		return cardsIdInDeck.get(cardId);
 	}
 }

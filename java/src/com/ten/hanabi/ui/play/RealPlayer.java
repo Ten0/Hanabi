@@ -1,6 +1,7 @@
 package com.ten.hanabi.ui.play;
 
 import com.ten.hanabi.core.Hanabi;
+import com.ten.hanabi.core.Hand;
 import com.ten.hanabi.core.Player;
 import com.ten.hanabi.core.Situation;
 import com.ten.hanabi.core.Variant;
@@ -69,6 +70,11 @@ public class RealPlayer extends PlayingEntity
 		if(upm.getSelectedCardPlayer() != currPlayer)
 			return;
 		int cardId = upm.getSelectedCardIdInHand();
+
+		// Check if card is unknown, and if so, ask for its value
+		Hand h = upm.getSituation().getHand(currPlayer);
+		if(h.get(cardId) == null)
+			AskCardValueDialog.setIfRequired(upm.getPlayFrame(), h.getHanabi().getDeck(), h.getIdInDeck(cardId));
 
 		Play play = null;
 		if(panel == UIPlayManager.PanelClick.BOARD) {

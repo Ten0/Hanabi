@@ -148,7 +148,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	private void notifySelectedCardChange() {
-		selectedCardChangeListeners.parallelStream().forEach(sccl -> {
+		selectedCardChangeListeners.forEach(sccl -> {
 			sccl.onSelectedCardChange(selectedCardPlayer, selectedCardIdInHand);
 		});
 	}
@@ -163,7 +163,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	private void notifySelectedClueChange() {
-		selectedClueChangeListeners.parallelStream().forEach(sccl -> {
+		selectedClueChangeListeners.forEach(sccl -> {
 			sccl.onSelectedClueChange(selectedClue);
 		});
 	}
@@ -177,7 +177,7 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	}
 
 	public void notifyPanelClick(PanelClick panel) {
-		panelClickListeners.parallelStream().forEach(pcl -> {
+		panelClickListeners.forEach(pcl -> {
 			pcl.onPanelClick(panel);
 		});
 	}
