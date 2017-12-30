@@ -177,7 +177,7 @@ public class PlayFrame extends JFrame implements KeyListener {
 			} else {
 				try {
 					Clue c = Clue.fromSmall(Character.toString(e.getKeyChar()));
-					uiPlayManager.selectClue(c);
+					uiPlayManager.selectClue(c.compareTo(uiPlayManager.getSelectedClue()) == 0 ? null : c);
 				} catch (Exception ex) { // Character doesn't match any clue
 					// It's ok, just drop the key press
 				}

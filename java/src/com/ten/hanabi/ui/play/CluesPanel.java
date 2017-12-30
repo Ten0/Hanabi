@@ -73,7 +73,7 @@ public class CluesPanel extends JPanel implements HanabiChangeListener, Selected
 		jpanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(uiPlayManager.getSelectedClue() == clue)
+				if(clue.compareTo(uiPlayManager.getSelectedClue()) == 0)
 					uiPlayManager.selectClue(null);
 				else
 					uiPlayManager.selectClue(clue);
