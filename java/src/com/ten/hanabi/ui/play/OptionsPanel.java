@@ -44,10 +44,11 @@ public class OptionsPanel extends JPanel implements HanabiChangeListener, ItemLi
 		if(hanabi == null) {
 			hideCardsDropdown.setModel(new DefaultComboBoxModel<>(new String[] { "No game loaded..." }));
 		} else {
-			String[] dropdownValues = new String[2 + hanabi.getPlayerCount()];
+			String[] dropdownValues = new String[3 + hanabi.getPlayerCount()];
 			dropdownValues[0] = "None";
-			dropdownValues[1] = "Current player";
-			int i = 2;
+			dropdownValues[1] = "Everyone";
+			dropdownValues[2] = "Current player";
+			int i = 3;
 			for(Player p : hanabi.getPlayers()) {
 				dropdownValues[i++] = p.getName();
 			}
@@ -62,9 +63,11 @@ public class OptionsPanel extends JPanel implements HanabiChangeListener, ItemLi
 			if(sel == 0)
 				uiPlayManager.setHiddenCardsMode(UIPlayManager.HiddenCardsMode.NONE);
 			else if(sel == 1)
+				uiPlayManager.setHiddenCardsMode(UIPlayManager.HiddenCardsMode.ALL);
+			else if(sel == 2)
 				uiPlayManager.setHiddenCardsMode(UIPlayManager.HiddenCardsMode.CURRENT);
 			else
-				uiPlayManager.setPlayerWhoseCardsAreHidden(uiPlayManager.getHanabi().getPlayer(sel - 2));
+				uiPlayManager.setPlayerWhoseCardsAreHidden(uiPlayManager.getHanabi().getPlayer(sel - 3));
 		}
 	}
 }
