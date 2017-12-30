@@ -6,7 +6,7 @@ import java.util.HashSet;
 import javax.swing.JPanel;
 
 import com.ten.hanabi.core.*;
-import com.ten.hanabi.core.clues.Clue;
+import com.ten.hanabi.core.clues.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.play.HanabiChangeListener;
 import com.ten.hanabi.play.PlayManager;
@@ -103,11 +103,15 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		this.selectedClue = c;
 	}
 
-	public void selectClue(Clue c) {
+	public boolean selectClue(Clue c) {
+		if(c != null && hanabi != null && c instanceof ColorClue
+				&& !hanabi.getRuleSet().isColorEnabled(((ColorClue) c).getColor()))
+			return false;
 		if(selectedClue != c) {
 			setSelectedClue(c);
 			notifySelectedClueChange();
 		}
+		return true;
 	}
 
 	void registerHanabiChangeListener(HanabiChangeListener hcl) {
