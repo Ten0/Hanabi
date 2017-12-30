@@ -8,6 +8,8 @@ public class NumberClue extends Clue {
 
 	public NumberClue(int n) {
 		number = n;
+		if(n < 1 || n > 5)
+			throw new RuntimeException("You cannot give a number " + n + " clue.");
 	}
 
 	public int getNumber() {

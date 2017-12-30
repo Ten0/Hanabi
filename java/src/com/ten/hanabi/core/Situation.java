@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import com.ten.hanabi.core.clues.*;
 import com.ten.hanabi.core.exceptions.InvalidPlayException;
 import com.ten.hanabi.core.plays.*;
 
@@ -119,9 +121,12 @@ public class Situation {
 			return false; // Invalid clue count
 		if(isGameOver())
 			return false; // Game is already over
-		if(!hanabi.getRuleSet().canGiveEmptyClues() && hanabi.getDeck().isLocked()) {
-			if(play instanceof CluePlay) {
-				CluePlay cp = (CluePlay) play;
+		if(play instanceof CluePlay) {
+			CluePlay cp = (CluePlay) play;
+			if(cp.getClue() instanceof ColorClue
+					&& !hanabi.getRuleSet().isColorEnabled(((ColorClue) cp.getClue()).getColor()))
+				return false; // Color is not enabled
+			if(!hanabi.getRuleSet().canGiveEmptyClues() && hanabi.getDeck().isLocked()) {
 				if(hands.get(cp.getReceiver().getId()).getConcernedCardsCount(cp.getClue()) <= 0)
 					return false; // Empty clues are not allowed
 			}
@@ -142,9 +147,12 @@ public class Situation {
 			throw new InvalidPlayException(play, "clues>" + maxClues);
 		if(isGameOver())
 			throw new InvalidPlayException(play, "Game is already over");
-		if(!hanabi.getRuleSet().canGiveEmptyClues() && hanabi.getDeck().isLocked()) {
-			if(play instanceof CluePlay) {
-				CluePlay cp = (CluePlay) play;
+		if(play instanceof CluePlay) {
+			CluePlay cp = (CluePlay) play;
+			if(cp.getClue() instanceof ColorClue
+					&& !hanabi.getRuleSet().isColorEnabled(((ColorClue) cp.getClue()).getColor()))
+				throw new InvalidPlayException(play, "Color is not enabled");
+			if(!hanabi.getRuleSet().canGiveEmptyClues() && hanabi.getDeck().isLocked()) {
 				if(hands.get(cp.getReceiver().getId()).getConcernedCardsCount(cp.getClue()) <= 0)
 					throw new InvalidPlayException(play, "Empty clues are not allowed");
 			}
