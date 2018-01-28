@@ -5,8 +5,9 @@ import java.io.PrintStream;
 
 import javax.swing.JPanel;
 
-import com.ten.hanabi.core.Situation;
-import com.ten.hanabi.core.plays.Play;
+import com.ten.hanabi.core.*;
+import com.ten.hanabi.core.exceptions.InvalidPlayException;
+import com.ten.hanabi.core.plays.*;
 import com.ten.hanabi.play.SituationChangeListener;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -41,7 +42,22 @@ public class LogPanel extends JPanel implements SituationChangeListener {
 				Play p = s.getVariant().getPlay(i);
 				ps.print(i);
 				ps.print(": ");
-				ps.println(p);
+				ps.print(p);
+				if(p instanceof CardPlay) {
+					CardPlay cp = (CardPlay) p;
+					try {
+						Situation prevSituation = s.getVariant().getSituation(i - 1);
+						Card playedCard = prevSituation.getHand(cp.getPlayer()).get(cp.getPlacement());
+						ps.print(" -> " + playedCard);
+						if(p instanceof PlacePlay) {
+							if(!prevSituation.canBePlaced(playedCard))
+								ps.print(" -> Strike!");
+						}
+					} catch (InvalidPlayException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				ps.println();
 			}
 			String content = new String(baos.toByteArray());
 			textArea.setText(content);
