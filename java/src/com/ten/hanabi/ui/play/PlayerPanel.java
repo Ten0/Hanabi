@@ -157,31 +157,38 @@ public class PlayerPanel extends JPanel implements SituationChangeListener, Sele
 					if(situation.getPlayingPlayer() == player) {
 						if(timerCancelled)
 							setCards(situation);
-						situation = s;
-						// C'était le tour de ce joueur
-						Play p = s.getVariant().getPlay(situation.getTurn());
-						if(p instanceof CardPlay) {
-							// On fait l'animation
-							CardPlay cp = (CardPlay) p;
-							if(cp instanceof PlacePlay)
-								cardJustPlaced = cp.getPlacement();
-							else
-								cardJustDiscarded = cp.getPlacement();
-							cardBorder(cp.getPlacement());
+						// It was this player's turn
 
-							this.timer = new Timer();
-							timer.schedule(new java.util.TimerTask() {
-								@Override
-								public void run() {
-									cardJustPlaced = -1;
-									cardJustDiscarded = -1;
-									setCards(s);
-									timer = null;
-								}
-							}, 2500);
-						} else {
+						final int playDelay = uiPlayManager.getPlayDelay();
+						if(playDelay <= 0) {
 							setCards(s);
+						} else {
+							// In case we were hiding the current player's cards, we need them un-hidden
+							if(uiPlayManager.getHiddenCardsMode() == UIPlayManager.HiddenCardsMode.CURRENT)
+								setCards(situation);
+
+							Play p = s.getVariant().getPlay(s.getTurn());
+							if(p instanceof CardPlay) {
+								CardPlay cp = (CardPlay) p;
+								if(cp instanceof PlacePlay)
+									cardJustPlaced = cp.getPlacement();
+								else
+									cardJustDiscarded = cp.getPlacement();
+								cardBorder(cp.getPlacement());
+
+								this.timer = new Timer();
+								timer.schedule(new java.util.TimerTask() {
+									@Override
+									public void run() {
+										cardJustPlaced = -1;
+										cardJustDiscarded = -1;
+										setCards(s);
+										timer = null;
+									}
+								}, playDelay);
+							}
 						}
+						situation = s;
 						return;
 					} else {
 						setCards(s); // Necessary because we also draw clues information

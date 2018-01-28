@@ -44,6 +44,8 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 	private PlayFrame playFrame;
 	/** PlayManager if we are currently running a game, null if only viewing */
 	private PlayManager playManager;
+	/** Delay between card play and player's new card draw */
+	private int playDelay = 2500;
 
 	public UIPlayManager() {
 		situationChangeListeners = new HashSet<SituationChangeListener>();
@@ -280,6 +282,10 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 		}
 	}
 
+	public HiddenCardsMode getHiddenCardsMode() {
+		return hiddenCardsMode;
+	}
+
 	void setPlayerWhoseCardsAreHidden(Player player) {
 		if(playerWhoseCardsAreHidden != player) {
 			this.hiddenCardsMode = HiddenCardsMode.MANUAL;
@@ -309,5 +315,15 @@ public class UIPlayManager implements SituationChangeListener, HanabiChangeListe
 
 	public PlayManager getPlayManager() {
 		return playManager;
+	}
+
+	/** Delay between card play and player's new card draw */
+	public void setPlayDelay(int playDelay) {
+		this.playDelay = playDelay;
+	}
+
+	/** Delay between card play and player's new card draw */
+	public int getPlayDelay() {
+		return playDelay;
 	}
 }

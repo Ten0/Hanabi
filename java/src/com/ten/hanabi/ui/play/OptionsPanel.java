@@ -7,26 +7,32 @@ import com.ten.hanabi.play.HanabiChangeListener;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.FlowLayout;
 
-public class OptionsPanel extends JPanel implements HanabiChangeListener, ItemListener {
+import java.awt.Component;
+import java.awt.FlowLayout;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class OptionsPanel extends JPanel implements HanabiChangeListener, ItemListener, ChangeListener {
+
 	private UIPlayManager uiPlayManager;
 	private JComboBox<String> hideCardsDropdown;
+	private JSlider playDelaySlider;
 
 	public OptionsPanel(UIPlayManager upm) {
 		uiPlayManager = upm;
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		JPanel hideCardsPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) hideCardsPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		add(hideCardsPanel);
+		JPanel hideCardsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 		JLabel hideCardsLabel = new JLabel("Hide cards :");
 		hideCardsPanel.add(hideCardsLabel);
@@ -35,6 +41,33 @@ public class OptionsPanel extends JPanel implements HanabiChangeListener, ItemLi
 		hideCardsDropdown.addItemListener(this);
 		hideCardsDropdown.setFocusable(false);
 		hideCardsPanel.add(hideCardsDropdown);
+
+		add(hideCardsPanel);
+
+		JPanel playDelayPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+		JLabel playDelayLabel = new JLabel("Play delay in players panel");
+		playDelayPanel.add(playDelayLabel);
+
+		playDelaySlider = new JSlider(0, 5000, 2500);
+		playDelaySlider.addChangeListener(this);
+		playDelaySlider.setFocusable(false);
+		playDelaySlider.setPaintTicks(true);
+		playDelaySlider.setMinorTickSpacing(500);
+		playDelaySlider.setMajorTickSpacing(1000);
+		playDelaySlider.setSnapToTicks(true);
+
+		Dictionary<Integer, Component> labelTable = new Hashtable<Integer, Component>();
+		labelTable.put(0, new JLabel("0s"));
+		labelTable.put(2500, new JLabel("2.5s"));
+		labelTable.put(5000, new JLabel("5s"));
+		playDelaySlider.setLabelTable(labelTable);
+		playDelaySlider.setPaintLabels(true);
+
+		playDelayPanel.add(playDelaySlider);
+		uiPlayManager.setPlayDelay(playDelaySlider.getValue());
+
+		add(playDelayPanel);
 
 		upm.registerHanabiChangeListener(this);
 	}
@@ -68,6 +101,13 @@ public class OptionsPanel extends JPanel implements HanabiChangeListener, ItemLi
 				uiPlayManager.setHiddenCardsMode(UIPlayManager.HiddenCardsMode.CURRENT);
 			else
 				uiPlayManager.setPlayerWhoseCardsAreHidden(uiPlayManager.getHanabi().getPlayer(sel - 3));
+		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		if(e.getSource() == playDelaySlider) {
+			uiPlayManager.setPlayDelay(playDelaySlider.getValue());
 		}
 	}
 }
