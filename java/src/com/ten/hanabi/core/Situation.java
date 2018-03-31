@@ -84,7 +84,9 @@ public class Situation {
 				if(this.canBePlaced(playedCard)) {
 					placedOnColor.put(playedCard.getColor(), placedOnColor.get(playedCard.getColor()) + 1);
 					placedCards.add(playedCard);
-					clues += playedCard.getCluesAddedOnPlay();
+					// Rules state that the "+1 clue bonus" is lost if a 5 is played while already at MAX_CLUES
+					clues = Math.min(clues + playedCard.getCluesAddedOnPlay(),
+							hanabi.getRuleSet().getMaxNumberOfClues());
 				} else {
 					strikes++;
 					discardedCards.add(playedCard);
