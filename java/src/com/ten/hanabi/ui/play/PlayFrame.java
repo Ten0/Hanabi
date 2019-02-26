@@ -123,7 +123,11 @@ public class PlayFrame extends JFrame implements KeyListener {
 				boolean doSave = true;
 				if(e.getKeyChar() == 'S') {
 					try {
-						uiPlayManager.getHanabi().getDeck().lock();
+						Deck deck = uiPlayManager.getHanabi().getDeck();
+						if(uiPlayManager.getSituation().isGameOver())
+							deck.autoComplete(true);
+						else
+							deck.lock();
 					} catch (InvalidDeckException ex) {
 						new ExceptionDialog(this, "Could not lock deck", ex.getMessage(), ex).setVisible(true);
 						doSave = false;
